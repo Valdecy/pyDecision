@@ -42,11 +42,11 @@ dataset = np.array([
 
 # Dataset
 dataset = np.array([
-                [10, 8, 10],   #a1
+                [10,  8, 10],   #a1
                 [10, 10, 10],   #a2
-                [1, 1, 1],   #a3
-                [7, 7, 5],   #a4
-                [7, 7, 7]    #a5
+                [ 1,  1,  1],   #a3
+                [ 7,  7,  5],   #a4
+                [ 7,  7,  7]    #a5
                 ])
 
 concordance, discordance, dominance, kernel, dominated = electre_i(dataset, W = W, remove_cycles = True, c_hat = 0.75, d_hat = 0.50, graph = True)
