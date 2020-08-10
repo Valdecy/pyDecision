@@ -3,6 +3,7 @@
 # Required Libraries
 import numpy as np
 
+# ELECTRE
 from py_decisions.electre.e_i       import electre_i
 from py_decisions.electre.e_i_s     import electre_i_s
 from py_decisions.electre.e_i_v     import electre_i_v
@@ -11,7 +12,7 @@ from py_decisions.electre.e_iii     import electre_iii
 from py_decisions.electre.e_iv      import electre_iv
 from py_decisions.electre.e_tri_b   import electre_tri_b
 
-
+# PROMETHEE
 from py_decisions.promethee.p_i     import promethee_i
 from py_decisions.promethee.p_ii    import promethee_ii
 from py_decisions.promethee.p_iii   import promethee_iii
