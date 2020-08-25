@@ -40,6 +40,7 @@ dataset = np.array([
                 [1, 1, 3, 5, 4, 1, 5]    #a5
                 ])
 
+# Call Electre I Function
 concordance, discordance, dominance, kernel, dominated = electre_i(dataset, W = W, remove_cycles = True, c_hat = 0.75, d_hat = 0.50, graph = True)
 
 ##############################################################################
@@ -67,7 +68,7 @@ dataset = np.array([
                 [17000, 209, 7, 37, 3, 440, 30.9]    #a9
                 ])
 
-# Call Electre
+# Call Electre I_s Function
 global_concordance, discordance, kernel, credibility, dominated = electre_i_s(dataset, Q = Q, P = P, V = V, W = W, graph = True, lambda_value = lambda_value)
 
 ##############################################################################
@@ -89,7 +90,7 @@ dataset = np.array([
                 [ 8,  9, 0,  9]    #a5
                 ])
 
-# Call Electre
+# Call Electre I_v Function
 concordance, discordance, dominance, kernel, dominated = electre_i_v(dataset, V = V, W = W, remove_cycles = True, c_hat = c_hat, graph = True)
 
 ##############################################################################
@@ -115,7 +116,7 @@ dataset = np.array([
                 [1, 1, 3, 5, 4, 1, 5]    #a6
                 ])
 
-# Call Electre
+# Call Electre II Function
 concordance, discordance, dominance_s, dominance_w, rank_D, rank_A, rank_N, rank_P = electre_ii(dataset, W = W, c_minus = c_minus, c_zero = c_zero, c_plus = c_plus, d_minus = d_minus, d_plus = d_plus, graph = True)
 
 ##############################################################################
@@ -138,7 +139,7 @@ dataset = np.array([
                 [7.41, 7.87, 6.77, 7.23]    #a6
                 ])
     
-# Call Electre
+# Call Electre III Function
 global_concordance, credibility, rank_D, rank_A, rank_N, rank_P = electre_iii(dataset, P = P, Q = Q, V = V, W = W, graph = True)
 
 
@@ -163,7 +164,7 @@ dataset = np.array([
                 [15, 80, 50, 50, 40, 90, 60, 100],   #a7
                 ])
 
-# Call Electre
+# Call Electre IV Function
 credibility, rank_D, rank_A, rank_N, rank_P = electre_iv(dataset, P = P, Q = Q, V = V, graph = True)
 
 ##############################################################################
@@ -183,7 +184,7 @@ V = [30, 30, 30, 30, 30]
 W = [ 1,  1,  1,  1,  1]
 B = [[50, 48, 55, 55, 60], [70, 75, 80, 75, 85]]
 
-
+# Call Electre Tri-B Function
 classification = electre_tri_b(dataset, W , Q , P , V , B , cut_level = 0.75, verbose = False, rule = 'oc', graph = True)
 
 ##############################################################################
@@ -204,7 +205,7 @@ P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
 F = ['t5', 't5', 't5', 't5']
 
-# Calling Promethee
+# Call Promethee I
 p1 = promethee_i(dataset, W = W, Q = Q, S = S, P = P, F = F, graph = True)
 
 ##############################################################################
@@ -225,7 +226,7 @@ P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
 F = ['t5', 't5', 't5', 't5']
 
-# Calling Promethee
+# Call Promethee II
 p2 = promethee_ii(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, topn = 10, graph = True)
 
 ##############################################################################
@@ -246,7 +247,7 @@ P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
 F = ['t5', 't5', 't5', 't5']
 
-# Calling Promethee
+# Call Promethee III
 p3 =  promethee_iii(dataset, W = W, Q = Q, S = S, P = P, F = F, lmbd = 0.15, graph = True)
 
 ##############################################################################
@@ -267,7 +268,7 @@ P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
 F = ['t5', 't5', 't5', 't5']
 
-# Calling Promethee
+# Call Promethee IV
 p4 = promethee_iv(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, steps = 0.001, topn = 10, graph = True)
 
 ##############################################################################
@@ -299,7 +300,7 @@ budget = 50
 forbidden = [['a5', 'a4']]
 forbidden = [['a1', 'a4'], ['a1', 'a5']]
 
-# Calling Promethee
+# Call Promethee V
 p5 = promethee_v(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, criteria = criteria, cost = cost, budget = budget, forbidden = forbidden, iterations = 500)
 
 ##############################################################################
@@ -325,7 +326,7 @@ W_upper  = np.array([3.10, 1.50, 5.00, 5.00])
 W_lower = np.array([5.00, 5.00, 1.00, 1.00])
 W_upper  = np.array([9.00, 9.00, 5.00, 5.00])
 
-# Calling Promethee
+# Call Promethee VI
 p6_minus, p6, p6_plus = promethee_vi(dataset, W_lower = W_lower, W_upper = W_upper, Q = Q, S = S, P = P, F = F, sort = True, topn = 10, iterations = 1000, graph = True)
 
 ##############################################################################
@@ -346,7 +347,7 @@ P = np.array([0.5, 0.5, 0.5, 0.5])
 W = np.array([9.00, 8.24, 5.98, 8.48])
 F = ['t5', 't5', 't5', 't5']
 
-# Calling Promethee
+# Call Promethee Gaia
 promethee_gaia(dataset, W = W, Q = Q, S = S, P = P, F = F)
 
 ##############################################################################
