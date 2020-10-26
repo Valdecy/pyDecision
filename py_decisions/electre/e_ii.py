@@ -137,7 +137,7 @@ def dominance_matrix(concordance, discordance, c_minus = 0.65, c_zero = 0.75, c_
             if (concordance[i,j] >= concordance[j,i] and i != j):
                 if ( ( (concordance[i,j] >= c_plus) and (discordance[i,j] <= d_plus ) ) or  ( (concordance[i,j] >= c_zero) and (discordance[i,j] <= d_minus) )):
                     dominance_s[i, j] = 1
-                if (concordance[i,j] >= c_minus and discordance[i,j] <= d_plus):
+                if (  (concordance[i,j] >= c_zero and discordance[i,j] <= d_plus) or (concordance[i,j] >= c_minus and discordance[i,j] <= d_minus) ):
                     dominance_w[i, j] = 1                 
     return dominance_s, dominance_w
 
