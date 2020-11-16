@@ -3,6 +3,9 @@
 # Required Libraries
 import numpy as np
 
+# AHP
+from py_decisions.ahp.ahp           import ahp_method
+
 # ELECTRE
 from py_decisions.electre.e_i       import electre_i
 from py_decisions.electre.e_i_s     import electre_i_s
@@ -20,6 +23,27 @@ from py_decisions.promethee.p_iv    import promethee_iv
 from py_decisions.promethee.p_v     import promethee_v
 from py_decisions.promethee.p_vi    import promethee_vi
 from py_decisions.promethee.p_xgaia import promethee_gaia
+
+##############################################################################
+
+# AHP
+
+# Parameters
+weight_derivation = 'geometric'
+
+# Dataset
+dataset = np.array([
+[1  ,   1/3,   1/5,   1  ,   1/4,   1/2,   3  ],   #a1
+[3  ,   1  ,   1/2,   2  ,   1/3,   3  ,   3  ],   #a2
+[5  ,   2  ,   1  ,   4  ,   5  ,   6  ,   5  ],   #a3
+[1  ,   1/2,   1/4,   1  ,   1/4,   1  ,   2  ],   #a4
+[4  ,   3  ,   1/5,   4  ,   1  ,   3  ,   2  ],   #a5
+[2  ,   1/3,   1/6,   1  ,   1/3,   1  ,   1/3],   #a6
+[1/3,   1/3,   1/5,   1/2,   1/2,   3  ,   1  ]    #a7
+])
+
+# Call AHP Function
+weights, rc = ahp_method(dataset, wd = weight_derivation)
 
 ##############################################################################
 
