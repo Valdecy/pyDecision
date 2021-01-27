@@ -24,6 +24,9 @@ from py_decisions.promethee.p_v     import promethee_v
 from py_decisions.promethee.p_vi    import promethee_vi
 from py_decisions.promethee.p_xgaia import promethee_gaia
 
+# TOPSIS
+from py_decisions.topsis.topsis     import topsis_method
+
 ##############################################################################
 
 # AHP
@@ -171,8 +174,7 @@ global_concordance, credibility, rank_D, rank_A, rank_N, rank_P = electre_iii(da
 
 # ELECTRE IV
     
-# Parameters
-    
+# Parameters 
 Q = [ 10,  10,  10,  10,  10,  10,  10,  10]
 P = [ 20,  20,  20,  20,  20,  20,  20,  20]
 V = [100, 100, 100, 100, 100, 100, 100, 100]
@@ -195,6 +197,13 @@ credibility, rank_D, rank_A, rank_N, rank_P = electre_iv(dataset, P = P, Q = Q, 
 
 # ELECTRE Tri-B
 
+# Parameters 
+Q = [ 5,  5,  5,  5,  5]
+P = [10, 10, 10, 10, 10]
+V = [30, 30, 30, 30, 30]
+W = [ 1,  1,  1,  1,  1]
+B = [[50, 48, 55, 55, 60], [70, 75, 80, 75, 85]]
+
 # Dataset
 dataset = np.array([
                 [75, 67, 85, 82, 90],   #a1
@@ -202,18 +211,21 @@ dataset = np.array([
                 [45, 60, 55, 68, 60]    #a3
                 ])
 
-Q = [ 5,  5,  5,  5,  5]
-P = [10, 10, 10, 10, 10]
-V = [30, 30, 30, 30, 30]
-W = [ 1,  1,  1,  1,  1]
-B = [[50, 48, 55, 55, 60], [70, 75, 80, 75, 85]]
-
 # Call Electre Tri-B Function
 classification = electre_tri_b(dataset, W , Q , P , V , B , cut_level = 0.75, verbose = False, rule = 'oc', graph = True)
 
 ##############################################################################
 
 # PROMETHEE I
+
+# Parameters 
+Q = [ 0.3,  0.3,  0.3,  0.3]
+S = [ 0.4,  0.4,  0.4,  0.4]
+P = [ 0.5,  0.5,  0.5,  0.5]
+W = [9.00, 8.24, 5.98, 8.48]
+F = ['t5', 't5', 't5', 't5']
+
+# Dataset
 dataset = np.array([
         [8.840, 8.790, 6.430, 6.950],  #a1
         [8.570, 8.510, 5.470, 6.910],  #a2
@@ -222,12 +234,6 @@ dataset = np.array([
         [9.030, 8.970, 8.190, 8.100],  #a5
         [7.410, 7.870, 6.770, 7.230]   #a6
         ])
-
-Q = [ 0.3,  0.3,  0.3,  0.3]
-S = [ 0.4,  0.4,  0.4,  0.4]
-P = [ 0.5,  0.5,  0.5,  0.5]
-W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
 
 # Call Promethee I
 p1 = promethee_i(dataset, W = W, Q = Q, S = S, P = P, F = F, graph = True)
@@ -235,6 +241,15 @@ p1 = promethee_i(dataset, W = W, Q = Q, S = S, P = P, F = F, graph = True)
 ##############################################################################
 
 # PROMETHEE II
+
+# Parameters 
+Q = [ 0.3,  0.3,  0.3,  0.3]
+S = [ 0.4,  0.4,  0.4,  0.4]
+P = [ 0.5,  0.5,  0.5,  0.5]
+W = [9.00, 8.24, 5.98, 8.48]
+F = ['t5', 't5', 't5', 't5']
+
+# Dataset
 dataset = np.array([
         [8.840, 8.790, 6.430, 6.950],  #a1
         [8.570, 8.510, 5.470, 6.910],  #a2
@@ -244,11 +259,6 @@ dataset = np.array([
         [7.410, 7.870, 6.770, 7.230]   #a6
         ])
 
-Q = [ 0.3,  0.3,  0.3,  0.3]
-S = [ 0.4,  0.4,  0.4,  0.4]
-P = [ 0.5,  0.5,  0.5,  0.5]
-W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
 
 # Call Promethee II
 p2 = promethee_ii(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, topn = 10, graph = True)
@@ -256,6 +266,15 @@ p2 = promethee_ii(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, topn 
 ##############################################################################
 
 # PROMETHEE III
+
+# Parameters 
+Q = [ 0.3,  0.3,  0.3,  0.3]
+S = [ 0.4,  0.4,  0.4,  0.4]
+P = [ 0.5,  0.5,  0.5,  0.5]
+W = [9.00, 8.24, 5.98, 8.48]
+F = ['t5', 't5', 't5', 't5']
+
+# Dataset
 dataset = np.array([
         [8.840, 8.790, 6.430, 6.950],  #a1
         [8.570, 8.510, 5.470, 6.910],  #a2
@@ -264,12 +283,6 @@ dataset = np.array([
         [9.030, 8.970, 8.190, 8.100],  #a5
         [7.410, 7.870, 6.770, 7.230]   #a6
         ])
-
-Q = [ 0.3,  0.3,  0.3,  0.3]
-S = [ 0.4,  0.4,  0.4,  0.4]
-P = [ 0.5,  0.5,  0.5,  0.5]
-W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
 
 # Call Promethee III
 p3 =  promethee_iii(dataset, W = W, Q = Q, S = S, P = P, F = F, lmbd = 0.15, graph = True)
@@ -277,6 +290,15 @@ p3 =  promethee_iii(dataset, W = W, Q = Q, S = S, P = P, F = F, lmbd = 0.15, gra
 ##############################################################################
 
 # PROMETHEE IV
+
+# Parameters 
+Q = [ 0.3,  0.3,  0.3,  0.3]
+S = [ 0.4,  0.4,  0.4,  0.4]
+P = [ 0.5,  0.5,  0.5,  0.5]
+W = [9.00, 8.24, 5.98, 8.48]
+F = ['t5', 't5', 't5', 't5']
+
+# Dataset
 dataset = np.array([
         [8.840, 8.790, 6.430, 6.950],  #a1
         [8.570, 8.510, 5.470, 6.910],  #a2
@@ -285,12 +307,6 @@ dataset = np.array([
         [9.030, 8.970, 8.190, 8.100],  #a5
         [7.410, 7.870, 6.770, 7.230]   #a6
         ])
-
-Q = [ 0.3,  0.3,  0.3,  0.3]
-S = [ 0.4,  0.4,  0.4,  0.4]
-P = [ 0.5,  0.5,  0.5,  0.5]
-W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
 
 # Call Promethee IV
 p4 = promethee_iv(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, steps = 0.001, topn = 10, graph = True)
@@ -298,15 +314,8 @@ p4 = promethee_iv(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, steps
 ##############################################################################
 
 # PROMETHEE V
-dataset = np.array([
-        [8.840, 8.790, 6.430, 6.950],  #a1
-        [8.570, 8.510, 5.470, 6.910],  #a2
-        [7.760, 7.750, 5.340, 8.760],  #a3
-        [7.970, 9.120, 5.930, 8.090],  #a4
-        [9.030, 8.970, 8.190, 8.100],  #a5
-        [7.410, 7.870, 6.770, 7.230]   #a6
-        ])
 
+# Parameters 
 Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
@@ -324,12 +333,7 @@ budget = 50
 forbidden = [['a5', 'a4']]
 forbidden = [['a1', 'a4'], ['a1', 'a5']]
 
-# Call Promethee V
-p5 = promethee_v(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, criteria = criteria, cost = cost, budget = budget, forbidden = forbidden, iterations = 500)
-
-##############################################################################
-
-# PROMETHEE VI
+# Dataset
 dataset = np.array([
         [8.840, 8.790, 6.430, 6.950],  #a1
         [8.570, 8.510, 5.470, 6.910],  #a2
@@ -339,6 +343,14 @@ dataset = np.array([
         [7.410, 7.870, 6.770, 7.230]   #a6
         ])
 
+# Call Promethee V
+p5 = promethee_v(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, criteria = criteria, cost = cost, budget = budget, forbidden = forbidden, iterations = 500)
+
+##############################################################################
+
+# PROMETHEE VI
+
+# Parameters 
 Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
@@ -350,12 +362,7 @@ W_upper  = np.array([3.10, 1.50, 5.00, 5.00])
 W_lower = np.array([5.00, 5.00, 1.00, 1.00])
 W_upper  = np.array([9.00, 9.00, 5.00, 5.00])
 
-# Call Promethee VI
-p6_minus, p6, p6_plus = promethee_vi(dataset, W_lower = W_lower, W_upper = W_upper, Q = Q, S = S, P = P, F = F, sort = True, topn = 10, iterations = 1000, graph = True)
-
-##############################################################################
-
-# PROMETHEE Gaia
+# Dataset
 dataset = np.array([
         [8.840, 8.790, 6.430, 6.950],  #a1
         [8.570, 8.510, 5.470, 6.910],  #a2
@@ -365,13 +372,51 @@ dataset = np.array([
         [7.410, 7.870, 6.770, 7.230]   #a6
         ])
 
+# Call Promethee VI
+p6_minus, p6, p6_plus = promethee_vi(dataset, W_lower = W_lower, W_upper = W_upper, Q = Q, S = S, P = P, F = F, sort = True, topn = 10, iterations = 1000, graph = True)
+
+##############################################################################
+
+# PROMETHEE Gaia
+
+# Parameters 
 Q = np.array([0.3, 0.3, 0.3, 0.3])
 S = np.array([0.4, 0.4, 0.4, 0.4])
 P = np.array([0.5, 0.5, 0.5, 0.5])
 W = np.array([9.00, 8.24, 5.98, 8.48])
 F = ['t5', 't5', 't5', 't5']
 
+# Dataset
+dataset = np.array([
+        [8.840, 8.790, 6.430, 6.950],  #a1
+        [8.570, 8.510, 5.470, 6.910],  #a2
+        [7.760, 7.750, 5.340, 8.760],  #a3
+        [7.970, 9.120, 5.930, 8.090],  #a4
+        [9.030, 8.970, 8.190, 8.100],  #a5
+        [7.410, 7.870, 6.770, 7.230]   #a6
+        ])
+
 # Call Promethee Gaia
 promethee_gaia(dataset, W = W, Q = Q, S = S, P = P, F = F)
 
 ##############################################################################
+
+# TOPSIS
+
+# Parameters 
+# Weights
+weights = np.array([ [0.1, 0.4, 0.3, 0.2] ])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'max', 'min']
+
+# Dataset
+dataset = np.array([
+                [7, 9, 9, 8],   #a1
+                [8, 7, 8, 7],   #a2
+                [9, 6, 8, 9],   #a3
+                [6, 7, 8, 6]    #a4
+                ])
+
+# Call TOPSIS
+relative_closeness = topsis_method(dataset, weights, criterion_type, graph = True)
