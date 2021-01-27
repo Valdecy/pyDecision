@@ -333,7 +333,6 @@ cost   = [10, 10, 15, 10, 10, 15]
 budget = 50
 
 # Constraint 3
-forbidden = [['a5', 'a4']]
 forbidden = [['a1', 'a4'], ['a1', 'a5']]
 
 # Dataset
