@@ -27,6 +27,9 @@ from py_decisions.promethee.p_xgaia import promethee_gaia
 # TOPSIS
 from py_decisions.topsis.topsis     import topsis_method
 
+# TOPSIS
+from py_decisions.vikor.vikor     import vikor_method, ranking
+
 ##############################################################################
 
 # AHP
