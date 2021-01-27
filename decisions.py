@@ -445,12 +445,11 @@ dataset = np.array([
                 ])
 
 # Call VIKOR
-s, r, q, c_solution = vikor_method(dataset, weights, criterion_type, mgu = 0.5, graph = False)
+s, r, q, c_solution = vikor_method(dataset, weights, criterion_type, strategy_coefficient = 0.5, graph = False)
 
 # Graph Solutions
 ranking(s) 
 ranking(r) 
 ranking(q) 
 ranking(c_solution) # Final Solution
-
 ###############################################################################
