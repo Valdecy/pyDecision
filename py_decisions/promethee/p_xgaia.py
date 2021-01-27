@@ -73,7 +73,7 @@ def preference_degree(dataset, W, Q, S, P, F):
     return pd_array
  
 # Function: Promethee Gaia
-def promethee_gaia(dataset, W, Q, S, P, F):
+def promethee_gaia(dataset, W, Q, S, P, F, size_x = 10, size_y = 10):
     pd_matrix   = preference_degree(dataset[:,0].reshape(-1,1), W, Q, S, P, F)
     flow_plus   = np.sum(pd_matrix, axis = 1)/(pd_matrix.shape[0] - 1)
     flow_minus  = np.sum(pd_matrix, axis = 0)/(pd_matrix.shape[0] - 1)
@@ -96,6 +96,7 @@ def promethee_gaia(dataset, W, Q, S, P, F):
     alts         = ['a' + str(alt) for alt in alts]
     crits        = list(range(1, dataset.shape[1] + 1)) 
     crits        = ['g' + str(crit) for crit in crits]
+    plt.figure(figsize = [size_x, size_y])
     for i in range(0, alternatives.shape[0]-2):
         plt.text(alternatives[i, 0],  alternatives[i, 1], alts[i], size = 12, ha = 'center', va = 'center', bbox = dict(boxstyle = 'round', ec = (0.0, 0.0, 0.0), fc = (1.0, 1.0, 0.8),))
     plt.text(alternatives[-1, 0],  alternatives[-1, 1], '+', size = 8, ha = 'center', va = 'center', color = 'black', bbox = dict(boxstyle = 'round', ec = (0.0, 0.0, 0.0), fc = (0.0, 1.0, 0.0),))
