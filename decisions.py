@@ -172,7 +172,6 @@ dataset = np.array([
 # Call Electre III Function
 global_concordance, credibility, rank_D, rank_A, rank_N, rank_P = electre_iii(dataset, P = P, Q = Q, V = V, W = W, graph = True)
 
-
 ##############################################################################
 
 # ELECTRE IV
@@ -446,4 +445,5 @@ ranking(s)
 ranking(r) 
 ranking(q) 
 ranking(c_solution) # Final Solution
+
 ###############################################################################
