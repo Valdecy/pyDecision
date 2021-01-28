@@ -358,9 +358,6 @@ S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
 F = ['t5', 't5', 't5', 't5']
 
-W_lower = np.array([1.00, 1.00, 4.95, 1.00])
-W_upper  = np.array([3.10, 1.50, 5.00, 5.00])
-
 W_lower = np.array([5.00, 5.00, 1.00, 1.00])
 W_upper  = np.array([9.00, 9.00, 5.00, 5.00])
 
@@ -405,7 +402,6 @@ promethee_gaia(dataset, W = W, Q = Q, S = S, P = P, F = F)
 
 # TOPSIS
 
-# Parameters 
 # Weights
 weights = np.array([ [0.1, 0.4, 0.3, 0.2] ])
 
@@ -426,8 +422,7 @@ relative_closeness = topsis_method(dataset, weights, criterion_type, graph = Tru
 ###############################################################################
 
 # VIKOR
-
-# Parameters 
+ 
 # Weights
 weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
 
