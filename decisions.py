@@ -6,6 +6,9 @@ import numpy as np
 # AHP
 from py_decisions.ahp.ahp           import ahp_method
 
+# Fuzzy AHP 
+from py_decisions.ahp.fuzzy_ahp    import fuzzy_ahp_method
+
 # ELECTRE
 from py_decisions.electre.e_i       import electre_i
 from py_decisions.electre.e_i_s     import electre_i_s
@@ -50,6 +53,21 @@ dataset = np.array([
 
 # Call AHP Function
 weights, rc = ahp_method(dataset, wd = weight_derivation)
+
+##############################################################################
+
+# Fuzzy AHP
+
+# Dataset
+dataset = list([
+    [ (  1,   1,   1), (  4,   5,   6), (  3,   4,   5), (  6,   7,   8) ],   #g1
+    [ (1/6, 1/5, 1/4), (  1,   1,   1), (1/3, 1/2, 1/1), (  2,   3,   4) ],   #g2
+    [ (1/5, 1/4, 1/3), (  1,   2,   3), (  1,   1,   1), (  2,   3,   4) ],   #g3
+    [ (1/8, 1/7, 1/6), (1/4, 1/3, 1/2), (1/4, 1/3, 1/2), (  1,   1,   1) ]    #g4
+    ])
+
+# Call Fuzzy AHP Function        
+fuzzy_weights, defuzzified_weights, normalized_weights = fuzzy_ahp_method(dataset)
 
 ##############################################################################
 
