@@ -29,7 +29,7 @@ def fuzzy_ahp_method(dataset):
         a, b, c = a*(U**-1), b*(M**-1), c*(L**-1)
         f_w.append( ( a, b, c ) )
         d_w.append( (a + b + c)/3 )
-    n_w      = [item/sum(d_w) for item in d_w]  
+    n_w = [item/sum(d_w) for item in d_w]  
     return f_w, d_w, n_w
 
 ###############################################################################
