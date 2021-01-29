@@ -1,5 +1,5 @@
 # pyDecisions
-A python MCDA Library having the following methods: **AHP** (Analytic Hierarchy Process), **Fuzzy AHP**, **ELECTRE** (I, I_s, I_v, II, III, IV, Tri-B); **PROMETHEE** (I, II, III, IV, V, VI, Gaia); **TOPSIS** (Technique for Order of Preference by Similarity to Ideal Solution); **VIKOR** (VIseKriterijumska Optimizacija I Kompromisno Resenje).
+A python MCDA Library having the following methods: **AHP** (Analytic Hierarchy Process), **Fuzzy AHP**, **ELECTRE** (I, I_s, I_v, II, III, IV, Tri-B); **PROMETHEE** (I, II, III, IV, V, VI, Gaia); **TOPSIS** (Technique for Order of Preference by Similarity to Ideal Solution); **Fuzzy TOPSIS**; **VIKOR** (VIseKriterijumska Optimizacija I Kompromisno Resenje).
 
 Try it in **Colab**:
 
@@ -20,4 +20,5 @@ Try it in **Colab**:
 - PROMETHEE VI   ([ Colab Demo ](https://colab.research.google.com/drive/14QdhifGitj4GK-QijRr1vj_dmGU2Pfh4?usp=sharing))
 - PROMETHEE Gaia ([ Colab Demo ](https://colab.research.google.com/drive/1lj7IRKXcuRjrpoBp_KmQn_3sI3P_Qxju?usp=sharing))
 - TOPSIS ([ Colab Demo ](https://colab.research.google.com/drive/1s87DC5_oa9GvgVe98oAP1UIhduac09CB?usp=sharing))
+- Fuzzy TOPSIS ([ Colab Demo ](https://colab.research.google.com/drive/1eKx7AOYrnG-kZcsBt28rMEtCrUO-j3J-?usp=sharing))
 - VIKOR ([ Colab Demo ](https://colab.research.google.com/drive/1egZiTNvI2eE-tyJ2m85MM6B3-qhiSjPG?usp=sharing))
