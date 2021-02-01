@@ -7,7 +7,10 @@ import numpy as np
 from py_decisions.ahp.ahp           import ahp_method
 
 # Fuzzy AHP 
-from py_decisions.ahp.fuzzy_ahp    import fuzzy_ahp_method
+from py_decisions.ahp.fuzzy_ahp     import fuzzy_ahp_method
+
+# Fuzzy AHP 
+from py_decisions.dematel.dematel   import dematel_method
 
 # ELECTRE
 from py_decisions.electre.e_i       import electre_i
@@ -71,6 +74,21 @@ dataset = list([
 
 # Call Fuzzy AHP Function        
 fuzzy_weights, defuzzified_weights, normalized_weights = fuzzy_ahp_method(dataset)
+
+##############################################################################
+
+# DEMATEL (Decision Making Trial and Evaluation Laboratory)
+
+# Dataset # Scale: 0 (No Influence), 1 (Low Influence), 2 (Medium Influence), 3 (High Influence), 4 (Very High Influence)
+dataset = np.array([
+    [  0,  1,  2,  0  ],   #g1
+    [  3,  0,  4,  4  ],   #g2
+    [  3,  2,  0,  1  ],   #g3
+    [  4,  1,  2,  0  ]    #g4
+    ])
+
+# Call DEMATEL Function  
+D_plus_R, D_minus_R, weights = dematel_method(dataset, size_x = 15, size_y = 10)
 
 ##############################################################################
 
