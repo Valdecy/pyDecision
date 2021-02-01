@@ -13,7 +13,7 @@ def ranking(flow):
         rank_xy[i, 0] = 0
         rank_xy[i, 1] = flow.shape[0]-i           
     for i in range(0, rank_xy.shape[0]):
-        plt.text(rank_xy[i, 0],  rank_xy[i, 1], 'g' + str(int(flow[i,0])), size = 12, ha = 'center', va = 'center', bbox = dict(boxstyle = 'round', ec = (0.0, 0.0, 0.0), fc = (0.8, 1.0, 0.8),))
+        plt.text(rank_xy[i, 0],  rank_xy[i, 1], 'a' + str(int(flow[i,0])), size = 12, ha = 'center', va = 'center', bbox = dict(boxstyle = 'round', ec = (0.0, 0.0, 0.0), fc = (0.8, 1.0, 0.8),))
     for i in range(0, rank_xy.shape[0]-1):
         plt.arrow(rank_xy[i, 0], rank_xy[i, 1], rank_xy[i+1, 0] - rank_xy[i, 0], rank_xy[i+1, 1] - rank_xy[i, 1], head_width = 0.01, head_length = 0.2, overhang = 0.0, color = 'black', linewidth = 0.9, length_includes_head = True)
     axes = plt.gca()
