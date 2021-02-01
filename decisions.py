@@ -21,6 +21,9 @@ from py_decisions.electre.e_iii     import electre_iii
 from py_decisions.electre.e_iv      import electre_iv
 from py_decisions.electre.e_tri_b   import electre_tri_b
 
+# GRA
+from py_decisions.gra.gra           import gra_method
+
 # PROMETHEE
 from py_decisions.promethee.p_i     import promethee_i
 from py_decisions.promethee.p_ii    import promethee_ii
@@ -254,6 +257,28 @@ dataset = np.array([
 
 # Call Electre Tri-B Function
 classification = electre_tri_b(dataset, W , Q , P , V , B , cut_level = 0.75, verbose = False, rule = 'oc', graph = True)
+
+##############################################################################
+
+# GRA
+
+# Weights
+weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['min', 'max', 'max', 'max']
+
+# Dataset
+dataset = np.array([
+                [250, 16, 12, 5],   #a1
+                [200, 16, 8 , 3],   #a2
+                [300, 32, 16, 4],   #a3
+                [275, 32, 8 , 4],   #a4
+                [225, 16, 16, 2]    #a5
+                ])
+
+# Call GRA Function
+gra_grade = gra_method(dataset, criterion_type, weights, epsilon = 0.5, graph = True)
 
 ##############################################################################
 
