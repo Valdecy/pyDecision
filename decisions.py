@@ -9,7 +9,7 @@ from py_decisions.ahp.ahp           import ahp_method
 # Fuzzy AHP 
 from py_decisions.ahp.fuzzy_ahp     import fuzzy_ahp_method
 
-# Fuzzy AHP 
+# DEMATEL
 from py_decisions.dematel.dematel   import dematel_method
 
 # ELECTRE
@@ -77,7 +77,7 @@ fuzzy_weights, defuzzified_weights, normalized_weights = fuzzy_ahp_method(datase
 
 ##############################################################################
 
-# DEMATEL (Decision Making Trial and Evaluation Laboratory)
+# DEMATEL
 
 # Dataset # Scale: 0 (No Influence), 1 (Low Influence), 2 (Medium Influence), 3 (High Influence), 4 (Very High Influence)
 dataset = np.array([
