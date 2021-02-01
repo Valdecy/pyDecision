@@ -19,7 +19,10 @@ def dematel_method(dataset, size_x = 10, size_y = 10):
     D_plus_R   = D + R # Most Importante Criteria
     D_minus_R  = D - R # +Influencer Criteria, - Influenced Criteria
     weights = D_plus_R/np.sum(D_plus_R)
-    print('QUADRANT I has the Most Important Criteria (Prominence: High, Relation: High); QUADRANT II has Important Criteira that can be Improved by Other Criteria (Prominence: Low, Relation: High). QUADRANT III has Criteria that are not Important (Prominence: Low, Relation: Low); QUADRANT IV has Important Criteria that cannot be Improved by Other Criteria (Prominence: High, Relation: Low)')
+    print('QUADRANT I has the Most Important Criteria (Prominence: High, Relation: High)') 
+    print('QUADRANT II has Important Criteira that can be Improved by Other Criteria (Prominence: Low, Relation: High)') 
+    print('QUADRANT III has Criteria that are not Important (Prominence: Low, Relation: Low)')
+    print('QUADRANT IV has Important Criteria that cannot be Improved by Other Criteria (Prominence: High, Relation: Low)')
     print('')
     plt.figure(figsize = [size_x, size_y])
     plt.style.use('ggplot')
