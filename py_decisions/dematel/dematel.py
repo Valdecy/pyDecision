@@ -61,3 +61,4 @@ def dematel_method(dataset, size_x = 10, size_y = 10):
     plt.show()
     return D_plus_R, D_minus_R, weights
 
+###############################################################################
