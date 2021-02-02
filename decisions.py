@@ -15,6 +15,9 @@ from py_decisions.dematel.dematel   import dematel_method
 # Fuzzy DEMATEL
 from py_decisions.dematel.fuzzy_dematel import fuzzy_dematel_method
 
+# EDAS
+from py_decisions.edas.edas        import edas_method
+
 # ELECTRE
 from py_decisions.electre.e_i       import electre_i
 from py_decisions.electre.e_i_s     import electre_i_s
@@ -114,6 +117,28 @@ dataset = list([
 D_plus_R, D_minus_R, weights = fuzzy_dematel_method(dataset, size_x = 15, size_y = 10)
 
 ##############################################################################
+
+# EDAS
+ 
+# Weights
+weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['min', 'max', 'max', 'max']
+
+# Dataset
+dataset = np.array([
+                [250, 16, 12, 5],   #a1
+                [200, 16, 8 , 3],   #a2
+                [300, 32, 16, 4],   #a3
+                [275, 32, 8 , 4],   #a4
+                [225, 16, 16, 2]    #a5
+                ])
+
+# Call EDAS Function  
+rank = edas_method(dataset, criterion_type, weights, graph = True)
+
+###############################################################################
 
 # ELECTRE I
     
