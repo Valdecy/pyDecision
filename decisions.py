@@ -12,6 +12,9 @@ from py_decisions.ahp.fuzzy_ahp     import fuzzy_ahp_method
 # DEMATEL
 from py_decisions.dematel.dematel   import dematel_method
 
+# Fuzzy DEMATEL
+from py_decisions.dematel.fuzzy_dematel import fuzzy_dematel_method
+
 # ELECTRE
 from py_decisions.electre.e_i       import electre_i
 from py_decisions.electre.e_i_s     import electre_i_s
@@ -92,6 +95,23 @@ dataset = np.array([
 
 # Call DEMATEL Function  
 D_plus_R, D_minus_R, weights = dematel_method(dataset, size_x = 15, size_y = 10)
+
+##############################################################################
+
+# Fuzzy DEMATEL
+
+# Dataset # Scale: No Influence (0, 0, 1/4), Low Influence (1/4, 1/2, 3/4), Medium Influence (1/4, 1/2, 3/4), High Influence (1/2, 3/4, 1), Very High Influence (3/4, 1, 1)
+
+dataset = list([
+    #          g1              g2                g3                  g4
+    [  (  0,   0, 1/4),  (  0, 1/4, 1/2),  (1/4, 1/2, 3/4),  (  0,   0, 1/4)  ],   #g1
+    [  (1/2, 3/4,   1),  (  0,   0, 1/4),  (3/4,   1,   1),  (3/4,   1,   1)  ],   #g2
+    [  (1/2, 3/4,   1),  (1/4, 1/2, 3/4),  (  0,   0, 1/4),  (  0, 1/4, 1/2)  ],   #g3
+    [  (3/4,   1,   1),  (  0, 1/4, 1/2),  (1/4, 1/2, 3/4),  (  0,   0, 1/4)  ]    #g4
+    ])
+
+# Call Fuzzy DEMATEL Function  
+D_plus_R, D_minus_R, weights = fuzzy_dematel_method(dataset, size_x = 15, size_y = 10)
 
 ##############################################################################
 
