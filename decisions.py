@@ -48,6 +48,9 @@ from py_decisions.topsis.fuzzy_topsis import fuzzy_topsis_method
 # VIKOR
 from py_decisions.vikor.vikor       import vikor_method, ranking
 
+# WSM, WPM, WASPAS
+from py_decisions.waspas.waspas     import waspas_method
+
 ##############################################################################
 
 # AHP
@@ -577,5 +580,29 @@ ranking(s)
 ranking(r) 
 ranking(q) 
 ranking(c_solution) # Final Solution
+
+###############################################################################
+
+# WSM, WPM, WASPAS
+ 
+# Weights
+weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['min', 'max', 'max', 'max']
+
+# Dataset
+dataset = np.array([
+                [250, 16, 12, 5],   #a1
+                [200, 16, 8 , 3],   #a2
+                [300, 32, 16, 4],   #a3
+                [275, 32, 8 , 4],   #a4
+                [225, 16, 16, 2]    #a5
+                ])
+# Lambda
+lambda_value = 0.5
+
+# Call WASPAS Function  
+wsm, wpm, waspas = waspas_method(dataset, criterion_type, weights, lambda_value)
 
 ###############################################################################
