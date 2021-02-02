@@ -1,5 +1,5 @@
 # pyDecisions
-A python MCDA Library having the following methods: **AHP** (Analytic Hierarchy Process); **Fuzzy AHP**; **DEMATEL** (DEcision MAking Trial and Evaluation Laboratory); **Fuzzy DEMATEL**; **EDAS** (Evaluation based on Distance from Average Solution);**ELECTRE** (I, I_s, I_v, II, III, IV, Tri-B); **GRA** (Grey Relational Analysis); **PROMETHEE** (I, II, III, IV, V, VI, Gaia); **TOPSIS** (Technique for Order of Preference by Similarity to Ideal Solution); **Fuzzy TOPSIS**; **VIKOR** (VIseKriterijumska Optimizacija I Kompromisno Resenje).
+A python MCDA Library having the following methods: **AHP** (Analytic Hierarchy Process); **Fuzzy AHP**; **DEMATEL** (DEcision MAking Trial and Evaluation Laboratory); **Fuzzy DEMATEL**; **EDAS** (Evaluation based on Distance from Average Solution); **ELECTRE** (I, I_s, I_v, II, III, IV, Tri-B); **GRA** (Grey Relational Analysis); **PROMETHEE** (I, II, III, IV, V, VI, Gaia); **TOPSIS** (Technique for Order of Preference by Similarity to Ideal Solution); **Fuzzy TOPSIS**; **VIKOR** (VIseKriterijumska Optimizacija I Kompromisno Resenje).
 
 Try it in **Colab**:
 
