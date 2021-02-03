@@ -165,7 +165,7 @@ dataset = list([
     ])
 
 # Call Fuzzy EDAS
-fuzzy_rank, rank = fuzzy_edas_method(dataset, weights, criterion_type, graph = True)
+fuzzy_rank, rank = fuzzy_edas_method(dataset, criterion_type, weights, graph = True)
 
 ##############################################################################
 
