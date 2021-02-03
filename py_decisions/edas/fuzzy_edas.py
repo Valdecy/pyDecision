@@ -100,9 +100,6 @@ def fuzzy_edas_method(dataset, criterion_type, weights, graph = True):
         flow = flow[np.argsort(flow[:, 1])]
         flow = flow[::-1]
         ranking(flow)
-    fuzzy_a_s = []
-    for i in range(0, a_s_A.shape[0]):
-        fuzzy_a_s.append( (a_s_A[i], a_s_B[i], a_s_C[i]))
-    return fuzzy_a_s, a_s
+    return a_s
 
 ###############################################################################
