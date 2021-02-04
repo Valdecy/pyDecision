@@ -111,7 +111,7 @@ dataset = np.array([
                 [6, 7, 8, 6]    #a4
                 ])
 
-# Call TOPSIS
+# Call Borda
 rank = borda_method(dataset, criterion_type, graph = True)
 
 ##############################################################################
