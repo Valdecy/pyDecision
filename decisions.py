@@ -366,7 +366,7 @@ Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
+F = ['t5', 't5', 't5', 't5'] # 't1' = Usual; 't2' = U-Shape; 't3' = V-Shape; 't4' = Level; 't5' = V-Shape with Indifference; 't6' = Gaussian; 't7' = C-Form
 
 # Dataset
 dataset = np.array([
@@ -390,7 +390,7 @@ Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
+F = ['t5', 't5', 't5', 't5'] # 't1' = Usual; 't2' = U-Shape; 't3' = V-Shape; 't4' = Level; 't5' = V-Shape with Indifference; 't6' = Gaussian; 't7' = C-Form
 
 # Dataset
 dataset = np.array([
@@ -415,7 +415,7 @@ Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
+F = ['t5', 't5', 't5', 't5'] # 't1' = Usual; 't2' = U-Shape; 't3' = V-Shape; 't4' = Level; 't5' = V-Shape with Indifference; 't6' = Gaussian; 't7' = C-Form
 
 # Dataset
 dataset = np.array([
@@ -439,7 +439,7 @@ Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
+F = ['t5', 't5', 't5', 't5'] # 't1' = Usual; 't2' = U-Shape; 't3' = V-Shape; 't4' = Level; 't5' = V-Shape with Indifference; 't6' = Gaussian; 't7' = C-Form
 
 # Dataset
 dataset = np.array([
@@ -463,7 +463,7 @@ Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
 W = [9.00, 8.24, 5.98, 8.48]
-F = ['t5', 't5', 't5', 't5']
+F = ['t5', 't5', 't5', 't5'] # 't1' = Usual; 't2' = U-Shape; 't3' = V-Shape; 't4' = Level; 't5' = V-Shape with Indifference; 't6' = Gaussian; 't7' = C-Form
 
 # Constraint 1
 criteria = 4
@@ -496,7 +496,7 @@ p5 = promethee_v(dataset, W = W, Q = Q, S = S, P = P, F = F, sort = True, criter
 Q = [ 0.3,  0.3,  0.3,  0.3]
 S = [ 0.4,  0.4,  0.4,  0.4]
 P = [ 0.5,  0.5,  0.5,  0.5]
-F = ['t5', 't5', 't5', 't5']
+F = ['t5', 't5', 't5', 't5'] # 't1' = Usual; 't2' = U-Shape; 't3' = V-Shape; 't4' = Level; 't5' = V-Shape with Indifference; 't6' = Gaussian; 't7' = C-Form
 
 W_lower = np.array([5.00, 5.00, 1.00, 1.00])
 W_upper  = np.array([9.00, 9.00, 5.00, 5.00])
@@ -523,7 +523,7 @@ Q = np.array([0.3, 0.3, 0.3, 0.3])
 S = np.array([0.4, 0.4, 0.4, 0.4])
 P = np.array([0.5, 0.5, 0.5, 0.5])
 W = np.array([9.00, 8.24, 5.98, 8.48])
-F = ['t5', 't5', 't5', 't5']
+F = ['t5', 't5', 't5', 't5'] # 't1' = Usual; 't2' = U-Shape; 't3' = V-Shape; 't4' = Level; 't5' = V-Shape with Indifference; 't6' = Gaussian; 't7' = C-Form
 
 # Dataset
 dataset = np.array([
