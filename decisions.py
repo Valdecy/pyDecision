@@ -51,6 +51,9 @@ from py_decisions.topsis.fuzzy_topsis import fuzzy_topsis_method
 # VIKOR
 from py_decisions.vikor.vikor       import vikor_method, ranking
 
+# Fuzzy VIKOR
+from py_decisions.vikor.fuzzy_vikor import fuzzy_vikor_method
+
 # WSM, WPM, WASPAS
 from py_decisions.waspas.waspas     import waspas_method
 
@@ -599,7 +602,7 @@ dataset = np.array([
                 ])
 
 # Call VIKOR
-s, r, q, c_solution = vikor_method(dataset, weights, criterion_type, mgu = 0.5, graph = False)
+s, r, q, c_solution = vikor_method(dataset, weights, criterion_type, strategy_coefficient = 0.5, graph = False)
 
 # Graph Solutions
 ranking(s) 
@@ -607,7 +610,36 @@ ranking(r)
 ranking(q) 
 ranking(c_solution) # Final Solution
 
-###############################################################################
+##############################################################################
+
+# Fuzzy VIKOR
+ 
+# Weigths
+weights = list([
+          [ (  0.1,   0.2,   0.3), (  0.7,   0.8,   0.9), (  0.3,   0.5,   0.8) ]    
+    ])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'min']
+
+# Dataset
+dataset = list([
+    [ (  3,   6,   9), (  5,   8,   9), (  5,   7,   9) ],   #a1
+    [ (  5,   7,   9), (  3,   7,   9), (  3,   5,   7) ],   #a2
+    [ (  5,   8,   9), (  3,   5,   7), (  1,   2,   3) ],   #a3
+    [ (  1,   2,   4), (  1,   4,   7), (  1,   2,   5) ]    #a4
+    ])
+
+# Call Fuzzy VIKOR
+s, r, q, c_solution = fuzzy_vikor_method(dataset, weights, criterion_type, strategy_coefficient = 0.5, graph = True)
+
+# Graph Solutions
+ranking(s) 
+ranking(r) 
+ranking(q) 
+ranking(c_solution) # Final Solution
+
+##############################################################################
 
 # WSM, WPM, WASPAS
  
