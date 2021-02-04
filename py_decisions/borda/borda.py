@@ -29,7 +29,7 @@ def ranking(flow):
     return
 
 # Function: Borda
-def borda_method(dataset, weights, criterion_type, graph = True):
+def borda_method(dataset, criterion_type, graph = True):
     X = np.zeros((dataset.shape[0], dataset.shape[1]))
     for j in range(0, dataset.shape[1]):
         if (criterion_type[j] == 'max'):
