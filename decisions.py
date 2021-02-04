@@ -9,6 +9,9 @@ from py_decisions.ahp.ahp           import ahp_method
 # Fuzzy AHP 
 from py_decisions.ahp.fuzzy_ahp     import fuzzy_ahp_method
 
+# Borda
+from py_decisions.borda.borda       import borda_method
+
 # DEMATEL
 from py_decisions.dematel.dematel   import dematel_method
 
@@ -92,6 +95,24 @@ dataset = list([
 
 # Call Fuzzy AHP Function        
 fuzzy_weights, defuzzified_weights, normalized_weights = fuzzy_ahp_method(dataset)
+
+##############################################################################
+
+# Borda
+ 
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'max', 'min']
+
+# Dataset
+dataset = np.array([
+                [7, 9, 9, 5],   #a1
+                [8, 7, 8, 7],   #a2
+                [9, 6, 8, 9],   #a3
+                [6, 7, 8, 6]    #a4
+                ])
+
+# Call TOPSIS
+rank = borda_method(dataset, criterion_type, graph = True)
 
 ##############################################################################
 
