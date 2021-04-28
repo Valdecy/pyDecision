@@ -6,11 +6,26 @@ import numpy as np
 # AHP
 from py_decisions.ahp.ahp           import ahp_method
 
+# COPRAS
+from py_decisions.copras.copras     import copras_method
+
 # Fuzzy AHP 
 from py_decisions.ahp.fuzzy_ahp     import fuzzy_ahp_method
 
 # Borda
 from py_decisions.borda.borda       import borda_method
+
+# BWM
+from py_decisions.bwm.bwm           import bw_method
+
+# CODAS
+from py_decisions.codas.codas       import codas_method
+
+# ARAS
+from py_decisions.aras.aras       import aras_method
+
+# CRITIC
+from py_decisions.critic.critic     import critic_method
 
 # DEMATEL
 from py_decisions.dematel.dematel   import dematel_method
@@ -36,6 +51,9 @@ from py_decisions.electre.e_tri_b   import electre_tri_b
 # GRA
 from py_decisions.gra.gra           import gra_method
 
+# MOORA
+from py_decisions.moora.moora       import moora_method
+
 # PROMETHEE
 from py_decisions.promethee.p_i     import promethee_i
 from py_decisions.promethee.p_ii    import promethee_ii
@@ -46,19 +64,19 @@ from py_decisions.promethee.p_vi    import promethee_vi
 from py_decisions.promethee.p_xgaia import promethee_gaia
 
 # TOPSIS
-from py_decisions.topsis.topsis     import topsis_method
+from py_decisions.topsis.topsis       import topsis_method
 
 # Fuzzy TOPSIS
 from py_decisions.topsis.fuzzy_topsis import fuzzy_topsis_method
 
 # VIKOR
-from py_decisions.vikor.vikor       import vikor_method, ranking
+from py_decisions.vikor.vikor         import vikor_method, ranking
 
 # Fuzzy VIKOR
-from py_decisions.vikor.fuzzy_vikor import fuzzy_vikor_method
+from py_decisions.vikor.fuzzy_vikor   import fuzzy_vikor_method
 
 # WSM, WPM, WASPAS
-from py_decisions.waspas.waspas     import waspas_method
+from py_decisions.waspas.waspas       import waspas_method
 
 ##############################################################################
 
@@ -69,6 +87,7 @@ weight_derivation = 'geometric'
 
 # Dataset
 dataset = np.array([
+# g1     g2     g3    g4      g5     g6    g7
 [1  ,   1/3,   1/5,   1  ,   1/4,   1/2,   3  ],   #g1
 [3  ,   1  ,   1/2,   2  ,   1/3,   3  ,   3  ],   #g2
 [5  ,   2  ,   1  ,   4  ,   5  ,   6  ,   5  ],   #g3
@@ -83,10 +102,35 @@ weights, rc = ahp_method(dataset, wd = weight_derivation)
 
 ##############################################################################
 
+# ARAS
+
+# Weights
+weights = np.array([0.28, 0.14, 0.05, 0.24, 0.19, 0.05, 0.05])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'max', 'min', 'min', 'min', 'min']
+
+# Dataset
+dataset = np.array([
+                    [75.5, 420,	 74.2,	2.8,	21.4,	0.37,	0.16],   #a1
+                    [95,   91,	 70,	2.68,	22.1,	0.33,	0.16],   #a2
+                    [770,  1365, 189,	7.9,	16.9,	0.04,	0.08],   #a3
+                    [187,  1120, 210,	7.9,	14.4,	0.03,	0.08],   #a4
+                    [179,  875,	 112,	4.43,	9.4,	0.016,	0.09],   #a5
+                    [239,  1190, 217,	8.51,	11.5,	0.31,	0.07],   #a6
+                    [273,  200,	 112,	8.53,	19.9,	0.29,	0.06]    #a7
+                    ])
+
+# Call ARAS Function
+rank = aras_method(dataset, weights, criterion_type, graph = True)
+
+##############################################################################
+
 # Fuzzy AHP
 
 # Dataset
 dataset = list([
+    #          g1              g2                g3                  g4
     [ (  1,   1,   1), (  4,   5,   6), (  3,   4,   5), (  6,   7,   8) ],   #g1
     [ (1/6, 1/5, 1/4), (  1,   1,   1), (1/3, 1/2, 1/1), (  2,   3,   4) ],   #g2
     [ (1/5, 1/4, 1/3), (  1,   2,   3), (  1,   1,   1), (  2,   3,   4) ],   #g3
@@ -111,19 +155,111 @@ dataset = np.array([
                 [6, 7, 8, 6]    #a4
                 ])
 
-# Call Borda
+# Call Borda Function
 rank = borda_method(dataset, criterion_type, graph = True)
 
 ##############################################################################
+
+# BWM
+ 
+# Dataset
+dataset = np.array([
+                # g1   g2   g3   g4
+                [250,  16,  12,  5],
+                [200,  16,  8 ,  3],   
+                [300,  32,  16,  4],
+                [275,  32,  8 ,  4],
+                [225,  16,  16,  2]
+                ])
+
+# Most Important Criteria
+mic = np.array([1, 3, 4, 7])
+
+# Least Important Criteria
+lic = np.array([7, 5, 5, 1])
+
+# Call BWM Function
+weights =  bw_method(dataset, mic, lic, size = 50, iterations = 150)
+
+##############################################################################
+
+# CODAS
+
+# Weights
+weights = np.array([0.28, 0.14, 0.05, 0.24, 0.19, 0.05, 0.05])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'max', 'min', 'min', 'min', 'min']
+
+# Dataset
+dataset = np.array([
+                    [75.5, 420,	 74.2,	2.8,	21.4,	0.37,	0.16],   #a1
+                    [95,   91,	 70,	2.68,	22.1,	0.33,	0.16],   #a2
+                    [770,  1365, 189,	7.9,	16.9,	0.04,	0.08],   #a3
+                    [187,  1120, 210,	7.9,	14.4,	0.03,	0.08],   #a4
+                    [179,  875,	 112,	4.43,	9.4,	0.016,	0.09],   #a5
+                    [239,  1190, 217,	8.51,	11.5,	0.31,	0.07],   #a6
+                    [273,  200,	 112,	8.53,	19.9,	0.29,	0.06]    #a7
+                    ])
+
+# Call CODAS Function
+rank = codas_method(dataset, weights, criterion_type, lmbd = 0.02, graph = True)
+
+##############################################################################
+
+# COPRAS
+
+# Weights
+weights = np.array([0.28, 0.14, 0.05, 0.24, 0.19, 0.05, 0.05])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'max', 'min', 'min', 'min', 'min']
+
+# Dataset
+dataset = np.array([
+                    [75.5, 420,	 74.2,	2.8,	21.4,	0.37,	0.16],   #a1
+                    [95,   91,	 70,	2.68,	22.1,	0.33,	0.16],   #a2
+                    [770,  1365, 189,	7.9,	16.9,	0.04,	0.08],   #a3
+                    [187,  1120, 210,	7.9,	14.4,	0.03,	0.08],   #a4
+                    [179,  875,	 112,	4.43,	9.4,	0.016,	0.09],   #a5
+                    [239,  1190, 217,	8.51,	11.5,	0.31,	0.07],   #a6
+                    [273,  200,	 112,	8.53,	19.9,	0.29,	0.06]    #a7
+                    ])
+
+# Call COPRAS Function
+rank = copras_method(dataset, weights, criterion_type, graph = True)
+
+##############################################################################
+
+# CRITIC
+ 
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['min', 'max', 'max', 'max']
+
+# Dataset
+dataset = np.array([
+                # g1   g2   g3   g4
+                [250,  16,  12,  5],
+                [200,  16,  8 ,  3],   
+                [300,  32,  16,  4],
+                [275,  32,  8 ,  4],
+                [225,  16,  16,  2]
+                ])
+
+# Call CRITIC Function  
+weights = critic_method(dataset, criterion_type)
+
+###############################################################################
 
 # DEMATEL
 
 # Dataset # Scale: 0 (No Influence), 1 (Low Influence), 2 (Medium Influence), 3 (High Influence), 4 (Very High Influence)
 dataset = np.array([
-    [  0,  1,  2,  0  ],   #g1
-    [  3,  0,  4,  4  ],   #g2
-    [  3,  2,  0,  1  ],   #g3
-    [  4,  1,  2,  0  ]    #g4
+    # 'g1' 'g2' 'g3' 'g4'
+    [  0,   1,   2,   0  ],   #g1
+    [  3,   0,   4,   4  ],   #g2
+    [  3,   2,   0,   1  ],   #g3
+    [  4,   1,   2,   0  ]    #g4
     ])
 
 # Call DEMATEL Function  
@@ -377,6 +513,30 @@ dataset = np.array([
 
 # Call GRA Function
 gra_grade = gra_method(dataset, criterion_type, weights, epsilon = 0.5, graph = True)
+
+##############################################################################
+
+# MOORA
+
+# Weights
+weights = np.array([0.297, 0.025, 0.035, 0.076, 0.154, 0.053, 0.104, 0.017, 0.025, 0.214])
+
+# Load Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'max', 'max', 'max', 'max', 'max', 'max', 'min', 'min']
+
+# Dataset
+dataset = np.array([
+                    [3.5, 6, 1256, 4, 16, 3, 17.3, 8, 2.82, 4100],   #a1
+                    [3.1, 4, 1000, 2, 8,  1, 15.6, 5, 3.08, 3800],   #a2
+                    [3.6, 6, 2000, 4, 16, 3, 17.3, 5, 2.9,  4000],   #a3
+                    [3,   4, 1000, 2, 8,  2, 17.3, 5, 2.6,  3500],   #a4
+                    [3.3, 6, 1008, 4, 12, 3, 15.6, 8, 2.3,  3800],   #a5
+                    [3.6, 6, 1000, 2, 16, 3, 15.6, 5, 2.8,  4000],   #a6
+                    [3.5, 6, 1256, 2, 16, 1, 15.6, 6, 2.9,  4000]    #a7
+                   ])
+
+# Call MOORA Function
+rank = moora_method(dataset, weights, criterion_type, graph = True)
 
 ##############################################################################
 
