@@ -51,7 +51,7 @@ def codas_method(dataset, weights, criterion_type, lmbd = 0.02, graph = True):
     for j in range(0, r_m.shape[1]):
         for i in range(0, r_m.shape[0]):
             r_m[i, j] = (e_i[i] - e_i[j]) + lmbd*( (e_i[i] - e_i[j]) *  (t_i[i] - t_i[j]) )
-    h_i = np.sum(r_m, axis = 1)
+    h_i  = np.sum(r_m, axis = 1)
     flow = np.copy(h_i)
     flow = np.reshape(flow, (h_i.shape[0], 1))
     flow = np.insert(flow, 0, list(range(1, h_i.shape[0]+1)), axis = 1)
