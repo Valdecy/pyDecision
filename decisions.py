@@ -22,7 +22,7 @@ from py_decisions.bwm.bwm           import bw_method
 from py_decisions.codas.codas       import codas_method
 
 # ARAS
-from py_decisions.aras.aras       import aras_method
+from py_decisions.aras.aras         import aras_method
 
 # CRITIC
 from py_decisions.critic.critic     import critic_method
@@ -74,6 +74,9 @@ from py_decisions.vikor.vikor         import vikor_method, ranking
 
 # Fuzzy VIKOR
 from py_decisions.vikor.fuzzy_vikor   import fuzzy_vikor_method
+
+# WINGS
+from py_decisions.wings.wings         import wings_method
 
 # WSM, WPM, WASPAS
 from py_decisions.waspas.waspas       import waspas_method
@@ -820,7 +823,22 @@ ranking(r)
 ranking(q) 
 ranking(c_solution) # Final Solution
 
-##############################################################################
+###############################################################################
+
+# WINGS
+
+# Dataset # Scale: 0 (No Influence), 1 (Low Influence), 2 (Medium Influence), 3 (High Influence), 4 (Very High Influence). # on Diagonal = Force, off Diagonal = Influence
+dataset = np.array([
+    # 'g1' 'g2' 'g3'
+    [  4,   1,   4 ],   #g1
+    [  3,   2,   2 ],   #g2
+    [  2,   3,   2 ]    #g3
+    ])
+
+# Call WINGS Function  
+R_plus_C, R_minus_C, weights = wings_method(dataset, size_x = 15, size_y = 10)
+
+###############################################################################
 
 # WSM, WPM, WASPAS
  
@@ -845,3 +863,4 @@ lambda_value = 0.5
 wsm, wpm, waspas = waspas_method(dataset, criterion_type, weights, lambda_value)
 
 ###############################################################################
+
