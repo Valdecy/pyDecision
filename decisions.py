@@ -796,7 +796,7 @@ dataset = np.array([
     [  22,   25,   2,  31]    #a4
     ])
 
-#  Call Saw
+#  Call Saw Function
 rank = saw_method(dataset, criterion_type, weights, graph = True)
 
 ##############################################################################
@@ -822,7 +822,7 @@ dataset = np.array([
                     [40000, 199, 11.1, 480]    #a3
                    ])
 
-# Call MOOSRA Function
+# Call SMART Function
 rank = smart_method(dataset, grades, lower, upper, criterion_type, graph = True)
 
 ##############################################################################
