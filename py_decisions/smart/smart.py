@@ -41,7 +41,6 @@ def smart_method(dataset, grades, lower, upper, criterion_type, graph = True):
             X[:,i] =  4 + np.log2( ((dataset[:,i] - lower[i] ) / (upper[i] - lower[i]))*(64) ) 
         else:
             X[:,i] = 10 - np.log2( ((dataset[:,i] - lower[i] ) / (upper[i] - lower[i]))*(64) ) 
-    X
     Y    = np.sum(X*w, axis = 1)
     flow = np.copy(Y)
     flow = np.reshape(flow, (Y.shape[0], 1))
