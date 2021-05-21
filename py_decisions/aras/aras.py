@@ -45,11 +45,11 @@ def aras_method(dataset, weights, criterion_type, graph = True):
         bst[j] = bst[j]/ bsm[j]
         for i in range(0, X.shape[0]):
             X[i, j] = X[i, j]/ bsm[j]
-    X   = X*weights
-    bst = bst*weights
-    n_0 = np.sum(bst)
-    n_i = np.sum(X, axis = 1)
-    k_i = n_i/n_0
+    X    = X*weights
+    bst  = bst*weights
+    n_0  = np.sum(bst)
+    n_i  = np.sum(X, axis = 1)
+    k_i  = n_i/n_0
     flow = np.copy(k_i)
     flow = np.reshape(flow, (k_i.shape[0], 1))
     flow = np.insert(flow, 0, list(range(1, k_i.shape[0]+1)), axis = 1)
