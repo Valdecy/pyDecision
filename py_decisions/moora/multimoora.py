@@ -85,3 +85,5 @@ def multimoora_method(dataset, criterion_type, graph = True):
     if (graph == True):
         ranking(flow_1[np.argsort(flow_1[:, 1])], flow_2[np.argsort(flow_2[:, 1])], flow_3[np.argsort(flow_3[:, 1])])
     return flow_1, flow_2, flow_3
+
+###############################################################################
