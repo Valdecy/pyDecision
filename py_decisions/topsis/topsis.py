@@ -30,12 +30,12 @@ def ranking(flow):
 
 # Function: TOPSIS
 def topsis_method(dataset, weights, criterion_type, graph = True):
-    X = np.copy(dataset)
-    w = np.copy(weights)
-    sum_cols = np.sum(X*X, axis = 0)
-    sum_cols = sum_cols**(1/2)
-    r_ij = X/sum_cols
-    v_ij = r_ij*w
+    X         = np.copy(dataset)
+    w         = np.copy(weights)
+    sum_cols  = np.sum(X*X, axis = 0)
+    sum_cols  = sum_cols**(1/2)
+    r_ij      = X/sum_cols
+    v_ij      = r_ij*w
     p_ideal_A = np.zeros(X.shape[1])
     n_ideal_A = np.zeros(X.shape[1])
     for i in range(0, dataset.shape[1]):
