@@ -40,16 +40,16 @@ def moosra_method(dataset, weights, criterion_type, graph = True):
     root = (np.sum(X**2, axis = 0))**(1/2)
     X    = X/root
     X    = X*weights
-    id1 = [i for i, j in enumerate(criterion_type) if j == 'max']
-    id2 = [i for i, j in enumerate(criterion_type) if j == 'min']
-    s_p = np.zeros(X.shape[0])
-    s_m = np.zeros(X.shape[0])
-    Y   = np.zeros(X.shape[0])
+    id1  = [i for i, j in enumerate(criterion_type) if j == 'max']
+    id2  = [i for i, j in enumerate(criterion_type) if j == 'min']
+    s_p  = np.zeros(X.shape[0])
+    s_m  = np.zeros(X.shape[0])
+    Y    = np.zeros(X.shape[0])
     if (len(id1) > 0):
         s_p = np.sum(X[:,id1], axis = 1)
     if (len(id2) > 0):
         s_m = np.sum(X[:,id2], axis = 1)
-    Y   = s_p/s_m
+    Y    = s_p/s_m
     flow = np.copy(Y)
     flow = np.reshape(flow, (Y.shape[0], 1))
     flow = np.insert(flow, 0, list(range(1, Y.shape[0]+1)), axis = 1)
@@ -60,3 +60,5 @@ def moosra_method(dataset, weights, criterion_type, graph = True):
         flow = flow[::-1]
         ranking(flow)
     return flow
+
+###############################################################################
