@@ -58,3 +58,5 @@ def copras_method(dataset, weights, criterion_type, graph = True):
         flow = flow[::-1]
         ranking(flow)
     return flow
+
+###############################################################################
