@@ -4,82 +4,94 @@
 import numpy as np
 
 # AHP
-from py_decisions.ahp.ahp           import ahp_method
+from py_decisions.ahp.ahp               import ahp_method
 
 # COPRAS
-from py_decisions.copras.copras     import copras_method
+from py_decisions.copras.copras         import copras_method
 
 # Fuzzy AHP 
-from py_decisions.ahp.fuzzy_ahp     import fuzzy_ahp_method
+from py_decisions.ahp.fuzzy_ahp         import fuzzy_ahp_method
 
 # Borda
-from py_decisions.borda.borda       import borda_method
+from py_decisions.borda.borda           import borda_method
 
 # BWM
-from py_decisions.bwm.bwm           import bw_method
+from py_decisions.bwm.bwm               import bw_method
 
 # CODAS
-from py_decisions.codas.codas       import codas_method
+from py_decisions.codas.codas           import codas_method
 
 # ARAS
-from py_decisions.aras.aras         import aras_method
+from py_decisions.aras.aras             import aras_method
 
 # CRITIC
-from py_decisions.critic.critic     import critic_method
+from py_decisions.critic.critic         import critic_method
 
 # DEMATEL
-from py_decisions.dematel.dematel   import dematel_method
+from py_decisions.dematel.dematel       import dematel_method
 
 # Fuzzy DEMATEL
 from py_decisions.dematel.fuzzy_dematel import fuzzy_dematel_method
 
 # EDAS
-from py_decisions.edas.edas         import edas_method
+from py_decisions.edas.edas             import edas_method
 
 # Fuzzy EDAS
-from py_decisions.edas.fuzzy_edas   import fuzzy_edas_method
+from py_decisions.edas.fuzzy_edas       import fuzzy_edas_method
 
 # ELECTRE
-from py_decisions.electre.e_i       import electre_i
-from py_decisions.electre.e_i_s     import electre_i_s
-from py_decisions.electre.e_i_v     import electre_i_v
-from py_decisions.electre.e_ii      import electre_ii
-from py_decisions.electre.e_iii     import electre_iii
-from py_decisions.electre.e_iv      import electre_iv
-from py_decisions.electre.e_tri_b   import electre_tri_b
+from py_decisions.electre.e_i           import electre_i
+from py_decisions.electre.e_i_s         import electre_i_s
+from py_decisions.electre.e_i_v         import electre_i_v
+from py_decisions.electre.e_ii          import electre_ii
+from py_decisions.electre.e_iii         import electre_iii
+from py_decisions.electre.e_iv          import electre_iv
+from py_decisions.electre.e_tri_b       import electre_tri_b
 
 # GRA
-from py_decisions.gra.gra           import gra_method
+from py_decisions.gra.gra               import gra_method
 
 # MOORA
-from py_decisions.moora.moora       import moora_method
+from py_decisions.moora.moora           import moora_method
+
+# MOOSRA
+from py_decisions.moora.moora           import multimoora_method
+
+# MULTIMOORA
+from py_decisions.moora.moora           import moosra_method
 
 # PROMETHEE
-from py_decisions.promethee.p_i     import promethee_i
-from py_decisions.promethee.p_ii    import promethee_ii
-from py_decisions.promethee.p_iii   import promethee_iii
-from py_decisions.promethee.p_iv    import promethee_iv
-from py_decisions.promethee.p_v     import promethee_v
-from py_decisions.promethee.p_vi    import promethee_vi
-from py_decisions.promethee.p_xgaia import promethee_gaia
+from py_decisions.promethee.p_i         import promethee_i
+from py_decisions.promethee.p_ii        import promethee_ii
+from py_decisions.promethee.p_iii       import promethee_iii
+from py_decisions.promethee.p_iv        import promethee_iv
+from py_decisions.promethee.p_v         import promethee_v
+from py_decisions.promethee.p_vi        import promethee_vi
+from py_decisions.promethee.p_xgaia     import promethee_gaia
+
+# SAW
+from py_decisions.saw.saw               import saw_method
+
+# SMART
+from py_decisions.smart.smart           import smart_method
 
 # TOPSIS
-from py_decisions.topsis.topsis       import topsis_method
+from py_decisions.topsis.topsis         import topsis_method
 
 # Fuzzy TOPSIS
-from py_decisions.topsis.fuzzy_topsis import fuzzy_topsis_method
+from py_decisions.topsis.fuzzy_topsis   import fuzzy_topsis_method
 
 # VIKOR
-from py_decisions.vikor.vikor         import vikor_method, ranking
+from py_decisions.vikor.vikor           import vikor_method, ranking
 
 # Fuzzy VIKOR
-from py_decisions.vikor.fuzzy_vikor   import fuzzy_vikor_method
+from py_decisions.vikor.fuzzy_vikor     import fuzzy_vikor_method
 
 # WINGS
-from py_decisions.wings.wings         import wings_method
+from py_decisions.wings.wings           import wings_method
 
 # WSM, WPM, WASPAS
-from py_decisions.waspas.waspas       import waspas_method
+from py_decisions.waspas.waspas         import waspas_method
 
 ##############################################################################
 
@@ -110,7 +122,7 @@ weights, rc = ahp_method(dataset, wd = weight_derivation)
 # Weights
 weights = np.array([0.28, 0.14, 0.05, 0.24, 0.19, 0.05, 0.05])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'max', 'min', 'min', 'min', 'min']
 
 # Dataset
@@ -147,7 +159,7 @@ fuzzy_weights, defuzzified_weights, normalized_weights = fuzzy_ahp_method(datase
 
 # Borda
  
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'max', 'min']
 
 # Dataset
@@ -191,7 +203,7 @@ weights =  bw_method(dataset, mic, lic, size = 50, iterations = 150)
 # Weights
 weights = np.array([0.28, 0.14, 0.05, 0.24, 0.19, 0.05, 0.05])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'max', 'min', 'min', 'min', 'min']
 
 # Dataset
@@ -215,7 +227,7 @@ rank = codas_method(dataset, weights, criterion_type, lmbd = 0.02, graph = True)
 # Weights
 weights = np.array([0.28, 0.14, 0.05, 0.24, 0.19, 0.05, 0.05])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'max', 'min', 'min', 'min', 'min']
 
 # Dataset
@@ -236,7 +248,7 @@ rank = copras_method(dataset, weights, criterion_type, graph = True)
 
 # CRITIC
  
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['min', 'max', 'max', 'max']
 
 # Dataset
@@ -292,7 +304,7 @@ D_plus_R, D_minus_R, weights = fuzzy_dematel_method(dataset, size_x = 15, size_y
 # Weights
 weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['min', 'max', 'max', 'max']
 
 # Dataset
@@ -316,7 +328,7 @@ weights = list([
           [ (  0.1,   0.2,   0.3), (  0.7,   0.8,   0.9), (  0.3,   0.5,   0.8) ]    
     ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'min']
 
 # Dataset
@@ -502,7 +514,7 @@ classification = electre_tri_b(dataset, W , Q , P , V , B , cut_level = 0.75, ve
 # Weights
 weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['min', 'max', 'max', 'max']
 
 # Dataset
@@ -524,7 +536,7 @@ gra_grade = gra_method(dataset, criterion_type, weights, epsilon = 0.5, graph = 
 # Weights
 weights = np.array([0.297, 0.025, 0.035, 0.076, 0.154, 0.053, 0.104, 0.017, 0.025, 0.214])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'max', 'max', 'max', 'max', 'max', 'max', 'min', 'min']
 
 # Dataset
@@ -540,6 +552,50 @@ dataset = np.array([
 
 # Call MOORA Function
 rank = moora_method(dataset, weights, criterion_type, graph = True)
+
+##############################################################################
+
+# MOOSRA
+
+# Weights
+weights = np.array([0.297, 0.025, 0.035, 0.076, 0.154, 0.053, 0.104, 0.017, 0.025, 0.214])
+
+# Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'max', 'max', 'max', 'max', 'max', 'max', 'min', 'min']
+
+# Dataset
+dataset = np.array([
+                    [3.5, 6, 1256, 4, 16, 3, 17.3, 8, 2.82, 4100],   #a1
+                    [3.1, 4, 1000, 2, 8,  1, 15.6, 5, 3.08, 3800],   #a2
+                    [3.6, 6, 2000, 4, 16, 3, 17.3, 5, 2.9,  4000],   #a3
+                    [3,   4, 1000, 2, 8,  2, 17.3, 5, 2.6,  3500],   #a4
+                    [3.3, 6, 1008, 4, 12, 3, 15.6, 8, 2.3,  3800],   #a5
+                    [3.6, 6, 1000, 2, 16, 3, 15.6, 5, 2.8,  4000],   #a6
+                    [3.5, 6, 1256, 2, 16, 1, 15.6, 6, 2.9,  4000]    #a7
+                   ])
+
+# Call MOOSRA Function
+rank = moosra_method(dataset, weights, criterion_type, graph = True)
+
+##############################################################################
+
+# MULTIMOORA
+
+# Criterion Type: 'max' or 'min'
+criterion_type = ['min', 'min', 'min', 'min', 'max', 'min', 'max']
+
+# Dataset
+dataset = np.array([
+                    [33.95, 23.78, 11.45, 39.97, 29.44, 167.10,  3.852 ],   #a1
+                    [38.90,  4.17,  6.32,  0.01,  4.29, 132.52, 25.184 ],   #a2
+                    [37.59,  9.36,  8.23,  4.35, 10.22, 136.71, 10.845 ],   #a3
+                    [30.44, 37.59, 13.91, 74.08, 45.10, 198.34,  2.186 ],   #a4
+                    [36.21, 14.79,  9.17, 17.77, 17.06, 148.30,  6.610 ],   #a5
+                    [37.80,  8.55,  7.97,  2.35,  9.25, 134.83, 11.935 ]    #a6
+                   ])
+
+# Call MULTIMOORA Function
+rank = multimoora_method(dataset, criterion_type, graph = True)
 
 ##############################################################################
 
@@ -724,12 +780,59 @@ promethee_gaia(dataset, W = W, Q = Q, S = S, P = P, F = F)
 
 ##############################################################################
 
+# SAW
+
+# Weights (Must Sum 1)
+weights = np.array([0.25, 0.25, 0.25, 0.25])
+
+# Criterion Type: 'max' or 'min'
+criterion_type = ['max', 'max', 'min', 'max']
+
+# Dataset 
+dataset = np.array([
+    [  25,   67,   7,  20],   #a1
+    [  21,   78,   6,  24],   #a2
+    [  19,   53,   5,  33],    #a3
+    [  22,   25,   2,  31]    #a4
+    ])
+
+#  Call Saw
+rank = saw_method(dataset, criterion_type, weights, graph = True)
+
+##############################################################################
+
+# SMART
+
+# Grades - From 4 (worst) to 10 (best)
+grades = np.array([9, 5, 7, 6])
+
+# Min Criteria Threshold 
+lower = np.array([20300, 140, 8.2, 230]) 
+
+#  Max Criteria Threshold
+upper = np.array([40000, 220, 20, 2000])
+
+# Criterion Type: 'max' or 'min'
+criterion_type = ['min', 'max', 'min', 'max']
+
+# Dataset
+dataset = np.array([
+                    [25000, 153, 15.3, 250],   #a1
+                    [33000, 177, 12.3, 380],   #a2
+                    [40000, 199, 11.1, 480]    #a3
+                   ])
+
+# Call MOOSRA Function
+rank = smart_method(dataset, grades, lower, upper, criterion_type, graph = True)
+
+##############################################################################
+
 # TOPSIS
  
 # Weights
 weights = np.array([ [0.1, 0.4, 0.3, 0.2] ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'max', 'min']
 
 # Dataset
@@ -752,7 +855,7 @@ weights = list([
           [ (  0.1,   0.2,   0.3), (  0.7,   0.8,   0.9), (  0.3,   0.5,   0.8) ]    
     ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'min']
 
 # Dataset
@@ -773,7 +876,7 @@ relative_closeness = fuzzy_topsis_method(dataset, weights, criterion_type, graph
 # Weights
 weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['min', 'max', 'max', 'max']
 
 # Dataset
@@ -803,7 +906,7 @@ weights = list([
           [ (  0.1,   0.2,   0.3), (  0.7,   0.8,   0.9), (  0.3,   0.5,   0.8) ]    
     ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['max', 'max', 'min']
 
 # Dataset
@@ -845,7 +948,7 @@ R_plus_C, R_minus_C, weights = wings_method(dataset, size_x = 15, size_y = 10)
 # Weights
 weights = np.array([ [0.35, 0.30, 0.20, 0.15] ])
 
-# Load Criterion Type: 'max' or 'min'
+# Criterion Type: 'max' or 'min'
 criterion_type = ['min', 'max', 'max', 'max']
 
 # Dataset
@@ -863,4 +966,3 @@ lambda_value = 0.5
 wsm, wpm, waspas = waspas_method(dataset, criterion_type, weights, lambda_value)
 
 ###############################################################################
-
