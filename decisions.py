@@ -51,7 +51,7 @@ from py_decisions.electre.e_tri_b       import electre_tri_b
 # GRA
 from py_decisions.gra.gra               import gra_method
 
-# IDOCRIW (Integrated Determination of Objective CRIteria Weights)
+# IDOCRIW
 from py_decisions.idocriw.idocriw import idocriw_method
 
 # MOORA
