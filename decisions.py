@@ -992,4 +992,3 @@ wsm, wpm, waspas = waspas_method(dataset, criterion_type, weights, lambda_value)
 
 ###############################################################################
 
-]
