@@ -114,6 +114,5 @@ def genetic_algorithm(population_size = 5, mutation_rate = 0.1, elite = 0, min_v
         value = np.copy(population[population[:,-1].argsort()][0,:])
         if(elite_ind[-1] > value[-1]):
             elite_ind = np.copy(value) 
-        count = count + 1   
-    print(elite_ind )    
+        count = count + 1       
     return elite_ind 
