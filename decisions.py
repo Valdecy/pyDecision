@@ -133,7 +133,7 @@ dataset = list([
     ])
 
 # Call Fuzzy AHP Function        
-fuzzy_weights, defuzzified_weights, normalized_weights = fuzzy_ahp_method(dataset)
+fuzzy_weights, defuzzified_weights, normalized_weights, rc = fuzzy_ahp_method(dataset)
 
 ##############################################################################
 
