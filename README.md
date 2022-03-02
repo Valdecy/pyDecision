@@ -1,5 +1,55 @@
 # pyDecisions
+
+## Introduction
+
 A python library with the following MCDA methods: **AHP** (Analytic Hierarchy Process); **Fuzzy AHP**; **ARAS** (Additive Ratio ASsessment); **Borda**; **BWM** (Best-Worst Method); **CODAS** (Combinative Distance-based Assessment); **COPRAS** (Complex PRoportional Assessment); **CRITIC** (CRiteria Importance Through Intercriteria Correlation); **DEMATEL** (DEcision MAking Trial and Evaluation Laboratory); **Fuzzy DEMATEL**; **EDAS** (Evaluation based on Distance from Average Solution); **Fuzzy EDAS**; **ELECTRE** (I, I_s, I_v, II, III, IV, Tri-B); **GRA** (Grey Relational Analysis); **IDOCRIW** (Integrated Determination of Objective CRIteria Weights); **MOORA** (Multi-Objective Optimization on the basis of Ratio Analysis); **MOOSRA** (Multi-Objective Optimisation on the Basis of Simple Ratio Analysis);  **MULTIMOORA** (Multi-Objective Optimization on the basis of Ratio Analisys Multiplicative Form); **PROMETHEE** (I, II, III, IV, V, VI, Gaia); **SAW** (Simple Additive Weighting); **SMART** (Simple Multi-Attribute Rating Technique); **TOPSIS** (Technique for Order of Preference by Similarity to Ideal Solution); **Fuzzy TOPSIS**; **VIKOR** (VIseKriterijumska Optimizacija I Kompromisno Resenje); **Fuzzy VIKOR**; **WINGS** (Weighted Influence Non-linear Gauge System); **WSM** (Weighted Sum Model); **WPM** (Weighted Product Model); **WASPAS** (Weighted Aggregates Sum Product Assessment).
+
+## Usage
+
+1. Install
+```bash
+pip install pyDecision
+```
+
+2. Import
+
+```py3
+
+# Import AHP
+from pyDecision.algorithm import ahp_method
+
+# Parameters
+weight_derivation = 'geometric' # 'mean' or 'geometric'
+
+# Dataset
+dataset = np.array([
+  #g1     g2     g3     g4     g5     g6     g7                  
+  [1  ,   1/3,   1/5,   1  ,   1/4,   1/2,   3  ],   #g1
+  [3  ,   1  ,   1/2,   2  ,   1/3,   3  ,   3  ],   #g2
+  [5  ,   2  ,   1  ,   4  ,   5  ,   6  ,   5  ],   #g3
+  [1  ,   1/2,   1/4,   1  ,   1/4,   1  ,   2  ],   #g4
+  [4  ,   3  ,   1/5,   4  ,   1  ,   3  ,   2  ],   #g5
+  [2  ,   1/3,   1/6,   1  ,   1/3,   1  ,   1/3],   #g6
+  [1/3,   1/3,   1/5,   1/2,   1/2,   3  ,   1  ]    #g7
+])
+
+# Call AHP Function
+weights, rc = ahp_method(dataset, wd = weight_derivation)
+
+# Weigths
+for i in range(0, weights.shape[0]):
+  print('w(g'+str(i+1)+'): ', round(weights[i], 3))
+  
+# Consistency Ratio
+print('RC: ' + str(round(rc, 2)))
+if (rc > 0.10):
+  print('The solution is inconsistent, the pairwise comparisons must be reviewed')
+else:
+  print('The solution is consistent')
+
+```
+
+3. Colab Demo
 
 Try it in **Colab**:
 
