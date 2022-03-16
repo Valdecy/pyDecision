@@ -3,16 +3,15 @@
 # Created by: Prof. Valdecy Pereira, D.Sc.
 # UFF - Universidade Federal Fluminense (Brazil)
 # email:  valdecy.pereira@gmail.com
-# Course: Metaheuristics
-# Lesson: Grey Wolf Optimizer
+# Metaheuristic: Grey Wolf Optimizer
 
-# Citation: 
-# PEREIRA, V. (2018). Project: Metaheuristic-Grey_Wolf_Optimizer, File: Python-MH-Grey Wolf Optimizer.py, GitHub repository: <https://github.com/Valdecy/Metaheuristic-Grey_Wolf_Optimizer>
+# PEREIRA, V. (2022). GitHub repository: https://github.com/Valdecy/pyMetaheuristic
 
 ############################################################################
 
 # Required Libraries
 import numpy  as np
+import math
 import random
 import os
 
@@ -21,6 +20,8 @@ import os
 # Function
 def target_function():
     return
+
+############################################################################
 
 # Function: Initialize Variables
 def initial_position(pack_size = 5, min_values = [-5,-5], max_values = [5,5], target_function = target_function):
@@ -94,18 +95,21 @@ def update_position(position, alpha, beta, delta, a_linear_component = 2, min_va
         updated_position[i,-1] = target_function(updated_position[i,0:updated_position.shape[1]-1])
     return updated_position
 
+############################################################################
+
 # GWO Function
-def grey_wolf_optimizer(pack_size = 5, min_values = [-5,-5], max_values = [5,5], iterations = 50, target_function = target_function):    
+def grey_wolf_optimizer(pack_size = 5, min_values = [-5,-5], max_values = [5,5], iterations = 50, target_function = target_function, verbose = True):    
     count    = 0
     alpha    = alpha_position(dimension = len(min_values), target_function = target_function)
     beta     = beta_position(dimension  = len(min_values), target_function = target_function)
     delta    = delta_position(dimension = len(min_values), target_function = target_function)
     position = initial_position(pack_size = pack_size, min_values = min_values, max_values = max_values, target_function = target_function)
-    while (count <= iterations):      
-        print("Iteration = ", count)      
+    while (count <= iterations): 
+        if (verbose == True):    
+            print('Iteration = ', count, ' f(x) = ', alpha[0][-1])      
         a_linear_component = 2 - count*(2/iterations)
         alpha, beta, delta = update_pack(position, alpha, beta, delta)
-        position           = update_position(position, alpha, beta, delta, a_linear_component = a_linear_component, min_values = min_values, max_values = max_values, target_function = target_function)       
+        position           = update_position(position, alpha, beta, delta, a_linear_component = a_linear_component, min_values = min_values, max_values = max_values, target_function = target_function)    
         count              = count + 1          
     return alpha
 
