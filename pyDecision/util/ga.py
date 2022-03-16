@@ -3,11 +3,9 @@
 # Created by: Prof. Valdecy Pereira, D.Sc.
 # UFF - Universidade Federal Fluminense (Brazil)
 # email:  valdecy.pereira@gmail.com
-# Course: Metaheuristics
-# Lesson: Genetic Algorithm
+# Metaheuristic: Genetic Algorithm
 
-# Citation: 
-# PEREIRA, V. (2018). Project: Metaheuristic-Genetic_Algorithm, File: Python-MH-Genetic Algorithm.py, GitHub repository: <https://github.com/Valdecy/Metaheuristic-Genetic_Algorithm>
+# PEREIRA, V. (2022). GitHub repository: https://github.com/Valdecy/pyMetaheuristic
 
 ############################################################################
 
@@ -17,9 +15,13 @@ import math
 import random
 import os
 
+############################################################################
+
 # Function
 def target_function():
     return
+
+############################################################################
 
 # Function: Initialize Variables
 def initial_population(population_size = 5, min_values = [-5,-5], max_values = [5,5], target_function = target_function):
@@ -100,20 +102,24 @@ def mutation(offspring, mutation_rate = 0.1, eta = 1, min_values = [-5,-5], max_
         offspring[i,-1] = target_function(offspring[i,0:offspring.shape[1]-1])                        
     return offspring
 
+############################################################################
+
 # GA Function
-def genetic_algorithm(population_size = 5, mutation_rate = 0.1, elite = 0, min_values = [-5,-5], max_values = [5,5], eta = 1, mu = 1, generations = 50, target_function = target_function):    
+def genetic_algorithm(population_size = 5, mutation_rate = 0.1, elite = 0, min_values = [-5,-5], max_values = [5,5], eta = 1, mu = 1, generations = 50, target_function = target_function, verbose = True):    
     count = 0
     population = initial_population(population_size = population_size, min_values = min_values, max_values = max_values, target_function = target_function)
     fitness = fitness_function(population)    
     elite_ind = np.copy(population[population[:,-1].argsort()][0,:])
     while (count <= generations):  
-        print("Generation = ", count, " f(x) = ", elite_ind[-1])  
+        if (verbose == True):
+            print('Generation = ', count, ' f(x) = ', elite_ind[-1])  
         offspring = breeding(population, fitness, min_values = min_values, max_values = max_values, mu = mu, elite = elite, target_function = target_function) 
         population = mutation(offspring, mutation_rate = mutation_rate, eta = eta, min_values = min_values, max_values = max_values, target_function = target_function)
         fitness = fitness_function(population)
         value = np.copy(population[population[:,-1].argsort()][0,:])
         if(elite_ind[-1] > value[-1]):
             elite_ind = np.copy(value) 
-        count = count + 1   
-    print(elite_ind )    
+        count = count + 1       
     return elite_ind 
+
+############################################################################
