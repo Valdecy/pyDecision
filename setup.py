@@ -6,7 +6,7 @@ long_description = (this_directory / 'README.md').read_text()
 
 setup(
     name='pyDecision',
-    version='2.7.8',
+    version='2.7.9',
     license='GNU',
     author='Valdecy Pereira',
     author_email='valdecy.pereira@gmail.com',
@@ -17,6 +17,7 @@ setup(
         'numpy',
         'scikit-learn'
     ],
+    description='A MCDA Library',
     long_description=long_description,
     long_description_content_type='text/markdown',
 )
