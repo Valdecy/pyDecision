@@ -49,9 +49,7 @@ else:
 
 ```
 
-3. Colab Demo
-
-Try it in **Colab**:
+3. Try it in **Colab**:
 
 - AHP ([ Colab Demo ](https://colab.research.google.com/drive/1qwFQs5xkTZ8K-Ul_wWcCtPjLH0QooU9g?usp=sharing))
 - Fuzzy AHP ([ Colab Demo ](https://colab.research.google.com/drive/1RtEMOLGL5wtmheMRZv8emcO5wbjYVBCo?usp=sharing))
