@@ -21,9 +21,10 @@ from .fuzzy_topsis  import fuzzy_topsis_method
 from .fuzzy_vikor   import fuzzy_vikor_method
 from .gra           import gra_method
 from .idocriw       import idocriw_method
+from .mabac         import mabac_method
 from .moora         import moora_method
 from .moosra        import moosra_method
-from .multimoora    import multimoora_method 
+from .multimoora    import multimoora_method  
 from .p_i           import promethee_i
 from .p_ii          import promethee_ii
 from .p_iii         import promethee_iii
@@ -37,5 +38,3 @@ from .topsis        import topsis_method
 from .vikor         import vikor_method, ranking
 from .waspas        import waspas_method
 from .wings         import wings_method
-
-
