@@ -1,4 +1,4 @@
-# pyDecisions
+# pyDecision
 
 ## Introduction
 
