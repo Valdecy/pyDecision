@@ -8,7 +8,7 @@ from functools import reduce
 
 # Function: AHP
 def ahp_method(dataset, wd = 'm'):
-    inc_rat  = np.array([0, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45])
+    inc_rat  = np.array([0, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59])
     X        = np.copy(dataset)
     weights  = np.zeros(X.shape[1])
     if (wd == 'm' or wd == 'mean'):
