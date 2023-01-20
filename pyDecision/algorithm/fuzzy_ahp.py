@@ -11,7 +11,7 @@ def fuzzy_ahp_method(dataset):
     s_row   = []
     f_w     = []
     d_w     = []
-    inc_rat = np.array([0, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45])
+    inc_rat  = np.array([0, 0, 0, 0.58, 0.9, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49, 1.51, 1.48, 1.56, 1.57, 1.59])
     X       = [(item[0] + 4*item[1] + item[2])/6 for i in range(0, len(dataset)) for item in dataset[i] ]
     X       = np.asarray(X)
     X       = np.reshape(X, (len(dataset), len(dataset)))
