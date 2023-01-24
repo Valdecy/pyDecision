@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 # Function: Rank 
 def ranking(flow):    
@@ -23,7 +24,28 @@ def ranking(flow):
     plt.show() 
     return
 
-def maut(dataset, criterion_type, weights, graph=True):
+#Marginal Utility Functions
+def Uexp(x):
+    return (math.exp(x**2)-1)/1.72
+
+# Custom made Marginal Utility functions based on Step, Log and quadratic functions which return values in [0,1]
+# op: number of evaluation options for the criterion j
+def Ustep(x,op):
+    return ceil(op*x)/op
+
+# Logarithmic base 10
+def Ulog(x):
+    return math.log(9*x+1,10)
+
+# Natural Logarithm (ln) base e
+def Uln(x):
+    return math.log((math.exp(1)-1)*x+1)
+
+# Quadratic
+def Uquad(x):
+    return (2*x-1)**2
+
+def maut(dataset, criterion_type, utility_functions, weights, graph=True):
     X = np.copy(dataset)
     # normalization
     for i in range(0,X.shape[1]):
@@ -32,10 +54,30 @@ def maut(dataset, criterion_type, weights, graph=True):
         else:
             X[:,i]=1+ (np.min(X[:,i])- X[:,i])/(np.max(X[:,i])-np.min(X[:,i]))
 
+    # Apply selected Maginal Utility Function on criterion
+    for i in range(0,X.shape[1]):
+        if(utility_functions[i]=='exp'):
+            ArrExp=np.vectorize(Uexp)
+            X[:,i]=ArrExp(X[:,i])
+        elif(utility_functions[i]=='step'):
+            ArrStep=np.vectorize(Ustep)
+            X[:,i]=ArrStep(X[:,i])
+        elif(utility_functions[i]=='quad'):
+            ArrQuad=np.vectorize(Uquad)
+            X[:,i]=ArrQuad(X[:,i])
+        elif(utility_functions[i]=='log'):
+            ArrLog=np.vectorize(Ulog)
+            X[:,i]=ArrLog(X[:,i])
+        elif(utility_functions[i]=='ln'):
+            ArrLn=np.vectorize(Uln)
+            X[:,i]=ArrLn(X[:,i])
+
+
     # Multiplying by Weights
     for i in range(0,X.shape[1]):
         X[:,i] = X[:,i]*weights[i]
 
+    
     # Final Additive Utility Score
     Y = np.sum(X,axis=1)
 
