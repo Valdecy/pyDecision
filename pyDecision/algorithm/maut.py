@@ -1,6 +1,12 @@
+###############################################################################
+
+# Code Contributor: Sabir Mohammedi Taieb - Université Abdelhamid Ibn Badis Mostaganem
+
+# Required Libraries
 import numpy as np
 import matplotlib.pyplot as plt
-import math
+
+###############################################################################
 
 # Function: Rank 
 def ranking(flow):    
@@ -23,76 +29,76 @@ def ranking(flow):
     plt.axis('off')
     plt.show() 
     return
-
-#Marginal Utility Functions
-def Uexp(x):
-    return (math.exp(x**2)-1)/1.72
-
-# Custom made Marginal Utility functions based on Step, Log and quadratic functions which return values in [0,1]
-# op: number of evaluation options for the criterion j; 
-# When using step function:
-# Add a list containing number of options for each criterion using step function otherwise put 0 as a placeholder
-def Ustep(x,op):
-    return ceil(op*x)/op
-
-# Logarithmic base 10
-def Ulog(x):
-    return math.log(9*x+1,10)
-
-# Natural Logarithm (ln) base e
-def Uln(x):
-    return math.log((math.exp(1)-1)*x+1)
-
-# Quadratic
-def Uquad(x):
-    return (2*x-1)**2
-
-def maut(dataset, criterion_type, utility_functions, weights, options_number=1, graph=True):
-    X = np.copy(dataset)
-    # normalization
-    for i in range(0,X.shape[1]):
-        if(criterion_type[i]=='max'):
-            X[:,i]=(X[:,i] - np.min(X[:,i]))/(np.max(X[:,i])-np.min(X[:,i]))
-        else:
-            X[:,i]=1+ (np.min(X[:,i])- X[:,i])/(np.max(X[:,i])-np.min(X[:,i]))
-
-    # Apply selected Maginal Utility Function on criterion
-    for i in range(0,X.shape[1]):
-        if(utility_functions[i]=='exp'):
-            ArrExp=np.vectorize(Uexp)
-            X[:,i]=ArrExp(X[:,i])
-        elif(utility_functions[i]=='step'):
-            ArrStep=np.vectorize(Ustep)
-            X[:,i]=ArrStep(X[:,i],options_number)
-        elif(utility_functions[i]=='quad'):
-            ArrQuad=np.vectorize(Uquad)
-            X[:,i]=ArrQuad(X[:,i])
-        elif(utility_functions[i]=='log'):
-            ArrLog=np.vectorize(Ulog)
-            X[:,i]=ArrLog(X[:,i])
-        elif(utility_functions[i]=='ln'):
-            ArrLn=np.vectorize(Uln)
-            X[:,i]=ArrLn(X[:,i])
-
-
-    # Multiplying by Weights
-    for i in range(0,X.shape[1]):
-        X[:,i] = X[:,i]*weights[i]
-
     
-    # Final Additive Utility Score
-    Y = np.sum(X,axis=1)
+###############################################################################
 
-    # Printing Scores of alternatives
+# Function: Marginal Utility Exp
+def u_exp(x):
+    y = (np.exp(x**2)-1)/1.72
+    return y
+
+# Function: Marginal Utility Step
+def u_step(x, op):
+    y = np.ceil(op*x)/op
+    return y
+
+# Function: Marginal Utility Log10
+def u_log(x):
+    y = np.log10(9*x+1)
+    return y
+
+# Function: Marginal Utility LN
+def u_ln(x):
+    y = np.log((np.exp(1)-1)*x+1)
+    return y
+
+# Function: Marginal Utility Quadratic
+def u_quad(x):
+    y = (2*x-1)**2
+    return y
+
+###############################################################################
+
+# Function: MAUT
+def maut_method(dataset, weights, criterion_type, utility_functions, step_size = 1, graph = True):
+    X = np.copy(dataset)
+    # Normalization
+    for i in range(0, X.shape[1]):
+        if (criterion_type[i] == 'max'):
+            X[:, i] = (X[:,i] - np.min(X[:, i]))/(np.max(X[:, i]) - np.min(X[:, i]))
+        else:
+            X[:, i] = 1 + (np.min(X[:, i])- X[:, i])/(np.max(X[:, i]) - np.min(X[: ,i]))
+    # Apply Maginal Utility Function
+    for i in range(0, X.shape[1]):
+        if (utility_functions[i] == 'exp'):
+            ArrExp  = np.vectorize(u_exp)
+            X[:, i] = ArrExp(X[:, i])
+        elif (utility_functions[i] == 'step'):
+            ArrStep = np.vectorize(u_step)
+            X[:, i] = ArrStep(X[:, i], step_size)
+        elif (utility_functions[i] == 'quad'):
+            ArrQuad  = np.vectorize(u_quad)
+            X[:, i]  = ArrQuad(X[:, i])
+        elif (utility_functions[i] == 'log'):
+            ArrLog  = np.vectorize(u_log)
+            X[:, i] =ArrLog(X[:, i])
+        elif (utility_functions[i] == 'ln'):
+            ArrLn  = np.vectorize(u_ln)
+            X[:, i]= ArrLn(X[:, i])
+    for i in range(0, X.shape[1]):
+        X[:, i] = X[:, i]*weights[i]
+    # Additive Utility Score
+    Y    = np.sum(X, axis = 1)
     flow = np.copy(Y)
     flow = np.reshape(flow, (Y.shape[0], 1))
     flow = np.insert(flow, 0, list(range(1, Y.shape[0]+1)), axis = 1)
     for i in range(0, flow.shape[0]):
         print('a' + str(int(flow[i,0])) + ': ' + str(round(flow[i,1], 3)))
-
     if (graph == True):
         flow = flow[np.argsort(flow[:, 1])]
         flow = flow[::-1]
         ranking(flow)
-    print(flow)
     return flow
+
+###############################################################################
+
