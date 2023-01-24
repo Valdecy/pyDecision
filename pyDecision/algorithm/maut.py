@@ -29,7 +29,9 @@ def Uexp(x):
     return (math.exp(x**2)-1)/1.72
 
 # Custom made Marginal Utility functions based on Step, Log and quadratic functions which return values in [0,1]
-# op: number of evaluation options for the criterion j
+# op: number of evaluation options for the criterion j; 
+# When using step function:
+# Add a list containing number of options for each criterion using step function otherwise put 0 as a placeholder
 def Ustep(x,op):
     return ceil(op*x)/op
 
@@ -45,7 +47,7 @@ def Uln(x):
 def Uquad(x):
     return (2*x-1)**2
 
-def maut(dataset, criterion_type, utility_functions, weights, graph=True):
+def maut(dataset, criterion_type, utility_functions, weights, options_number=1, graph=True):
     X = np.copy(dataset)
     # normalization
     for i in range(0,X.shape[1]):
@@ -61,7 +63,7 @@ def maut(dataset, criterion_type, utility_functions, weights, graph=True):
             X[:,i]=ArrExp(X[:,i])
         elif(utility_functions[i]=='step'):
             ArrStep=np.vectorize(Ustep)
-            X[:,i]=ArrStep(X[:,i])
+            X[:,i]=ArrStep(X[:,i],options_number)
         elif(utility_functions[i]=='quad'):
             ArrQuad=np.vectorize(Uquad)
             X[:,i]=ArrQuad(X[:,i])
