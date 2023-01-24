@@ -22,6 +22,7 @@ from .fuzzy_vikor   import fuzzy_vikor_method
 from .gra           import gra_method
 from .idocriw       import idocriw_method
 from .mabac         import mabac_method
+from .maut          import maut_method
 from .moora         import moora_method
 from .moosra        import moosra_method
 from .multimoora    import multimoora_method  
