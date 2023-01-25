@@ -77,14 +77,14 @@ def maut_method(dataset, weights, criterion_type, utility_functions, step_size =
             ArrStep = np.vectorize(u_step)
             X[:, i] = ArrStep(X[:, i], step_size)
         elif (utility_functions[i] == 'quad'):
-            ArrQuad  = np.vectorize(u_quad)
-            X[:, i]  = ArrQuad(X[:, i])
+            ArrQuad = np.vectorize(u_quad)
+            X[:, i] = ArrQuad(X[:, i])
         elif (utility_functions[i] == 'log'):
             ArrLog  = np.vectorize(u_log)
-            X[:, i] =ArrLog(X[:, i])
+            X[:, i] = ArrLog(X[:, i])
         elif (utility_functions[i] == 'ln'):
-            ArrLn  = np.vectorize(u_ln)
-            X[:, i]= ArrLn(X[:, i])
+            ArrLn   = np.vectorize(u_ln)
+            X[:, i] = ArrLn(X[:, i])
     for i in range(0, X.shape[1]):
         X[:, i] = X[:, i]*weights[i]
     # Additive Utility Score
