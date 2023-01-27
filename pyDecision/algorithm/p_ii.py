@@ -8,18 +8,21 @@ import numpy as np
 ###############################################################################
 
 # Function: Distance Matrix
-def distance_matrix(dataset, criteria = 0):
+def distance_matrix(dataset, criteria_type, criteria = 0):
     distance_array = np.zeros(shape = (dataset.shape[0],dataset.shape[0]))
     for i in range(0, distance_array.shape[0]):
         for j in range(0, distance_array.shape[1]):
-            distance_array[i,j] = dataset[i, criteria] - dataset[j, criteria] 
+            if(criteria_type[criteria]=='min'):
+                distance_array[i,j] = -(dataset[i, criteria] - dataset[j, criteria])
+            elif(criteria_type[criteria]=='max'):
+                 distance_array[i,j] = dataset[i,criteria] - dataset[j, criteria]
     return distance_array
 
 # Function: Preferences
-def preference_degree(dataset, W, Q, S, P, F):
+def preference_degree(dataset, W, Q, S, P, F, criteria_type):
     pd_array = np.zeros(shape = (dataset.shape[0],dataset.shape[0]))
     for k in range(0, dataset.shape[1]):
-        distance_array = distance_matrix(dataset, criteria = k)
+        distance_array = distance_matrix(dataset, criteria_type, criteria = k)
         for i in range(0, distance_array.shape[0]):
             for j in range(0, distance_array.shape[1]):
                 if (i != j):
@@ -98,7 +101,7 @@ def ranking(flow):
 ###############################################################################
 
 # Function: Promethee II
-def promethee_ii(dataset, W, Q, S, P, F, sort = True, topn = 0, graph = False):
+def promethee_ii(dataset, W, Q, S, P, F, criteria_type, sort = True, topn = 0, graph = False):
     pd_matrix  = preference_degree(dataset, W, Q, S, P, F)
     flow_plus  = np.sum(pd_matrix, axis = 1)/(pd_matrix.shape[0] - 1)
     flow_minus = np.sum(pd_matrix, axis = 0)/(pd_matrix.shape[0] - 1)
