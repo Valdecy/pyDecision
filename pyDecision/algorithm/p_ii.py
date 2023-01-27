@@ -19,7 +19,7 @@ def distance_matrix(dataset, criteria_type, criteria = 0):
     return distance_array
 
 # Function: Preferences
-def preference_degree(dataset, W, Q, S, P, F, criteria_type):
+def preference_degree(dataset, criteria_type, W, Q, S, P, F):
     pd_array = np.zeros(shape = (dataset.shape[0],dataset.shape[0]))
     for k in range(0, dataset.shape[1]):
         distance_array = distance_matrix(dataset, criteria_type, criteria = k)
@@ -101,8 +101,8 @@ def ranking(flow):
 ###############################################################################
 
 # Function: Promethee II
-def promethee_ii(dataset, W, Q, S, P, F, criteria_type, sort = True, topn = 0, graph = False):
-    pd_matrix  = preference_degree(dataset, W, Q, S, P, F)
+def promethee_ii(dataset, criteria_type,W, Q, S, P, F,sort = True, topn = 0, graph = False):
+    pd_matrix  = preference_degree(dataset, criteria_type,W, Q, S, P, F)
     flow_plus  = np.sum(pd_matrix, axis = 1)/(pd_matrix.shape[0] - 1)
     flow_minus = np.sum(pd_matrix, axis = 0)/(pd_matrix.shape[0] - 1)
     flow       = flow_plus - flow_minus 
