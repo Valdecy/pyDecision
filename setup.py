@@ -6,7 +6,7 @@ long_description = (this_directory / 'README.md').read_text()
 
 setup(
     name='pyDecision',
-    version='2.8.7',
+    version='2.9.1',
     license='GNU',
     author='Valdecy Pereira',
     author_email='valdecy.pereira@gmail.com',
@@ -15,7 +15,8 @@ setup(
     install_requires=[
         'matplotlib',
         'numpy',
-        'scikit-learn'
+        'scikit-learn',
+        'scipy'
     ],
     description='A MCDA Library',
     long_description=long_description,
