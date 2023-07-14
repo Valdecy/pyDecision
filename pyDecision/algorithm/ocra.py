@@ -29,7 +29,7 @@ def ranking(flow):
     return
 
 # Function:  OCRA (Operational Competitiveness RAting)
-def ocra(dataset, weights, criterion_type, graph = True):
+def ocra_method(dataset, weights, criterion_type, graph = True):
     X     = np.copy(dataset)/1.0
     n, m  = dataset.shape
     I     = np.zeros(n)
