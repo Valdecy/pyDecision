@@ -2,6 +2,7 @@ from .ahp           import ahp_method
 from .aras          import aras_method
 from .borda         import borda_method
 from .bwm           import bw_method
+from .cocoso        import cocoso_method
 from .codas         import codas_method
 from .copras        import copras_method
 from .critic        import critic_method
@@ -22,10 +23,12 @@ from .fuzzy_vikor   import fuzzy_vikor_method
 from .gra           import gra_method
 from .idocriw       import idocriw_method
 from .mabac         import mabac_method
+from .marcos        import marcos_method
 from .maut          import maut_method
 from .moora         import moora_method
 from .moosra        import moosra_method
 from .multimoora    import multimoora_method  
+from .ocra          import ocra_method
 from .p_i           import promethee_i
 from .p_ii          import promethee_ii
 from .p_iii         import promethee_iii
@@ -35,6 +38,7 @@ from .p_vi          import promethee_vi
 from .p_xgaia       import promethee_gaia
 from .saw           import saw_method
 from .smart         import smart_method
+from .todim         import todim_method
 from .topsis        import topsis_method
 from .vikor         import vikor_method, ranking
 from .waspas        import waspas_method
