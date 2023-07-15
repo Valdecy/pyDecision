@@ -30,10 +30,10 @@ def ranking(flow):
 
 # Function: MARCOS (Measurement of Alternatives and Ranking according to COmpromise Solution)
 def marcos_method(dataset, weights, criterion_type, graph = True):
-    X      = np.copy(dataset)/1.0
-    n, m   = X.shape
-    best  = np.zeros(X.shape[1])
-    worst = np.zeros(X.shape[1])
+    X       = np.copy(dataset)/1.0
+    best    = np.zeros(X.shape[1])
+    worst   = np.zeros(X.shape[1])
+    weights = np.array(weights)
     for i in range(0, dataset.shape[1]):
         if (criterion_type[i] == 'max'):
             best[i]  = np.max(X[:, i])
@@ -50,8 +50,11 @@ def marcos_method(dataset, weights, criterion_type, graph = True):
             X[:,j]   =  best[j] / X[:,j]
             worst[j] = best[j]  / worst[j]
             best[j]  = best[j]  / best[j]
-    best  = best * weights
-    worst = worst * weights
+    best  = np.array(best)
+    worst = np.array(worst)
+    for i in range(0, X.shape[1]):
+        best[i]  = best[i]  * weights[i]
+        worst[i] = worst[i] * weights[i]
     V     = X * weights
     S     = V.sum(axis = 1)
     k_n   = S / np.sum(worst)
