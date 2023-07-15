@@ -43,11 +43,11 @@ def marcos_method(dataset, weights, criterion_type, graph = True):
             worst[i] = np.max(X[:, i])   
     for j in range(0, X.shape[1]):
         if (criterion_type[j] == 'max'):
-            X[:,j]   =  X[:,j]  / best[j]
+            X[:,j]   = X[:,j]   / best[j]
             worst[j] = worst[j] / best[j]
             best[j]  = best[j]  / best[j]
         else:
-            X[:,j]   =  best[j] / X[:,j]
+            X[:,j]   = best[j]  / X[:,j]
             worst[j] = best[j]  / worst[j]
             best[j]  = best[j]  / best[j]
     best  = np.array(best)
