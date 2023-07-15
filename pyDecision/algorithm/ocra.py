@@ -30,15 +30,21 @@ def ranking(flow):
 
 # Function:  OCRA (Operational Competitiveness RAting)
 def ocra_method(dataset, weights, criterion_type, graph = True):
-    X     = np.copy(dataset)/1.0
-    n, m  = dataset.shape
-    I     = np.zeros(n)
-    O     = np.zeros(n)      
-    for j in range(m):
+    X       = np.copy(dataset)/1.0
+    I       = np.zeros(X.shape[0])
+    O       = np.zeros(X.shape[0])    
+    weights = np.array(weights)
+    for j in range(0, X.shape[1]):
         if (criterion_type[j] == 'max'):
-            O = O + weights[j] * (X[:,j] - np.min(X[:,j])) / np.min(X[:,j])
+            A = (X[:,j] - np.min(X[:,j])) / np.min(X[:,j])
+            for k in range(0, A.shape[0]):
+                A[k] = A[k] * weights[j]
+            O = O + A
         else:
-            I = I + weights[j] * (np.max(X[:,j]) - X[:,j]) / np.min(X[:,j])
+            B = (np.max(X[:,j]) - X[:,j]) / np.min(X[:,j])
+            for k in range(0, B.shape[0]):
+                B[k] = B[k] * weights[j]
+            I = I + B
     O = O - np.min(O)
     I = I - np.min(I)
     r = (I + O) - np.min(I + O)
