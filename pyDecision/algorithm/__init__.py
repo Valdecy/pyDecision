@@ -6,6 +6,7 @@ from .cilos         import cilos_method
 from .cocoso        import cocoso_method
 from .codas         import codas_method
 from .copras        import copras_method
+from .cradis        import cradis_method
 from .critic        import critic_method
 from .dematel       import dematel_method
 from .e_i           import electre_i
