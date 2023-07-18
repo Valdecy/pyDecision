@@ -13,6 +13,8 @@ def cilos_method(dataset, criterion_type):
     for j in range(0, X.shape[1]):
         if (criterion_type[j] == 'max'):
             X[:,j] = np.min(X[:,j]) / X[:,j]
+        else:
+            X[:,j] = X[:,j] / np.max(X[:,j])
         X[:,j] = X[:,j] / np.sum(X[:,j])
     A = X[np.argmax(X, axis = 0)]
     P = (np.diag(A) - A) / np.diag(A)
