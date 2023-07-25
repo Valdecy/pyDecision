@@ -76,7 +76,6 @@ def plot_rank_freq(ranks, size_x = 8, size_y = 10):
     colors          = plt.cm.get_cmap('tab10', ranks.shape[0])
     bottom          = np.zeros(len(alternative_labels))
     for rank, counts in rank_count_dict.items():
-        print(rank, counts)
         bars   = ax.barh(alternative_labels, counts, left = bottom, color = colors(rank-1))
         bottom = bottom + counts  
         for rect, c in zip(bars, counts):
