@@ -16,11 +16,11 @@ setup(
         'matplotlib',
         'numpy',
         'openai',
-	'pandas',
+		'pandas',
         'scikit-learn',
         'scipy'
     ],
-    description='A MCDA Library',
+    description='A MCDA Library Incorporating Large Language Models to Enhance Decision Analysis',
     long_description=long_description,
     long_description_content_type='text/markdown',
 )
