@@ -31,6 +31,7 @@ from .fuzzy_vikor   import fuzzy_vikor_method
 from .gra           import gra_method
 from .idocriw       import idocriw_method
 from .mabac         import mabac_method
+from .macbeth       import macbeth_method
 from .mairca        import mairca_method
 from .marcos        import marcos_method
 from .maut          import maut_method
@@ -39,6 +40,7 @@ from .moora         import moora_method
 from .moosra        import moosra_method
 from .multimoora    import multimoora_method  
 from .ocra          import ocra_method
+from .oreste        import oreste_method
 from .p_i           import promethee_i
 from .p_ii          import promethee_ii
 from .p_iii         import promethee_iii
@@ -48,6 +50,7 @@ from .p_vi          import promethee_vi
 from .p_xgaia       import promethee_gaia
 from .piv           import piv_method
 from .psi           import psi_method
+from .regime        import regime_method
 from .rov           import rov_method
 from .saw           import saw_method
 from .smart         import smart_method
