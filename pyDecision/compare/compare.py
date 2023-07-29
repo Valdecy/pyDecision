@@ -27,6 +27,7 @@ from pyDecision.algorithm.cradis       import cradis_method
 from pyDecision.algorithm.edas         import edas_method
 from pyDecision.algorithm.gra          import gra_method
 from pyDecision.algorithm.mabac        import mabac_method
+from pyDecision.algorithm.macbeth      import macbeth_method
 from pyDecision.algorithm.mairca       import mairca_method
 from pyDecision.algorithm.marcos       import marcos_method
 from pyDecision.algorithm.maut         import maut_method
@@ -34,6 +35,7 @@ from pyDecision.algorithm.moora        import moora_method
 from pyDecision.algorithm.moosra       import moosra_method
 from pyDecision.algorithm.multimoora   import multimoora_method
 from pyDecision.algorithm.ocra         import ocra_method
+from pyDecision.algorithm.oreste       import oreste_method
 from pyDecision.algorithm.piv          import piv_method
 from pyDecision.algorithm.p_ii         import promethee_ii
 from pyDecision.algorithm.p_iv         import promethee_iv
@@ -139,9 +141,9 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
     return X
 
 # Function: Compare Ranks Crisp
-def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], lambda_value = 0.5):
+def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], lambda_value = 0.5, alpha = 0.4):
     if ('all' in methods_list):
-        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'piv', 'promethee_ii', 'promethee_iv', 'psi', 'rov', 'saw', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas']
+        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'psi', 'rov', 'saw', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     graph   = False
@@ -203,6 +205,11 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             X[:,j] = rank
             j      = j + 1
             print('MABAC: Done!')
+        if (method == 'macbeth' or method == 'all'):
+            rank   = macbeth_method(dataset, weights, criterion_type, graph, verbose)
+            X[:,j] = rank
+            j      = j + 1
+            print('MACBETH: Done!')
         if (method == 'mairca' or method == 'all'):
             rank   = mairca_method(dataset, weights, criterion_type, graph, verbose)
             X[:,j] = rank
@@ -238,6 +245,11 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             X[:,j] = rank
             j      = j + 1
             print('OCRA: Done!')
+        if (method == 'oreste' or method == 'all'):
+            rank   = oreste_method(dataset, weights, criterion_type, alpha, graph, verbose)
+            X[:,j] = -rank
+            j      = j + 1
+            print('ORESTE: Done!')
         if (method == 'piv' or method == 'all'):
             rank   = piv_method(dataset, weights, criterion_type, graph, verbose)
             X[:,j] = rank
