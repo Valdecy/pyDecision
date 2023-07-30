@@ -2,7 +2,6 @@
 
 # Required Libraries
 import openai  
-a=openai.Model.list()
 
 ###############################################################################
 
