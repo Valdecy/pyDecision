@@ -12,30 +12,35 @@ def fuzzy_dematel_method(dataset, size_x = 10, size_y = 10):
     X_a = np.zeros((len(dataset), len(dataset)))
     X_b = np.zeros((len(dataset), len(dataset)))
     X_c = np.zeros((len(dataset), len(dataset)))
+    m_a = np.ones ((len(dataset), len(dataset))) # min
+    m_c = np.zeros((len(dataset), len(dataset))) # max
     for i in range(0, len(dataset)):
         for j in range(0, len(dataset)):
             a, b, c  = dataset[i][j]
             X_a[i,j] = a
             X_b[i,j] = b
             X_c[i,j] = c
-    X_a = X_a / np.max(np.sum(X_a, axis = 1))
-    X_b = X_b / np.max(np.sum(X_b, axis = 1))
-    X_c = X_c / np.max(np.sum(X_c, axis = 1))
-    Y_a = np.linalg.inv(np.identity(len(dataset)) - X_a)
-    Y_b = np.linalg.inv(np.identity(len(dataset)) - X_b)
-    Y_c = np.linalg.inv(np.identity(len(dataset)) - X_c)
-    T_a = np.matmul (X_a, Y_a)
-    T_b = np.matmul (X_b, Y_b)
-    T_c = np.matmul (X_c, Y_c)
-    D_a = np.sum(T_a, axis = 1)
-    D_b = np.sum(T_b, axis = 1)
-    D_c = np.sum(T_c, axis = 1)
-    R_a = np.sum(T_a, axis = 0)
-    R_b = np.sum(T_b, axis = 0)
-    R_c = np.sum(T_c, axis = 0)
-    D_plus_R  = (D_a + D_b + D_c)/3 + (R_a + R_b + R_c)/3    
-    D_minus_R = (D_a + D_b + D_c)/3 - (R_a + R_b + R_c)/3 
-    weights   = D_plus_R/np.sum(D_plus_R)
+            if (a < m_a[i,j]):
+                m_a[i,j] = a
+            if (c > m_c[i,j]):
+                m_c[i,j] = c
+    m_a       = np.min(m_a, axis = 1)
+    m_c       = np.max(m_c, axis = 1)
+    X_a       = (X_a - m_a) / (m_c - m_a)
+    X_b       = (X_b - m_a) / (m_c - m_a)
+    X_c       = (X_c - m_a) / (m_c - m_a)
+    L         = X_b / (1 + X_b - X_a)
+    R         = X_c / (1 + X_c - X_b)
+    W         = (L * (1 - L) + R * R) / (1 - L + R)
+    Z         = m_a  + W * (m_c - m_a)
+    X         = Z/np.max(np.sum(Z, axis = 1))
+    Y         = np.linalg.inv(np.identity(X.shape[0]) - X) 
+    T         = np.matmul(X, Y)
+    D         = np.sum(T, axis = 1)
+    R         = np.sum(T, axis = 0)
+    D_plus_R  = D + R
+    D_minus_R = D - R 
+    weights   = (D_plus_R - D_minus_R)/(np.sum(D_plus_R + D_minus_R))
     print('QUADRANT I has the Most Important Criteria (Prominence: High, Relation: High)') 
     print('QUADRANT II has Important Criteira that can be Improved by Other Criteria (Prominence: Low, Relation: High)') 
     print('QUADRANT III has Criteria that are not Important (Prominence: Low, Relation: Low)')
