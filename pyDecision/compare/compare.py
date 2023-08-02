@@ -42,6 +42,7 @@ from pyDecision.algorithm.p_iv         import promethee_iv
 from pyDecision.algorithm.psi          import psi_method
 from pyDecision.algorithm.rov          import rov_method
 from pyDecision.algorithm.saw          import saw_method
+from pyDecision.algorithm.spotis       import spotis_method
 from pyDecision.algorithm.todim        import todim_method
 from pyDecision.algorithm.topsis       import topsis_method
 from pyDecision.algorithm.vikor        import vikor_method
@@ -92,10 +93,26 @@ def plot_rank_freq(ranks, size_x = 8, size_y = 10):
     plt.show()
     return
 
+# Function: Calc & Plot Correlation. correlation_method = 'kendall', correlation_method = 'spearman', correlation_method = 'pearson'
+def corr_viz(df, correlation_method = 'kendall', size = 10, font_size = 10, graph = True):
+    corr_df = df.corr(method = correlation_method)
+    if (graph == True):
+        plt.figure(figsize = (size, size))
+        cax = plt.matshow(corr_df, cmap = 'YlGnBu', fignum = 1)
+        plt.colorbar(cax)
+        plt.xticks(np.arange(len(corr_df.columns)), corr_df.columns, rotation = 90)
+        plt.yticks(np.arange(len(corr_df.columns)), corr_df.columns)
+        for i in range(len(corr_df.columns)):
+                    for j in range(len(corr_df.columns)):
+                        plt.gca().add_patch(plt.Rectangle((i-0.5, j-0.5), 1, 1, fill = False, edgecolor = 'black', lw = 0.2))
+        for (i, j), z in np.ndenumerate(corr_df):
+            plt.text(j, i, '{:0.2f}'.format(z), ha = 'center', va = 'center', fontsize = font_size, bbox = dict(boxstyle = 'round', facecolor = 'white', edgecolor = '0.1'))
+    return corr_df
+
 ###############################################################################
 
 # Function: Compare Weights
-def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], size_bw = 50, iterations_bw = 150, size_ido = 20, iterations_ido = 1200):
+def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = []):
     if ('all' in methods_list):
         methods_list = ['bwm', 'cilos', 'critic', 'idocriw', 'entropy',  'merec']
     if (len(custom_methods) > 0):
@@ -108,7 +125,7 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
         print(custom_methods[i], ': Done!')
     for method in methods_list:
         if (method == 'bwm' or method == 'all'):
-            w      = bw_method(dataset, mic, lic, size_bw, iterations_bw, False)
+            w      = bw_method(dataset, mic, lic, False)
             X[:,j] = w
             j      = j + 1
             print('BWM: Done!')
@@ -128,8 +145,8 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
             j      = j + 1
             print('Entropy: Done!')
         if (method == 'idocriw' or method == 'all'):
-            w      = idocriw_method(dataset, criterion_type, size_ido, iterations_ido, False)
-            X[:,j] = w[:,0]
+            w      = idocriw_method(dataset, criterion_type, False)
+            X[:,j] = w
             j      = j + 1
             print('IDOCRIW: Done!')
         if (method == 'merec' or method == 'all'):
@@ -141,9 +158,9 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
     return X
 
 # Function: Compare Ranks Crisp
-def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], lambda_value = 0.5, alpha = 0.4):
+def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = []):
     if ('all' in methods_list):
-        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'psi', 'rov', 'saw', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas']
+        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'psi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     graph   = False
@@ -162,7 +179,7 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             print('ARAS: Done!')
         if (method == 'borda' or method == 'all'):
             rank   = borda_method(dataset, criterion_type, graph, verbose)
-            X[:,j] = -rank
+            X[:,j] = rank
             j      = j + 1
             print('Borda: Done!')
         if (method == 'cocoso' or method == 'all'):
@@ -247,7 +264,7 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             print('OCRA: Done!')
         if (method == 'oreste' or method == 'all'):
             rank   = oreste_method(dataset, weights, criterion_type, alpha, graph, verbose)
-            X[:,j] = -rank
+            X[:,j] = rank
             j      = j + 1
             print('ORESTE: Done!')
         if (method == 'piv' or method == 'all'):
@@ -288,6 +305,11 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             X[:,j] = rank[:,1]
             j      = j + 1
             print('SAW: Done!')
+        if (method == 'spotis' or method == 'all'):
+            rank   = spotis_method(dataset, criterion_type, weights, s_min,s_max, graph, verbose)
+            X[:,j] = rank
+            j      = j + 1
+            print('SPOTIS: Done!')
         if (method == 'todim' or method == 'all'):
             rank   = todim_method(dataset, criterion_type, weights, teta, graph, verbose)
             X[:,j] = rank
@@ -319,8 +341,11 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             j      = j + 1
             print('WASPAS: Done!')
     ranked = np.zeros_like(X)
-    for i in range(0, X.shape[1]):
-        ranked[:, i] = X.shape[0] + 1 - rankdata(X[:, i], method = 'max')
+    for i in range(0, len(methods_list)):
+        if (methods_list[i] in ['borda', 'cradis', 'mairca', 'oreste', 'piv', 'spotis']):
+            ranked[:, i] = X.shape[0] + 1 - rankdata(-X[:, i], method = 'max')
+        else:
+            ranked[:, i] = X.shape[0] + 1 - rankdata(X[:, i], method = 'max')
     X      = pd.DataFrame(X, index = ['a'+str(i+1) for i in range(0, X.shape[0])], columns = methods_list)    
     ranked = pd.DataFrame(ranked, index = ['a'+str(i+1) for i in range(0, X.shape[0])], columns = methods_list)
     return X, ranked
