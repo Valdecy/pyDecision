@@ -54,6 +54,7 @@ from .regime        import regime_method
 from .rov           import rov_method
 from .saw           import saw_method
 from .smart         import smart_method
+from .spotis        import spotis_method
 from .todim         import todim_method
 from .topsis        import topsis_method
 from .vikor         import vikor_method, ranking
