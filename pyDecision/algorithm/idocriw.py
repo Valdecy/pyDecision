@@ -3,25 +3,21 @@
 # Required Libraries
 import numpy as np
 
-from pyDecision.util.ga import genetic_algorithm
+from scipy.optimize import minimize, Bounds
 
 ###############################################################################
 
 # Function: IDOCRIW (Integrated Determination of Objective CRIteria Weights)
-def idocriw_method(dataset, criterion_type, size = 20, gen = 12000, verbose = False):
-    X    = np.copy(dataset)
+def idocriw_method(dataset, criterion_type, verbose = False):
+    X    = np.copy(dataset)/1.0
     X    = X/X.sum(axis = 0)
-    X_ln = np.copy(dataset)
-    X_r  = np.copy(dataset)
-    for i in range(0, X.shape[0]):
-        for j in range(0, X.shape[1]):
-            X_ln[i,j] = X[i,j]*np.log(X[i,j])
-    d = np.zeros((1, X.shape[1]))
-    w = np.zeros((1, X.shape[1]))
-    for i in range(0, d.shape[1]):
-        d[0,i] = 1-( -1/(np.log(d.shape[1]))*sum(X_ln[:,i])) 
-    for i in range(0, w.shape[1]):
-        w[0,i] = d[0,i]/d.sum(axis = 1)
+    X_ln = np.zeros(X.shape[1])
+    X_r  = np.copy(dataset)/1.0
+    for j in range(0, X.shape[1]):
+        X_ln[j] = np.sum(X[:,j]*np.log(X[:,j]))
+        X_ln[j] = X_ln[j]*(-1/np.log(X.shape[1]))
+    d = 1 - X_ln
+    w = d/np.sum(d)
     for i in range(0, len(criterion_type)):
         if (criterion_type[i] == 'min'):
            X_r[:,i] = dataset[:,i].min() / X_r[:,i]
@@ -42,24 +38,22 @@ def idocriw_method(dataset, criterion_type, size = 20, gen = 12000, verbose = Fa
     np.fill_diagonal(WP, -P.sum(axis = 0))
     
     ################################################
-    def target_function(variable = [0]*WP.shape[1]):
-        variable = [variable[i]/sum(variable) for i in range(0, len(variable))]
-        WP_s     = np.copy(WP)
+    def target_function(variables):
+        WP_s = np.copy(WP)
         for i in range(0, WP.shape[0]):
             for j in range(0, WP.shape[1]):
-                WP_s[i, j] = WP_s[i, j]*variable[j]
-        total = abs(WP_s.sum(axis = 1)) 
-        total = sum(total) 
+                if (WP_s[i, j] != 0):
+                    WP_s[i, j] = WP_s[i, j]*variables[j]
+        total = np.sum((WP_s.sum(axis = 1)))
         return total
     ################################################
     
-    solution = genetic_algorithm(population_size = size, mutation_rate = 0.1, elite = 1, min_values = [0]*WP.shape[1], max_values = [1]*WP.shape[1], eta = 1, mu = 1, generations = gen, target_function = target_function, verbose = verbose)
-    solution = solution[:-1]
-    solution = solution/sum(solution)
-    w_       = np.copy(w)
-    w_       = w_*solution
-    w_       = w_/w_.sum()
-    w_       = w_.T
-    return w_
+    variables = np.ones(WP.shape[1])
+    bounds    = Bounds([0.0000001]*len(variables), [1]*len(variables))
+    results   = minimize(target_function, variables, method = 'L-BFGS-B', bounds = bounds)
+    weights   = results.x
+    weights   = weights * w
+    weights   = weights / np.sum(weights)
+    return weights
 
 ###############################################################################
