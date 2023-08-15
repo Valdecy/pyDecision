@@ -13,12 +13,21 @@ def ahp_method(dataset, wd = 'm'):
     weights  = np.zeros(X.shape[1])
     if (wd == 'm' or wd == 'mean'):
         weights  = np.mean(X/np.sum(X, axis = 0), axis = 1)
+        vector   = np.sum(X*weights, axis = 1)/weights
+        lamb_max = np.mean(vector)
     elif (wd == 'g' or wd == 'geometric'):
         for i in range (0, X.shape[1]):
             weights[i] = reduce( (lambda x, y: x * y), X[i,:])**(1/X.shape[1])
-        weights = weights/np.sum(weights)      
-    vector   = np.sum(X*weights, axis = 1)/weights
-    lamb_max = np.mean(vector)
+        weights  = weights/np.sum(weights)   
+        vector   = np.sum(X*weights, axis = 1)/weights
+        lamb_max = np.mean(vector)
+    elif (wd == 'me' or wd == 'max_eigen'):
+        eigenvalues, eigenvectors = np.linalg.eig(X)
+        eigenvalues_real          = np.real(eigenvalues)
+        lamb_max_index            = np.argmax(eigenvalues_real)
+        lamb_max                  = eigenvalues_real[lamb_max_index]
+        principal_eigenvector     = np.real(eigenvectors[:, lamb_max_index])
+        weights                   = principal_eigenvector / principal_eigenvector.sum()
     cons_ind = (lamb_max - X.shape[1])/(X.shape[1] - 1)
     rc       = cons_ind/inc_rat[X.shape[1]]
     return weights, rc
