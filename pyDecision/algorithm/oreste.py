@@ -33,7 +33,7 @@ def ranking(flow):
 # Function: ORESTE (Organisation Rangement Et SynThèsE de données relationnelles)
 def oreste_method(dataset, weights, criterion_type, alpha = 0.4, graph = True, verbose = True):
     X     = np.copy(dataset)/1.0
-    w     = rankdata(-weights, method = 'min')
+    w     = rankdata(-np.array(weights), method = 'min')
     r_ind = np.zeros((X.shape))
     for j in range(0, X.shape[1]):
         if (criterion_type[j] == 'max'):
