@@ -28,6 +28,7 @@ from .fuzzy_moora   import fuzzy_moora_method
 from .fuzzy_ocra    import fuzzy_ocra_method
 from .fuzzy_topsis  import fuzzy_topsis_method
 from .fuzzy_vikor   import fuzzy_vikor_method
+from .fuzzy_waspas  import fuzzy_waspas_method
 from .gra           import gra_method
 from .idocriw       import idocriw_method
 from .mabac         import mabac_method
