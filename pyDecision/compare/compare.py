@@ -55,6 +55,7 @@ from pyDecision.algorithm.fuzzy_moora  import fuzzy_moora_method
 from pyDecision.algorithm.fuzzy_ocra   import fuzzy_ocra_method
 from pyDecision.algorithm.fuzzy_topsis import fuzzy_topsis_method
 from pyDecision.algorithm.fuzzy_vikor  import fuzzy_vikor_method
+from pyDecision.algorithm.fuzzy_waspas import fuzzy_waspas_method
  
 ###############################################################################
 
@@ -353,7 +354,7 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
 # Function: Compare Ranks Fuzzy
 def compare_ranks_fuzzy(dataset, weights, criterion_type, custom_methods = [], custom_ranks = [], methods_list = [], strategy_coefficient = 0.5):
     if ('all' in methods_list):
-        methods_list = ['fuzzy_aras', 'fuzzy_copras', 'fuzzy_edas', 'fuzzy_moora', 'fuzzy_ocra', 'fuzzy_topsis', 'fuzzy_vikor']
+        methods_list = ['fuzzy_aras', 'fuzzy_copras', 'fuzzy_edas', 'fuzzy_moora', 'fuzzy_ocra', 'fuzzy_topsis', 'fuzzy_vikor', 'fuzzy_wsm', 'fuzzy_wpm', 'fuzzy_waspas']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     graph   = False
@@ -400,6 +401,21 @@ def compare_ranks_fuzzy(dataset, weights, criterion_type, custom_methods = [], c
             X[:,j] = -rank[:,0]
             j      = j + 1
             print('Fuzzy VIKOR: Done!')
+        if (method == 'fuzzy_wsm' or method == 'all'):
+            w, _, _ = fuzzy_waspas_method(dataset, criterion_type, weights, graph) 
+            X[:,j] = w
+            j      = j + 1
+            print('Fuzzy WSM: Done!')
+        if (method == 'fuzzy_wpm' or method == 'all'):
+            _, w, _ = fuzzy_waspas_method(dataset, criterion_type, weights, graph)
+            X[:,j] = w
+            j      = j + 1
+            print('Fuzzy WPM: Done!')
+        if (method == 'fuzzy_waspas' or method == 'all'):
+            _, _, w = fuzzy_waspas_method(dataset, criterion_type, weights, graph)
+            X[:,j] = w
+            j      = j + 1
+            print('Fuzzy WASPAS: Done!')
     ranked = np.zeros_like(X)
     for i in range(0, X.shape[1]):
         ranked[:, i] = X.shape[0] + 1 - rankdata(X[:, i], method = 'max')
