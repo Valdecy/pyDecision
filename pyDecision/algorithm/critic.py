@@ -7,7 +7,7 @@ import numpy as np
 
 # Function: CRITIC (CRiteria Importance Through Intercriteria Correlation)
 def critic_method(dataset, criterion_type):
-    X = np.copy(dataset)/1.0
+    X     = np.copy(dataset)/1.0
     best  = np.zeros(X.shape[1])
     worst = np.zeros(X.shape[1])
     for i in range(0, dataset.shape[1]):
