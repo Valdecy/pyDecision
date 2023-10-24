@@ -62,7 +62,7 @@ from pyDecision.algorithm.fuzzy_waspas import fuzzy_waspas_method
 # Function: Tranpose Dictionary
 def transpose_dict(rank_count_dict):
     transposed_dict = {}
-    list_length = len(next(iter(rank_count_dict.values())))
+    list_length     = len(next(iter(rank_count_dict.values())))
     for i in range(list_length):
         transposed_dict[i+1] = [values[i] for values in rank_count_dict.values()]
     return transposed_dict
