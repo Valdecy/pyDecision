@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from matplotlib import colormaps
 from matplotlib.ticker import MaxNLocator
 from scipy.stats import rankdata
 
@@ -69,7 +68,7 @@ def transpose_dict(rank_count_dict):
     return transposed_dict
 
 # Function: Plot Ranks
-def plot_rank_freq(rank, size_x = 8, size_y = 10):
+def plot_rank_freq(ranks, size_x = 8, size_y = 10):
     alternative_labels = [f'a{i+1}' for i in range(ranks.shape[0])]
     rank_count_dict    = {i+1: [0]*ranks.shape[0] for i in range(0, ranks.shape[0])}
     for i in range(0, ranks.shape[0]):
