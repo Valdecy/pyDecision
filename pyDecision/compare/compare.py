@@ -89,6 +89,7 @@ def plot_rank_freq(rank, size_x = 8, size_y = 10):
                 ax.text(width/2 + rect.get_x(), rect.get_y() + rect.get_height() / 2, f"r{rank} ({c})", ha = 'center', va = 'center', color = 'white')
     ax.invert_yaxis()
     ax.xaxis.set_major_locator(MaxNLocator(integer = True))
+    ax.tick_params(axis = 'y', which = 'both', pad = 25) 
     ax.set_xlabel('Frequency')
     ax.set_ylabel('Alternative')
     ax.set_title('Rank Frequency per Alternative')
