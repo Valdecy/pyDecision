@@ -70,20 +70,18 @@ def transpose_dict(rank_count_dict):
 
 # Function: Plot Ranks
 def plot_rank_freq(rank, size_x = 8, size_y = 10):
-    ranks              = rank.T
     alternative_labels = [f'a{i+1}' for i in range(ranks.shape[0])]
     rank_count_dict    = {i+1: [0]*ranks.shape[0] for i in range(0, ranks.shape[0])}
     for i in range(0, ranks.shape[0]):
         for j in range(0, ranks.shape[1]):
-            rank = int(ranks[i, j])
+            rank = int(ranks.iloc[i, j])
             rank_count_dict[i+1][rank-1] = rank_count_dict[i+1][rank-1] + 1
     rank_count_dict = transpose_dict(rank_count_dict)
     fig, ax         = plt.subplots(figsize = (size_x, size_y))
-    cmap            = colormaps.get_cmap('tab10')
-    colors          = [cmap(i) for i in np.linspace(0, 1, ranks.shape[0])]
+    colors          = plt.cm.get_cmap('tab10', ranks.shape[0])
     bottom          = np.zeros(len(alternative_labels))
     for rank, counts in rank_count_dict.items():
-        bars   = ax.barh(alternative_labels, counts, left = bottom, color = colors[rank-1])
+        bars   = ax.barh(alternative_labels, counts, left = bottom, color = colors(rank-1))
         bottom = bottom + counts  
         for rect, c in zip(bars, counts):
             if (c > 0): 
