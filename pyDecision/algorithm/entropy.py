@@ -18,9 +18,10 @@ def entropy_method(dataset, criterion_type):
     H = np.zeros((X.shape))
     for j, i in itertools.product(range(H.shape[1]), range(H.shape[0])):
         if (X[i, j]):
-            H[i, j] = X[i, j] * np.log(X[i, j])
-    h = np.sum(H, axis = 0) * (-1 * ((np.log(H.shape[0])) ** (-1)))
+            H[i, j] = X[i, j] * np.log(X[i, j] + 1e-9)
+    h = np.sum(H, axis = 0) * (-1 * ((np.log(H.shape[0] + 1e-9)) ** (-1)))
     d = 1 - h
+    d = d + 1e-9
     w = d / (np.sum(d))
     return w
 
