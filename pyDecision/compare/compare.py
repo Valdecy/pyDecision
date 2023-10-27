@@ -37,6 +37,7 @@ from pyDecision.algorithm.multimoora   import multimoora_method
 from pyDecision.algorithm.ocra         import ocra_method
 from pyDecision.algorithm.oreste       import oreste_method
 from pyDecision.algorithm.piv          import piv_method
+from pyDecision.algorithm.p_ec         import ec_promethee
 from pyDecision.algorithm.p_ii         import promethee_ii
 from pyDecision.algorithm.p_iv         import promethee_iv
 from pyDecision.algorithm.psi          import psi_method
@@ -160,9 +161,9 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
     return X
 
 # Function: Compare Ranks Crisp
-def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = []):
+def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], custom_sets = [], iterations = 1000, lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = []):
     if ('all' in methods_list):
-        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'psi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas']
+        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'ec_promethee', 'psi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     graph   = False
@@ -292,6 +293,11 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             X[:,j] = rank[:,1]
             j      = j + 1
             print('PROMETHEE IV: Done!')
+        if (method == 'ec_promethee' or method == 'all'):
+            _, _, rank, _ = ec_promethee(dataset, criterion_type, custom_sets, Q, S, P, F, iterations, verbose)
+            X[:,j] = np.sum(rank, axis = 0)
+            j      = j + 1
+            print('EC PROMETHEE: Done!')
         if (method == 'psi' or method == 'all'):
             rank   = psi_method(dataset, criterion_type, graph, verbose)
             X[:,j] = rank
