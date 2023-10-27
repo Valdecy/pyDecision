@@ -16,7 +16,7 @@ setup(
         'matplotlib',
         'numpy',
         'openai',
-		'pandas',
+	'pandas',
         'scikit-learn',
         'scipy'
     ],
