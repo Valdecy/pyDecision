@@ -42,7 +42,7 @@ from .moosra        import moosra_method
 from .multimoora    import multimoora_method  
 from .ocra          import ocra_method
 from .oreste        import oreste_method
-from .p_ec          import ec_promethee
+from .p_ec          import ec_promethee, solution_p_ranking, plot_rank_freq 
 from .p_i           import promethee_i
 from .p_ii          import promethee_ii
 from .p_iii         import promethee_iii
