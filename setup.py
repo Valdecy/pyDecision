@@ -20,7 +20,7 @@ setup(
         'scikit-learn',
         'scipy'
     ],
-    description='A MCDA Library Incorporating Large Language Models to Enhance Decision Analysis',
+    description='A MCDA Library Incorporating a Large Language Model to Enhance Decision Analysis',
     long_description=long_description,
     long_description_content_type='text/markdown',
 )
