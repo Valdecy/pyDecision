@@ -86,7 +86,7 @@ def plot_rank_freq(ranks, size_x = 8, size_y = 10):
         for rect, c in zip(bars, counts):
             if (c > 0): 
                 width = rect.get_width()
-                ax.text(width/2 + rect.get_x(), rect.get_y() + rect.get_height() / 2, f"r{rank} ({c})", ha = 'center', va = 'center', color = 'white')
+                ax.text(width/2 + rect.get_x(), rect.get_y() + rect.get_height() / 2, f"r{rank} ({c})", ha = 'center', va = 'center', color = 'black')
     ax.invert_yaxis()
     ax.xaxis.set_major_locator(MaxNLocator(integer = True))
     ax.tick_params(axis = 'y', which = 'both', pad = 25) 
