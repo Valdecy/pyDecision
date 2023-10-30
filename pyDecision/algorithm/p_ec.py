@@ -24,15 +24,19 @@ def critic_method(dataset, criterion_type):
             worst[i] = np.min(X[:, i])
         else:
             best[i]  = np.min(X[:, i])
-            worst[i] = np.max(X[:, i])        
+            worst[i] = np.max(X[:, i])
+        if (best[i] == worst[i]):
+            best[i]  = best[i]  + 1e-9
+            worst[i] = worst[i] - 1e-9
     for j in range(0, X.shape[1]):
-        X[:,j] = ( X[:,j] - worst[j] ) / ( best[j] - worst[j] ) 
+        X[:,j] = ( X[:,j] - worst[j] ) / ( best[j] - worst[j] )
     std      = (np.sum((X - X.mean())**2, axis = 0)/(X.shape[0] - 1))**(1/2)
     sim_mat  = np.corrcoef(X.T)
     conflict = np.sum(1 - sim_mat, axis = 1)
     infor    = std*conflict
     weights  = infor/np.sum(infor)
     return weights
+
 
 ###############################################################################
 
@@ -249,26 +253,46 @@ def ec_promethee(dataset, criterion_type, custom_sets, Q, S, P, F, iterations = 
     lower_upper_pairs = []
     sol               = []
     if (verbose == True):
-        print ('CRITIC Weigths:')
-        formatted         = ['{:.9f}'.format(val) for val in critic_weights]
+        print ('Entropy Weights:')
+        formatted         = ['{:.3f}'.format(val) for val in entropy_weights ]
         print('[' + ', '.join(formatted) + ']')
         print('')
-        print ('Entropy Weigths:')
-        formatted         = ['{:.9f}'.format(val) for val in entropy_weights ]
+        print ('CRITIC Weights:')
+        formatted         = ['{:.3f}'.format(val) for val in critic_weights]
         print('[' + ', '.join(formatted) + ']')
     for i in range(len(critic_weights)):
         all_weights = [critic_weights[i], entropy_weights[i]]
-        if custom_sets:
+        if (custom_sets):
             for custom_set in custom_sets:
-                if i < len(custom_set):
-                    all_weights.append(custom_set[i]) 
+                total          = sum(custom_set)
+                normalized_set = [x/total for x in custom_set] if total else custom_set
+                if (i < len(custom_set)):
+                    all_weights.append(normalized_set[i]) 
         lower = min(all_weights)
-        lower = max(1e-10, lower)
+        lower = max(1e-9, lower)
         upper = max(all_weights)
         lower_upper_pairs.append((lower, upper))
+    if (verbose == True):
+        if (custom_sets):
+            for custom_set in custom_sets:
+                count          = 1
+                total          = sum(custom_set)
+                normalized_set = [x/total for x in custom_set] if total else custom_set
+                print('')
+                print ('Custom Weights', str(count), ':')
+                formatted = ['{:.3f}'.format(val) for val in normalized_set ]
+                print('[' + ', '.join(formatted) + ']')
+                count     = count + 1
+        print('')
+        print ('Lower:')
+        formatted = ['{:.3f}'.format(lower) for lower, upper in lower_upper_pairs ]
+        print('[' + ', '.join(formatted) + ']')
+        print('')
+        print ('Upper:')
+        formatted = ['{:.3f}'.format(upper) for lower, upper in lower_upper_pairs ]
+        print('[' + ', '.join(formatted) + ']')
     for _ in range(iterations):
         random_weights   = np.array([random.uniform(lower, upper) for lower, upper in lower_upper_pairs])
-        random_weights   = random_weights / np.sum(random_weights)
         wnorm_matrix.append(random_weights)
         promethee_result = promethee_ii(X, random_weights, Q, S, P, F, sort = False, topn = 0, verbose = False)
         p2_matrix.append(promethee_result[:,-1])
