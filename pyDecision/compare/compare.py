@@ -128,7 +128,7 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
         print(custom_methods[i], ': Done!')
     for method in methods_list:
         if (method == 'bwm' or method == 'all'):
-            w      = bw_method(dataset, mic, lic, False)
+            w      = bw_method(mic, lic, False)
             X[:,j] = w
             j      = j + 1
             print('BWM: Done!')
