@@ -2,20 +2,22 @@
 
 # Required Libraries
 import numpy as np
+import warnings
+warnings.filterwarnings('ignore', message = 'delta_grad == 0.0. Check if the approximated')
 
 from scipy.optimize import minimize, Bounds, LinearConstraint
 
 ###############################################################################
 
 # Function: BWM
-def bw_method(mic, lic, verbose = True):
+def bw_method(mic, lic, eps_penalty = 1, verbose = True):
     cr = []
     mx = np.max(mic) 
     if (mx == 1):
         cr = 1
     else:
         for i in range(0, mic.shape[0]):
-            cr.append((mic[i]*lic[i]- mx)/(mx**2 - mx))
+            cr.append((mic[i] * lic[i] - mx)/(mx**2 - mx))
     cr        = np.max(cr)
     threshold = [0, 0, 0, 0.1667, 0.1898, 0.2306, 0.2643, 0.2819, 0.2958, 0.3062]
     if (verbose == True):
@@ -26,23 +28,23 @@ def bw_method(mic, lic, verbose = True):
     
     ################################################
     def target_function(variables):
-        eps       = variables[-1]
-        wx        = variables[np.argmin(mic)]
-        wy        = variables[np.argmin(lic)]
-        cons_1    = []
-        cons_2    = []
-        penalty   = 0
+        eps     = variables[-1]
+        wx      = variables[np.argmin(mic)]
+        wy      = variables[np.argmin(lic)]
+        cons_1  = []
+        cons_2  = []
+        penalty = 0
         for i in range(0, mic.shape[0]):
-            cons_1.append(wx-mic[i]*variables[i])
+            cons_1.append(wx - mic[i] * variables[i])
         cons_1.extend([-item for item in cons_1])
         for i in range(0, lic.shape[0]):
-            cons_2.append(variables[i]-lic[i]*wy)
+            cons_2.append(variables[i] - lic[i] * wy)
         cons_2.extend([-item for item in cons_2])
         cons = cons_1 + cons_2
         for item in cons:
             if (item > eps):
                 penalty = penalty + (item - eps) * 1
-        penalty = penalty + eps * 100
+        penalty = penalty + eps * eps_penalty
         return penalty
     ################################################
     
