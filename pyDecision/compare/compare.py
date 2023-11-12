@@ -17,6 +17,8 @@ from pyDecision.algorithm.entropy      import entropy_method
 from pyDecision.algorithm.idocriw      import idocriw_method
 from pyDecision.algorithm.merec        import merec_method
 
+#from pyDecision.algorithm.fuzzy_bwm    import fuzzy_bw_method
+
 from pyDecision.algorithm.aras         import aras_method
 from pyDecision.algorithm.borda        import borda_method
 from pyDecision.algorithm.cocoso       import cocoso_method
@@ -114,7 +116,7 @@ def corr_viz(df, correlation_method = 'kendall', size = 10, font_size = 10, grap
 
 ###############################################################################
 
-# Function: Compare Weights
+# Function: Compare Weights Crisp
 def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = []):
     if ('all' in methods_list):
         methods_list = ['bwm', 'cilos', 'critic', 'idocriw', 'entropy',  'merec']
@@ -160,6 +162,24 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
     X = pd.DataFrame(X, index = ['g'+str(i+1) for i in range(0, X.shape[0])], columns = methods_list)    
     return X
 
+# Function: Compare Weights Fuzzy
+#def compare_weigths_fuzzy(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], eps_penalty = 1):
+    #if ('all' in methods_list):
+        #methods_list = ['fuzzy_bwm']
+    #if (len(custom_methods) > 0):
+        #methods_list = custom_methods + methods_list 
+    #for i in range(0, len(custom_weigths)):
+        #X[:,j] = custom_weigths[i]
+        #j      = j + 1 
+        #print(custom_methods[i], ': Done!')
+    #for method in methods_list:
+        #if (method == 'fuzzy_bwm' or method == 'all'):
+            #_, _, _, w = bw_method(mic, lic, eps_penalty = eps_penalty, False)
+            #X[:,j]     = w
+            #j          = j + 1
+            #print('Fuzzy BWM: Done!')
+    #return
+    
 # Function: Compare Ranks Crisp
 def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], custom_sets = [], iterations = 1000, lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = []):
     if ('all' in methods_list):
