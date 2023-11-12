@@ -36,7 +36,7 @@ def fuzzy_bw_method(mic, lic, eps_penalty = 1, verbose = True):
     def operation(wv, eps, vector, idx_a = 2, idx_b = 0, idx_m = 0):
         a, b, c = wv[idx_a]
         d, e, f = wv[idx_b]
-        fn = (a - vector[idx_m][0]*f - eps*f, b - vector[idx_m][1]*e - eps*e, c - vector[idx_m][2]*d - eps*d)
+        fn      = (a - vector[idx_m][0]*f - eps*f, b - vector[idx_m][1]*e - eps*e, c - vector[idx_m][2]*d - eps*d)
         return fn
     
     def target_function(variables):
