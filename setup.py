@@ -17,7 +17,7 @@ setup(
         'numpy',
         'llmx',
         'openai',
-		'pandas',
+        'pandas',
         'scikit-learn',
         'scipy'
     ],
