@@ -13,9 +13,9 @@ setup(
     url='https://github.com/Valdecy/pyDecisions',
     packages=find_packages(),
     install_requires=[
+        'llmx',
         'matplotlib',
         'numpy',
-        'llmx',
         'openai',
         'pandas',
         'scikit-learn',
