@@ -6,7 +6,7 @@ long_description = (this_directory / 'README.md').read_text()
 
 setup(
     name='pyDecision',
-    version='4.3.5',
+    version='4.3.8',
     license='GNU',
     author='Valdecy Pereira',
     author_email='valdecy.pereira@gmail.com',
@@ -15,8 +15,9 @@ setup(
     install_requires=[
         'matplotlib',
         'numpy',
+        'llmx',
         'openai',
-	'pandas',
+		'pandas',
         'scikit-learn',
         'scipy'
     ],
