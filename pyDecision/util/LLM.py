@@ -4,8 +4,6 @@
 import openai  
 import os
 
-from openai import OpenAI
-
 ###############################################################################
 
 # Function: Ask GPT Rank
@@ -47,11 +45,11 @@ def ask_chatgpt_corr(ranks, char_limit = 4097, api_key = 'your_api_key_here', qu
               response = response.choices[0].text.strip()
         else:
           try:
-            client   = OpenAI(api_key = api_key)
+            client   = openai.OpenAI(api_key = api_key)
             response = client.chat.completions.create(model = model, messages = [{'role': 'user', 'content': prompt}], max_tokens = max_tokens)
             response = response.choices[0].message.content
           except:
-            client   = OpenAI(api_key = api_key)
+            client   = openai.OpenAI(api_key = api_key)
             response = client.completions.create( model = model, prompt = prompt, max_tokens = max_tokens, n = n, stop = None, temperature = temperature)
             response = response.choices[0].text.strip()
         return response
@@ -101,11 +99,11 @@ def ask_chatgpt_rank(ranks, char_limit = 4097, api_key = 'your_api_key_here', qu
               response = response.choices[0].text.strip()
         else:
           try:
-            client   = OpenAI(api_key = api_key)
+            client   = openai.OpenAI(api_key = api_key)
             response = client.chat.completions.create(model = model, messages = [{'role': 'user', 'content': prompt}], max_tokens = max_tokens)
             response = response.choices[0].message.content
           except:
-            client   = OpenAI(api_key = api_key)
+            client   = openai.OpenAI(api_key = api_key)
             response = client.completions.create( model = model, prompt = prompt, max_tokens = max_tokens, n = n, stop = None, temperature = temperature)
             response = response.choices[0].text.strip()
         return response
@@ -155,11 +153,11 @@ def ask_chatgpt_weights(weights, char_limit = 4097, api_key = 'your_api_key_here
               response = response.choices[0].text.strip()
         else:
           try:
-            client   = OpenAI(api_key = api_key)
+            client   = openai.OpenAI(api_key = api_key)
             response = client.chat.completions.create(model = model, messages = [{'role': 'user', 'content': prompt}], max_tokens = max_tokens)
             response = response.choices[0].message.content
           except:
-            client   = OpenAI(api_key = api_key)
+            client   = openai.OpenAI(api_key = api_key)
             response = client.completions.create( model = model, prompt = prompt, max_tokens = max_tokens, n = n, stop = None, temperature = temperature)
             response = response.choices[0].text.strip()
         return response
