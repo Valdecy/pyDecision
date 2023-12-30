@@ -21,7 +21,7 @@ pip install pyDecision
 from pyDecision.algorithm import ahp_method
 
 # Parameters
-weight_derivation = 'geometric' # 'mean' or 'geometric'
+weight_derivation = 'geometric' # 'mean'; 'geometric' or 'max_eigen'
 
 # Dataset
 dataset = np.array([
