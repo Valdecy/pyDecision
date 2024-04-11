@@ -8,7 +8,7 @@ pyDecision offers an array of features, including the **comparison of ranking al
 
 ## Citation
 
-PEREIRA, V.; BASILIO, M.P.; SANTOS, C.H.T (2024). Enhancing Decision Analysis with a Large Language Model: pyDecision a Comprehensive Library of MCDA Methods in Python. arXiv. https://doi.org/10.1108/DTA-11-2021-0315
+PEREIRA, V.; BASILIO, M.P.; SANTOS, C.H.T (2024). Enhancing Decision Analysis with a Large Language Model: pyDecision a Comprehensive Library of MCDA Methods in Python. arXiv. https://arxiv.org/abs/2404.06370
 
 ## Usage
 
