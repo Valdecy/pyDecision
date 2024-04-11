@@ -6,6 +6,10 @@ A python library with the following MCDA methods: **AHP** (Analytic Hierarchy Pr
 
 pyDecision offers an array of features, including the **comparison of ranking alternatives** and **comparison of criterion weights** from various methods. The library is also fully integrated with **chatGPT**, elevating result interpretation through AI. Additionally, pyDecision provides the flexibility to import results from custom methods or those not yet implemented in the library for swift comparison.
 
+## Citation
+
+Pereira, V.; Basilio, M.P.; Santos, C.H.T (2024). Enhancing Decision Analysis with a Large Language Model: pyDecision a Comprehensive Library of MCDA Methods in Python. arXiv. https://doi.org/10.1108/DTA-11-2021-0315
+
 ## Usage
 
 1. Install
