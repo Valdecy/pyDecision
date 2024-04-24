@@ -20,6 +20,7 @@ from .e_iv          import electre_iv
 from .e_tri_b       import electre_tri_b
 from .edas          import edas_method
 from .entropy       import entropy_method
+from .fucom         import fucom_method
 from .fuzzy_ahp     import fuzzy_ahp_method
 from .fuzzy_aras    import fuzzy_aras_method
 from .fuzzy_bwm     import fuzzy_bw_method
