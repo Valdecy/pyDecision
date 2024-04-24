@@ -11,9 +11,11 @@ from scipy.stats import rankdata
 ###############################################################################
 
 from pyDecision.algorithm.bwm          import bw_method
+from pyDecision.algorithm.bwm_s        import simplified_bw_method
 from pyDecision.algorithm.cilos        import cilos_method
 from pyDecision.algorithm.critic       import critic_method
 from pyDecision.algorithm.entropy      import entropy_method
+from pyDecision.algorithm.fucom        import fucom_method
 from pyDecision.algorithm.idocriw      import idocriw_method
 from pyDecision.algorithm.merec        import merec_method
 
@@ -50,6 +52,7 @@ from pyDecision.algorithm.todim        import todim_method
 from pyDecision.algorithm.topsis       import topsis_method
 from pyDecision.algorithm.vikor        import vikor_method
 from pyDecision.algorithm.waspas       import waspas_method
+from pyDecision.algorithm.wisp         import wisp_method
 
 from pyDecision.algorithm.fuzzy_aras   import fuzzy_aras_method
 from pyDecision.algorithm.fuzzy_copras import fuzzy_copras_method
@@ -117,9 +120,9 @@ def corr_viz(df, correlation_method = 'kendall', size = 10, font_size = 10, grap
 ###############################################################################
 
 # Function: Compare Weights Crisp
-def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = []):
+def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5):
     if ('all' in methods_list):
-        methods_list = ['bwm', 'cilos', 'critic', 'idocriw', 'entropy',  'merec']
+        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     X       = np.zeros((dataset.shape[1], len(methods_list)))
@@ -134,6 +137,11 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
             X[:,j] = w
             j      = j + 1
             print('BWM: Done!')
+        if (method == 'bwm_s' or method == 'all'):
+            _, w   = simplified_bw_method(mic, lic, alpha, False)
+            X[:,j] = w
+            j      = j + 1
+            print('Simplified BWM: Done!')
         if (method == 'cilos' or method == 'all'):
             w      = cilos_method(dataset, criterion_type)
             X[:,j] = w
@@ -149,6 +157,11 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
             X[:,j] = w
             j      = j + 1
             print('Entropy: Done!')
+        if (method == 'fucom' or method == 'all'):
+            w      = fucom_method(criteria_rank, criteria_priority, True, False)
+            X[:,j] = w
+            j      = j + 1
+            print('FUCOM: Done!')
         if (method == 'idocriw' or method == 'all'):
             w      = idocriw_method(dataset, criterion_type, False)
             X[:,j] = w
@@ -174,7 +187,7 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
         #print(custom_methods[i], ': Done!')
     #for method in methods_list:
         #if (method == 'fuzzy_bwm' or method == 'all'):
-            #_, _, _, w = bw_method(mic, lic, eps_penalty = eps_penalty, False)
+            #_, _, _, w = fuzzy_bw_method(mic, lic, eps_penalty = eps_penalty, False)
             #X[:,j]     = w
             #j          = j + 1
             #print('Fuzzy BWM: Done!')
@@ -183,7 +196,7 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
 # Function: Compare Ranks Crisp
 def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], custom_sets = [], iterations = 1000, lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = []):
     if ('all' in methods_list):
-        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'ec_promethee', 'psi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas']
+        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'ec_promethee', 'psi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas', 'wisp', 'simple wisp']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     graph   = False
@@ -368,6 +381,16 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             X[:,j] = w
             j      = j + 1
             print('WASPAS: Done!')
+        if (method == 'wisp' or method == 'all'):
+            w      = wisp_method(dataset, criterion_type, weights, simplified = False)
+            X[:,j] = w
+            j      = j + 1
+            print('WISP: Done!')
+        if (method == 'simple wisp' or method == 'all'):
+            w      = wisp_method(dataset, criterion_type, weights, simplified = True)
+            X[:,j] = w
+            j      = j + 1
+            print('Simple WISP: Done!')
     ranked = np.zeros_like(X)
     for i in range(0, len(methods_list)):
         if (methods_list[i] in ['borda', 'cradis', 'mairca', 'oreste', 'piv', 'spotis']):
