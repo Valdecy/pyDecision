@@ -5,6 +5,7 @@ import numpy as np
 import re
 import warnings
 warnings.filterwarnings('ignore', message = 'delta_grad == 0.0. Check if the approximated')
+warnings.filterwarnings('ignore', message = 'Values in x were outside bounds during a minimize step, clipping to bounds')
 
 from scipy.optimize import minimize, Bounds, LinearConstraint
 
