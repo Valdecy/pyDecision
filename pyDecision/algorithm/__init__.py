@@ -2,6 +2,7 @@ from .ahp           import ahp_method
 from .aras          import aras_method
 from .borda         import borda_method
 from .bwm           import bw_method
+from .bwm_s         import simplified_bw_method
 from .cilos         import cilos_method
 from .cocoso        import cocoso_method
 from .codas         import codas_method
@@ -62,4 +63,5 @@ from .todim         import todim_method
 from .topsis        import topsis_method
 from .vikor         import vikor_method, ranking
 from .waspas        import waspas_method
+from .wisp          import wisp_method
 from .wings         import wings_method
