@@ -242,7 +242,7 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             print('COPRAS: Done!')
         if (method == 'copeland' or method == 'all'):
             rank   = copeland_method(dataset, criterion_type, graph, verbose)
-            X[:,j] = rank[:,1]
+            X[:,j] = rank
             j      = j + 1
             print('COPELAND: Done!')
         if (method == 'cradis' or method == 'all'):
@@ -394,12 +394,12 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             j      = j + 1
             print('WASPAS: Done!')
         if (method == 'wisp' or method == 'all'):
-            w      = wisp_method(dataset, criterion_type, weights, simplified = False)
+            w      = wisp_method(dataset, criterion_type, weights, False, False, False)
             X[:,j] = w
             j      = j + 1
             print('WISP: Done!')
         if (method == 'simple wisp' or method == 'all'):
-            w      = wisp_method(dataset, criterion_type, weights, simplified = True)
+            w      = wisp_method(dataset, criterion_type, weights, True, False, False)
             X[:,j] = w
             j      = j + 1
             print('Simple WISP: Done!')
