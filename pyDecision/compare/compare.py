@@ -18,6 +18,7 @@ from pyDecision.algorithm.entropy      import entropy_method
 from pyDecision.algorithm.fucom        import fucom_method
 from pyDecision.algorithm.idocriw      import idocriw_method
 from pyDecision.algorithm.merec        import merec_method
+from pyDecision.algorithm.psi_m        import mpsi_method
 
 #from pyDecision.algorithm.fuzzy_bwm    import fuzzy_bw_method
 
@@ -33,6 +34,7 @@ from pyDecision.algorithm.gra          import gra_method
 from pyDecision.algorithm.mabac        import mabac_method
 from pyDecision.algorithm.macbeth      import macbeth_method
 from pyDecision.algorithm.mairca       import mairca_method
+from pyDecision.algorithm.mara         import mara_method
 from pyDecision.algorithm.marcos       import marcos_method
 from pyDecision.algorithm.maut         import maut_method
 from pyDecision.algorithm.moora        import moora_method
@@ -120,9 +122,9 @@ def corr_viz(df, correlation_method = 'kendall', size = 10, font_size = 10, grap
 ###############################################################################
 
 # Function: Compare Weights Crisp
-def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5):
+def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5):
     if ('all' in methods_list):
-        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec']
+        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec', 'mpsi']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     X       = np.zeros((dataset.shape[1], len(methods_list)))
@@ -172,11 +174,16 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
             X[:,j] = w
             j      = j + 1
             print('MEREC: Done!')
+        if (method == 'mpsi' or method == 'all'):
+            w      = mpsi_method(dataset, criterion_type)
+            X[:,j] = w
+            j      = j + 1
+            print('MPSI: Done!')
     X = pd.DataFrame(X, index = ['g'+str(i+1) for i in range(0, X.shape[0])], columns = methods_list)    
     return X
 
 # Function: Compare Weights Fuzzy
-#def compare_weigths_fuzzy(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], eps_penalty = 1):
+#def compare_weights_fuzzy(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], eps_penalty = 1):
     #if ('all' in methods_list):
         #methods_list = ['fuzzy_bwm']
     #if (len(custom_methods) > 0):
@@ -196,7 +203,7 @@ def compare_weigths(dataset, criterion_type, custom_methods = [], custom_weigths
 # Function: Compare Ranks Crisp
 def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], custom_sets = [], iterations = 1000, lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = []):
     if ('all' in methods_list):
-        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'ec_promethee', 'psi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas', 'wisp', 'simple wisp']
+        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'mara', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'ec_promethee', 'psi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas', 'wisp', 'simple wisp']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     graph   = False
@@ -268,6 +275,11 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             X[:,j] = rank
             j      = j + 1
             print('MAIRCA: Done!')
+        if (method == 'mara' or method == 'all'):
+            rank   = mara_method(dataset, weights, criterion_type, graph, verbose)
+            X[:,j] = rank
+            j      = j + 1
+            print('MARA: Done!')
         if (method == 'marcos' or method == 'all'):
             rank   = marcos_method(dataset, weights, criterion_type, graph, verbose)
             X[:,j] = rank
@@ -393,7 +405,7 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             print('Simple WISP: Done!')
     ranked = np.zeros_like(X)
     for i in range(0, len(methods_list)):
-        if (methods_list[i] in ['borda', 'cradis', 'mairca', 'oreste', 'piv', 'spotis']):
+        if (methods_list[i] in ['borda', 'cradis', 'mairca', 'mara', 'oreste', 'piv', 'spotis']):
             ranked[:, i] = X.shape[0] + 1 - rankdata(-X[:, i], method = 'max')
         else:
             ranked[:, i] = X.shape[0] + 1 - rankdata(X[:, i], method = 'max')
