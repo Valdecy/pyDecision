@@ -37,6 +37,7 @@ from .idocriw       import idocriw_method
 from .mabac         import mabac_method
 from .macbeth       import macbeth_method
 from .mairca        import mairca_method
+from .mara          import mara_method
 from .marcos        import marcos_method
 from .maut          import maut_method
 from .merec         import merec_method
@@ -55,6 +56,7 @@ from .p_vi          import promethee_vi
 from .p_xgaia       import promethee_gaia
 from .piv           import piv_method
 from .psi           import psi_method
+from .psi_m         import mpsi_method
 from .regime        import regime_method
 from .rov           import rov_method
 from .saw           import saw_method
