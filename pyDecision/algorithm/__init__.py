@@ -66,6 +66,7 @@ from .rov           import rov_method
 from .rrw           import rrw_method
 from .rsw           import rsw_method
 from .saw           import saw_method
+from .seca          import seca_method
 from .smart         import smart_method
 from .spotis        import spotis_method
 from .todim         import todim_method
