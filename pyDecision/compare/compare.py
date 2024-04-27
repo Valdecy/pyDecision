@@ -19,8 +19,14 @@ from pyDecision.algorithm.fucom        import fucom_method
 from pyDecision.algorithm.idocriw      import idocriw_method
 from pyDecision.algorithm.merec        import merec_method
 from pyDecision.algorithm.psi_m        import mpsi_method
+from pyDecision.algorithm.roc          import roc_method
+from pyDecision.algorithm.rrw          import rrw_method
+from pyDecision.algorithm.rsw          import rsw_method
 
-#from pyDecision.algorithm.fuzzy_bwm    import fuzzy_bw_method
+from pyDecision.algorithm.fuzzy_bwm    import fuzzy_bw_method
+from pyDecision.algorithm.fuzzy_critic import fuzzy_critic_method
+from pyDecision.algorithm.fuzzy_fucom  import fuzzy_fucom_method
+from pyDecision.algorithm.fuzzy_merec  import fuzzy_merec_method
 
 from pyDecision.algorithm.aras         import aras_method
 from pyDecision.algorithm.borda        import borda_method
@@ -124,7 +130,7 @@ def corr_viz(df, correlation_method = 'kendall', size = 10, font_size = 10, grap
 # Function: Compare Weights Crisp
 def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5):
     if ('all' in methods_list):
-        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec', 'mpsi']
+        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec', 'mpsi', 'roc', 'rrw', 'rsw']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     X       = np.zeros((dataset.shape[1], len(methods_list)))
@@ -179,26 +185,59 @@ def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths
             X[:,j] = w
             j      = j + 1
             print('MPSI: Done!')
+        if (method == 'roc' or method == 'all'):
+            w      = roc_method(criteria_rank)
+            X[:,j] = w
+            j      = j + 1
+            print('ROC: Done!')
+        if (method == 'rrw' or method == 'all'):
+            w      = rrw_method(criteria_rank)
+            X[:,j] = w
+            j      = j + 1
+            print('RRW: Done!')
+        if (method == 'rsw' or method == 'all'):
+            w      = rsw_method(criteria_rank)
+            X[:,j] = w
+            j      = j + 1
+            print('RSW: Done!')
     X = pd.DataFrame(X, index = ['g'+str(i+1) for i in range(0, X.shape[0])], columns = methods_list)    
     return X
 
 # Function: Compare Weights Fuzzy
-#def compare_weights_fuzzy(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], eps_penalty = 1):
-    #if ('all' in methods_list):
-        #methods_list = ['fuzzy_bwm']
-    #if (len(custom_methods) > 0):
-        #methods_list = custom_methods + methods_list 
-    #for i in range(0, len(custom_weigths)):
-        #X[:,j] = custom_weigths[i]
-        #j      = j + 1 
-        #print(custom_methods[i], ': Done!')
-    #for method in methods_list:
-        #if (method == 'fuzzy_bwm' or method == 'all'):
-            #_, _, _, w = fuzzy_bw_method(mic, lic, eps_penalty = eps_penalty, False)
-            #X[:,j]     = w
-            #j          = j + 1
-            #print('Fuzzy BWM: Done!')
-    #return
+def compare_weights_fuzzy(dataset = [], criterion_type = [], custom_methods = [], custom_weigths = [], methods_list = [], criteria_priority = [], criteria_rank = [], mic = [], lic = [], eps_penalty = 1, n_starts = 250):
+    if ('all' in methods_list):
+        methods_list = ['fuzzy_bwm', 'fuzzy_critic', 'fuzzy_fucom', 'fuzzy_merec']
+    if (len(custom_methods) > 0):
+        methods_list = custom_methods + methods_list 
+    X = np.zeros((np.max((len(criterion_type), len(criteria_rank), len(mic))), len(methods_list)))
+    j = 0
+    for i in range(0, len(custom_weigths)):
+        X[:,j] = custom_weigths[i]
+        j      = j + 1 
+        print(custom_methods[i], ': Done!')
+    for method in methods_list:
+        if (method == 'fuzzy_bwm' or method == 'all'):
+            _, _, _, w = fuzzy_bw_method(mic, lic, eps_penalty, False)
+            X[:,j]     = w
+            j          = j + 1
+            print('Fuzzy BWM: Done!')
+        if (method == 'fuzzy_critic' or method == 'all'):
+            w          = fuzzy_critic_method(dataset, criterion_type)
+            X[:,j]     = w
+            j          = j + 1
+            print('Fuzzy CRITIC: Done!')
+        if (method == 'fuzzy_fucom' or method == 'all'):
+            _, w       = fuzzy_fucom_method(criteria_rank, criteria_priority, n_starts, True, False)
+            X[:,j]     = w
+            j          = j + 1
+            print('Fuzzy FUCOM: Done!')
+        if (method == 'fuzzy_merec' or method == 'all'):
+            w          = fuzzy_merec_method(dataset, criterion_type)
+            X[:,j]     = w
+            j          = j + 1
+            print('Fuzzy MEREC: Done!')
+    X = pd.DataFrame(X, index = ['g'+str(i+1) for i in range(0, X.shape[0])], columns = methods_list) 
+    return X
     
 # Function: Compare Ranks Crisp
 def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], custom_sets = [], iterations = 1000, lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = []):
