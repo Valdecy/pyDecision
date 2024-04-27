@@ -22,6 +22,7 @@ from pyDecision.algorithm.psi_m        import mpsi_method
 from pyDecision.algorithm.roc          import roc_method
 from pyDecision.algorithm.rrw          import rrw_method
 from pyDecision.algorithm.rsw          import rsw_method
+from pyDecision.algorithm.seca         import seca_method
 
 from pyDecision.algorithm.fuzzy_bwm    import fuzzy_bw_method
 from pyDecision.algorithm.fuzzy_critic import fuzzy_critic_method
@@ -128,9 +129,9 @@ def corr_viz(df, correlation_method = 'kendall', size = 10, font_size = 10, grap
 ###############################################################################
 
 # Function: Compare Weights Crisp
-def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5):
+def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5, beta = 3):
     if ('all' in methods_list):
-        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec', 'mpsi', 'roc', 'rrw', 'rsw']
+        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec', 'mpsi', 'roc', 'rrw', 'rsw', 'seca']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     X       = np.zeros((dataset.shape[1], len(methods_list)))
@@ -200,6 +201,11 @@ def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths
             X[:,j] = w
             j      = j + 1
             print('RSW: Done!')
+        if (method == 'seca' or method == 'all'):
+            w      = seca_method(dataset, criterion_type, beta)
+            X[:,j] = w
+            j      = j + 1
+            print('SECA: Done!')
     X = pd.DataFrame(X, index = ['g'+str(i+1) for i in range(0, X.shape[0])], columns = methods_list)    
     return X
 
