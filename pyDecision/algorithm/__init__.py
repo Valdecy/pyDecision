@@ -25,8 +25,11 @@ from .fuzzy_ahp     import fuzzy_ahp_method
 from .fuzzy_aras    import fuzzy_aras_method
 from .fuzzy_bwm     import fuzzy_bw_method
 from .fuzzy_copras  import fuzzy_copras_method
+from .fuzzy_critic  import fuzzy_critic_method
 from .fuzzy_dematel import fuzzy_dematel_method
 from .fuzzy_edas    import fuzzy_edas_method
+from .fuzzy_fucom   import fuzzy_fucom_method
+from .fuzzy_merec   import fuzzy_merec_method
 from .fuzzy_moora   import fuzzy_moora_method
 from .fuzzy_ocra    import fuzzy_ocra_method
 from .fuzzy_topsis  import fuzzy_topsis_method
@@ -58,7 +61,10 @@ from .piv           import piv_method
 from .psi           import psi_method
 from .psi_m         import mpsi_method
 from .regime        import regime_method
+from .roc           import roc_method
 from .rov           import rov_method
+from .rrw           import rrw_method
+from .rsw           import rsw_method
 from .saw           import saw_method
 from .smart         import smart_method
 from .spotis        import spotis_method
