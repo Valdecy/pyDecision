@@ -22,6 +22,7 @@ from .edas          import edas_method
 from .entropy       import entropy_method
 from .fucom         import fucom_method
 from .fuzzy_ahp     import fuzzy_ahp_method
+from .fuzzy_ahp_ppf import ppf_ahp_method
 from .fuzzy_aras    import fuzzy_aras_method
 from .fuzzy_bwm     import fuzzy_bw_method
 from .fuzzy_copras  import fuzzy_copras_method
@@ -48,6 +49,7 @@ from .moora         import moora_method
 from .moosra        import moosra_method
 from .multimoora    import multimoora_method  
 from .ocra          import ocra_method
+from .opa           import opa_method
 from .oreste        import oreste_method
 from .p_ec          import ec_promethee, solution_p_ranking, plot_rank_freq, find_column_modes
 from .p_i           import promethee_i
