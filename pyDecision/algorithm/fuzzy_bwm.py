@@ -4,8 +4,9 @@
 import numpy as np
 import warnings
 warnings.filterwarnings('ignore', message = 'delta_grad == 0.0. Check if the approximated')
+warnings.filterwarnings('ignore', message = 'Values in x were outside bounds during a minimize step, clipping to bounds')
 
-from scipy.optimize import minimize, Bounds
+from scipy.optimize import minimize, Bounds, NonlinearConstraint
 
 ###############################################################################
 
@@ -22,6 +23,22 @@ def fuzzy_bw_method(mic, lic, eps_penalty = 1, verbose = True):
             if tup in criteria_list:
                 return criteria_list.index(tup)
         return None
+    
+    def generate_ordered_triplets(num_criteria):
+        variables = np.zeros(3 * num_criteria)
+        for i in range(0, num_criteria):
+            x1                   = np.random.uniform(low = 0.0001, high = 1.0)
+            x2                   = np.random.uniform(low = x1,     high = 1.0)
+            x3                   = np.random.uniform(low = x2,     high = 1.0)
+            variables[3 * i]     = x1
+            variables[3 * i + 1] = x2
+            variables[3 * i + 2] = x3
+        fuzzy_set = [(variables[i], variables[i + 1], variables[i + 2]) for i in range(0, len(variables), 3)]
+        weights   = np.array([(a + 4 * b + c) / 6 for a, b, c in fuzzy_set])
+        total     = np.sum(weights)
+        scale_fac = 1 / total
+        variables = variables * scale_fac
+        return variables
     
     ###############################################
     
@@ -69,11 +86,6 @@ def fuzzy_bw_method(mic, lic, eps_penalty = 1, verbose = True):
                 penalty = penalty + (item - eps) * 1
         penalty = penalty + eps * eps_penalty
         return penalty
-
-    def one_constraint(variables):
-        wv  = [(variables[i], variables[i+1], variables[i+2]) for i in range(0, len(variables) - 1, 3)]
-        cn2 = [(w[0] + 4*w[1] + w[2])/6 for w in wv]
-        return sum(cn2) - 1  
     
     def LMU_constraint(variables):
         constraints = []
@@ -83,27 +95,36 @@ def fuzzy_bw_method(mic, lic, eps_penalty = 1, verbose = True):
             constraints.append(m - L)  
             constraints.append(u - m)
         return constraints
+
+    def weights_constraint(variables):
+        fuzzy_set = [(variables[i], variables[i + 1], variables[i + 2]) for i in range(0, len(variables)-1, 3)]
+        w         = [(a + 4 * b + c) / 6 for a, b, c in fuzzy_set]
+        return np.sum(w)
    
-    constraint_1 = {'type': 'eq',   'fun': one_constraint}
+    constraint_1 = NonlinearConstraint(weights_constraint, 1, 1)
     constraint_2 = {'type': 'ineq', 'fun': LMU_constraint}
     constraints  = [constraint_1, constraint_2]
     
     ################################################
     
     np.random.seed(42)
-    variables  = np.random.uniform(low = 0.001, high = 1.0, size = len(mic)*3)
-    variables_ = []
-    for i in range(0, len(variables), 3):
-        group   = variables[i:i+3]
-        s_group = np.sort(group)
-        variables_.extend(s_group)
-    variables = np.array([item for item in variables_])
-    variables = np.append(variables, [0])
-    bounds    = Bounds([0]*len(mic)*3 + [0], [1]*len(mic)*3 + [1])
-    results   = minimize(target_function, variables, method = 'trust-constr', bounds = bounds, constraints = constraints)
-    f_weights = results.x[:-1]
-    f_weights = [(f_weights[i], f_weights[i+1], f_weights[i+2]) for i in range(0, len(f_weights) - 1, 3)]
-    weights   = [(w[0] + 4*w[1] + w[2])/6 for w in f_weights]
+    bounds   = Bounds([0]*len(mic)*3 + [0], [1]*len(mic)*3 + [1])
+    n_starts = 50
+    solution = None
+    obj_fun  = np.inf
+    for i in range(0, n_starts):  
+        if (i == 0):
+            guess = generate_ordered_triplets(len(mic))
+            guess = np.append(guess, [0])
+        else:
+            guess = solution
+        
+        results = minimize(target_function, guess, method = 'trust-constr', bounds = bounds, constraints = constraints)
+        if (results.fun < obj_fun):
+            obj_fun  = results.fun
+            solution = results.x
+    f_weights     = [(solution[i], solution[i + 1], solution[i + 2]) for i in range(0, len(solution)-1, 3)]
+    weights       = [(a + 4 * b + c) / 6 for a, b, c in f_weights]
     if (verbose == True):
         print('Epsilon Value:', np.round(results.x[-1], 4)) 
         print('CR: ', np.round(results.x[-1]/ci_value , 4))
