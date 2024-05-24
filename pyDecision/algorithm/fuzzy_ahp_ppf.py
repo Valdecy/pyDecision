@@ -42,7 +42,7 @@ def ppf_ahp_method(comparison_matrix):
         return crisp_matrix
     
     def normalize_matrix(crisp_matrix):
-        n_matrix = crisp_matrix / crisp_matrix.sum(axis = 0)
+        n_matrix = np.abs(crisp_matrix) / crisp_matrix.sum(axis = 0)
         return n_matrix
 
     def consistency_ratio(crisp_matrix):
@@ -63,6 +63,7 @@ def ppf_ahp_method(comparison_matrix):
     crisp_matrix  = triple_to_crisp(triple_matrix)
     n_matrix      = normalize_matrix(crisp_matrix)
     weights       = calculate_weights(n_matrix)
+    weights       = weights/np.sum(weights)
     rc            = consistency_ratio(crisp_matrix)
     return weights, rc
 
