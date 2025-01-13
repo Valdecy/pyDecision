@@ -5,6 +5,8 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
+from scipy.integrate import quad
+
 ###############################################################################
 
 # Function: Distance Matrix
@@ -15,114 +17,41 @@ def distance_matrix(dataset, criteria = 0):
             distance_array[i,j] = dataset[i, criteria] - dataset[j, criteria] 
     return distance_array
 
-# Function: Preferences
-def preference_degree(dataset, W, Q, S, P, F):
-    pd_array = np.zeros(shape = (dataset.shape[0],dataset.shape[0]))
+# Optimized Integration
+def integration_preference_degree(dataset, W, Q, S, P, F):
+    pd_array = np.zeros((dataset.shape[0], dataset.shape[0]))
+    
+    ###############################################################################
+    
+    def preference_function(distance, Fk, Qk, Pk, Sk):
+        if (Fk == 't1'):
+            return 1 if distance > 0 else 0
+        elif (Fk == 't2'):
+            return 1 if distance > Qk else 0
+        elif (Fk == 't3'):
+            return distance / Pk if 0 < distance <= Pk else (1 if distance > Pk else 0)
+        elif (Fk == 't4'):
+            return 0.5 if Qk < distance <= Pk else (1 if distance > Pk else 0)
+        elif (Fk == 't5'):
+            return (distance - Qk) / (Pk - Qk) if Qk < distance <= Pk else (1 if distance > Pk else 0)
+        elif (Fk == 't6'):
+            return 1 - math.exp(-(distance**2) / (2 * Sk**2)) if distance > 0 else 0
+        else:
+            return 0  
+    
+    ###############################################################################
+    
     for k in range(0, dataset.shape[1]):
-        distance_array = distance_matrix(dataset, criteria = k)
-        for i in range(0, distance_array.shape[0]):
-            for j in range(0, distance_array.shape[1]):
+        distances = distance_matrix(dataset, criteria = k)
+        for i in range(0, distances.shape[0]):
+            for j in range(0, distances.shape[1]):
                 if (i != j):
-                    if (F[k] == 't1'):
-                        if (distance_array[i,j] <= 0):
-                            distance_array[i,j]  = 0
-                        else:
-                            distance_array[i,j] = 1
-                    if (F[k] == 't2'):
-                        if (distance_array[i,j] <= Q[k]):
-                            distance_array[i,j]  = 0
-                        else:
-                            distance_array[i,j] = 1
-                    if (F[k] == 't3'):
-                        if (distance_array[i,j] <= 0):
-                            distance_array[i,j]  = 0
-                        elif (distance_array[i,j] > 0 and distance_array[i,j] <= P[k]):
-                            distance_array[i,j]  = distance_array[i,j]/P[k]
-                        else:
-                            distance_array[i,j] = 1
-                    if (F[k] == 't4'):
-                        if (distance_array[i,j] <= Q[k]):
-                            distance_array[i,j]  = 0
-                        elif (distance_array[i,j] > Q[k] and distance_array[i,j] <= P[k]):
-                            distance_array[i,j]  = 0.5
-                        else:
-                            distance_array[i,j] = 1
-                    if (F[k] == 't5'):
-                        if (distance_array[i,j] <= Q[k]):
-                            distance_array[i,j]  = 0
-                        elif (distance_array[i,j] > Q[k] and distance_array[i,j] <= P[k]):
-                            distance_array[i,j]  =  (distance_array[i,j] - Q[k])/(P[k] -  Q[k])
-                        else:
-                            distance_array[i,j] = 1
-                    if (F[k] == 't6'):
-                        if (distance_array[i,j] <= 0):
-                            distance_array[i,j]  = 0
-                        else:
-                            distance_array[i,j] = 1 - math.exp(-(distance_array[i,j]**2)/(2*S[k]**2))
-                    if (F[k] == 't7'):
-                        if (distance_array[i,j] == 0):
-                            distance_array[i,j]  = 0
-                        elif (distance_array[i,j] > 0 and distance_array[i,j] <= S[k]):
-                            distance_array[i,j]  =  (distance_array[i,j]/S[k])**0.5
-                        elif (distance_array[i,j] > S[k] ):
-                            distance_array[i,j] = 1
-        pd_array = pd_array + W[k]*distance_array
+                    distance = distances[i, j]
+                    if (distance > 0):
+                        area, _        = quad(preference_function, 0, distance, args = (F[k], Q[k], P[k], S[k]))
+                        pd_array[i, j] = pd_array[i, j] + W[k] * area
+    
     pd_array = pd_array/sum(W)
-    return pd_array
-
-# Function: Rectangular Integration
-def integration_prefence_degree(dataset, W, Q, S, P, F, steps = 0.01):
-    pd_array = np.zeros(shape = (dataset.shape[0],dataset.shape[0]))
-    for k in range(0, dataset.shape[1]):
-        distance_array = distance_matrix(dataset, criteria = k)
-        for i in range(0, distance_array.shape[0]):
-            for j in range(0, distance_array.shape[1]):
-                if (i != j):
-                    area      = 0
-                    f         = 0
-                    distance  = steps/2
-                    while (distance <= distance_array[i,j] and  distance_array[i,j] > 0):
-                        if (F[k] == 't1'):
-                            if (distance <= 0):
-                                f = 0
-                            else:
-                                f = 1
-                        if (F[k] == 't2'):
-                            if (distance <= Q[k]):
-                                f  = 0
-                            else:
-                                f = 1
-                        if (F[k] == 't3'):
-                            if (distance <= 0):
-                                f = 0
-                            elif (distance > 0 and distance <= P[k]):
-                                f = distance/P[k]
-                            else:
-                                f = 1
-                        if (F[k] == 't4'):
-                            if (distance <= Q[k]):
-                               f = 0
-                            elif (distance > Q[k] and distance <= P[k]):
-                                f = 0.5
-                            else:
-                                f = 1
-                        if (F[k] == 't5'):
-                            if (distance <= Q[k]):
-                                f = 0
-                            elif (distance > Q[k] and distance <= P[k]):
-                                f =  (distance - Q[k])/(P[k] -  Q[k])
-                            else:
-                               f = 1
-                        if (F[k] == 't6'):
-                            if (distance <= 0):
-                                f = 0
-                            else:
-                                f = 1 - math.exp(-(distance**2)/(2*S[k]**2))
-                        area = area + f*steps
-                        distance = distance + steps
-                    distance_array[i,j] = area
-        pd_array = pd_array + W[k]*distance_array
-    pd_array = pd_array/sum(W) 
     return pd_array
 
 # Function: Rank 
@@ -156,7 +85,7 @@ def ranking(flow):
 
 # Function: Promethee IV
 def promethee_iv(dataset, W, Q, S, P, F, sort = True, steps = 0.001, topn = 0, graph = False, verbose = True):
-    pd_matrix  = integration_prefence_degree(dataset, W, Q, S, P, F, steps)
+    pd_matrix  = integration_preference_degree(dataset, W, Q, S, P, F)
     flow_plus  = np.sum(pd_matrix, axis = 1)/(pd_matrix.shape[0] - 1)
     flow_minus = np.sum(pd_matrix, axis = 0)/(pd_matrix.shape[0] - 1)
     flow       = flow_plus - flow_minus 
