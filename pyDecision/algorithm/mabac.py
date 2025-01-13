@@ -58,3 +58,5 @@ def mabac_method(dataset, criterion_type, graph = True, verbose = True):
         flow = flow[::-1]
         ranking(flow)
     return rank
+
+###############################################################################
