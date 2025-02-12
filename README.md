@@ -148,11 +148,6 @@ else:
 5. Advanced MCDA Methods:
 
 - [3MOAHP](https://github.com/Valdecy/Method_3MOAHP) - Inconsistency Reduction Technique for AHP and Fuzzy-AHP Methods
-- [pyMissingAHP](https://github.com/Valdecy/pyMissingAHP) - A Method to Infer AHP Missing Pairwise Comparisons
-- [ELECTRE-Tree](https://github.com/Valdecy/ELECTRE-Tree) - Algorithm to infer the ELECTRE Tri-B method parameters
-- [Ranking-Trees](https://github.com/Valdecy/Ranking-Trees) - Algorithm to infer the ELECTRE II, III, IV, and PROMETHEE I, II, III, IV method parameters
-
-- [3MOAHP](https://github.com/Valdecy/Method_3MOAHP) - Inconsistency Reduction Technique for AHP and Fuzzy-AHP Methods
 - [EC-PROMETHEE](https://github.com/Valdecy/ec_promethee) -  A Committee Approach for Outranking Problems
 - [EC-TOPSIS](https://github.com/Valdecy/ec_topsis) -  A Committee Approach for Outranking Problems
 - [ELECTRE-Tree](https://github.com/Valdecy/ELECTRE-Tree) - Algorithm to infer the ELECTRE Tri-B method parameters
