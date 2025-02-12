@@ -26,17 +26,17 @@ def critic_method(dataset, criterion_type):
             best[i]  = np.min(X[:, i])
             worst[i] = np.max(X[:, i])
         if (best[i] == worst[i]):
-            best[i]  = best[i]  + 1e-9
-            worst[i] = worst[i] - 1e-9
+            best[i]  = best[i]  
+            worst[i] = worst[i] 
     for j in range(0, X.shape[1]):
-        X[:,j] = ( X[:,j] - worst[j] ) / ( best[j] - worst[j] )
+        X[:,j] = ( X[:,j] - worst[j] ) / ( best[j] - worst[j]  + 1e-10)
     std      = (np.sum((X - X.mean())**2, axis = 0)/(X.shape[0] - 1))**(1/2)
     sim_mat  = np.corrcoef(X.T)
+    sim_mat  = np.nan_to_num(sim_mat)
     conflict = np.sum(1 - sim_mat, axis = 1)
     infor    = std*conflict
     weights  = infor/np.sum(infor)
     return weights
-
 
 ###############################################################################
 
@@ -192,7 +192,6 @@ def find_column_modes(matrix):
         modes     = [x for x, count in counter.items() if count == max_count]
         mode_list.append(modes)
     return mode_list
-
 
 # Function: Tranpose Dictionary
 def transpose_dict(rank_count_dict):
