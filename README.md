@@ -92,7 +92,7 @@ else:
 - GRA ([ Colab Demo ](https://colab.research.google.com/drive/1aMMI0Cuo5kpzTDefqEwJhf0wWpBOP_JL?usp=sharing)) ( [ Paper ](https://uranos.ch/research/references/Julong_1989/10.1.1.678.3477.pdf))
 - IDOCRIW ([ Colab Demo ](https://colab.research.google.com/drive/1zt8uPFZGcHaSnpiT7tDnrDjvs0pK_7vS?usp=sharing)) ( [ Paper ](https://doi.org/10.1142/S0219622016500036))
 - MABAC ([ Colab Demo ](https://colab.research.google.com/drive/1BMqO-HnBXdcOZfZoULpx1H4MLPoUGucJ?usp=sharing)) ( [ Paper ](https://doi.org/10.1016/j.eswa.2014.11.057))
-- MACBETH ([ Colab Demo ](https://colab.research.google.com/drive/1GqM9uPgbaWCGyj4l-XjkoifY2JJoVyf2?usp=sharing)) ( [ Paper ](https://doi.org/10.1016/0969-6016(94)90010-8))
+- MACBETH ([ Colab Demo ](https://colab.research.google.com/drive/1GqM9uPgbaWCGyj4l-XjkoifY2JJoVyf2?usp=sharing)) ( [ Paper ](https://www.sciencedirect.com/science/article/abs/pii/0969601694900108))
 - MAIRCA ([ Colab Demo ](https://colab.research.google.com/drive/1gfqgrBAFGVygwm1j3lTjfy5wTsLgT_j5?usp=sharing)) ( [ Paper ](https://doi.org/10.1080/1331677X.2018.1506706))
 - MARA ([ Colab Demo ](https://colab.research.google.com/drive/1Ggg5e7TKVF_JN4yZRq9zThJO-PRBSI-N?usp=sharing)) ( [ Paper ](https://doi.org/10.3390/systems10060248))
 - MARCOS ([ Colab Demo ](https://colab.research.google.com/drive/13MI2Qrakm5VzHN3r5O2RqggCzQwRxCs-?usp=sharing)) ( [ Paper ](https://doi.org/10.1016/j.cie.2019.106231))
