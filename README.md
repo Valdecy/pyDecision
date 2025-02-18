@@ -96,7 +96,7 @@ else:
 - MAIRCA ([ Colab Demo ](https://colab.research.google.com/drive/1gfqgrBAFGVygwm1j3lTjfy5wTsLgT_j5?usp=sharing)) ( [ Paper ](https://doi.org/10.1080/1331677X.2018.1506706))
 - MARA ([ Colab Demo ](https://colab.research.google.com/drive/1Ggg5e7TKVF_JN4yZRq9zThJO-PRBSI-N?usp=sharing)) ( [ Paper ](https://doi.org/10.3390/systems10060248))
 - MARCOS ([ Colab Demo ](https://colab.research.google.com/drive/13MI2Qrakm5VzHN3r5O2RqggCzQwRxCs-?usp=sharing)) ( [ Paper ](https://doi.org/10.1016/j.cie.2019.106231))
-- MAUT ([ Colab Demo ](https://colab.research.google.com/drive/1qm3ARgQm68GUK2irGiCB-B49vnVHazB7?usp=sharing)) ( [ Paper ](10.1002/9781118644898.ch4))
+- MAUT ([ Colab Demo ](https://colab.research.google.com/drive/1qm3ARgQm68GUK2irGiCB-B49vnVHazB7?usp=sharing)) ( [ Paper ](https://doi.org/10.1002/9781118644898.ch4))
 - MEREC ([ Colab Demo ](https://colab.research.google.com/drive/1XE3AIzS84w-gw_1MEtV7xvkU1Gj_tRPd?usp=sharing)) ( [ Paper ](https://doi.org/10.3390/sym13040525))
 - Fuzzy MEREC ([ Colab Demo ](https://colab.research.google.com/drive/1yJ1eOXoGNp3amhoyBtEFCXr5PqwI9S5T?usp=sharing)) ( [ Paper ](https://doi.org/10.3390/math11061544))
 - MOORA ([ Colab Demo ](https://colab.research.google.com/drive/1FpKl0QAdwGgCVvLYsRHvMWhz7yOp17B5?usp=sharing)) ( [ Paper ](http://matwbn.icm.edu.pl/ksiazki/cc/cc35/cc35213.pdf))
