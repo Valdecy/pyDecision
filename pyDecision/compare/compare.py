@@ -38,6 +38,7 @@ from pyDecision.algorithm.copras       import copras_method
 from pyDecision.algorithm.cradis       import cradis_method
 from pyDecision.algorithm.edas         import edas_method
 from pyDecision.algorithm.gra          import gra_method
+from pyDecision.algorithm.lmaw         import lmaw_method
 from pyDecision.algorithm.mabac        import mabac_method
 from pyDecision.algorithm.macbeth      import macbeth_method
 from pyDecision.algorithm.mairca       import mairca_method
@@ -249,7 +250,7 @@ def compare_weights_fuzzy(dataset = [], criterion_type = [], custom_methods = []
 # Function: Compare Ranks Crisp
 def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = [], custom_methods = [], custom_ranks = [], methods_list = [], L = 0.5, lmbd = 0.02, epsilon = 0.5, step_size = 1, teta = 1, strategy_coefficient = 0.5, Q = [], S = [], P = [], F = [], custom_sets = [], iterations = 1000, lambda_value = 0.5, alpha = 0.4, s_min = [], s_max = [], ideal = [], anti_ideal = [], n_i = 1, n_k = 6):
     if ('all' in methods_list):
-        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'mabac', 'macbeth', 'mairca', 'mara', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'ec_promethee', 'psi', 'rafsi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas', 'wisp', 'simple wisp']
+        methods_list = ['aras', 'borda', 'cocoso', 'codas', 'copeland', 'copras', 'cradis', 'edas', 'gra', 'lmaw' 'mabac', 'macbeth', 'mairca', 'mara', 'marcos', 'maut', 'moora', 'moosra', 'multimoora', 'ocra', 'oreste', 'piv', 'promethee_ii', 'promethee_iv', 'ec_promethee', 'psi', 'rafsi', 'rov', 'saw', 'spotis', 'todim', 'topsis', 'vikor', 'wsm', 'wpm', 'waspas', 'wisp', 'simple wisp']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     graph   = False
@@ -306,6 +307,11 @@ def compare_ranks_crisp(dataset, weights, criterion_type, utility_functions = []
             X[:,j] = rank
             j      = j + 1
             print('GRA: Done!')
+        if (method == 'lmaw' or method == 'all'):
+            rank   = lmaw_method(dataset, weights, criterion_type, graph, verbose)
+            X[:,j] = rank
+            j      = j + 1
+            print('lMAW: Done!')
         if (method == 'mabac' or method == 'all'):
             rank   = mabac_method(dataset, criterion_type, graph, verbose)
             X[:,j] = rank
