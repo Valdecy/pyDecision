@@ -38,6 +38,7 @@ from .fuzzy_vikor   import fuzzy_vikor_method
 from .fuzzy_waspas  import fuzzy_waspas_method
 from .gra           import gra_method
 from .idocriw       import idocriw_method
+from .lmaw          import lmaw_method
 from .mabac         import mabac_method
 from .macbeth       import macbeth_method
 from .mairca        import mairca_method
