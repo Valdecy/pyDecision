@@ -8,6 +8,7 @@ from .cocoso        import cocoso_method
 from .codas         import codas_method
 from .copeland      import copeland_method
 from .copras        import copras_method
+from .cpp_tri       import cpp_tri_method
 from .cradis        import cradis_method
 from .critic        import critic_method
 from .dematel       import dematel_method
