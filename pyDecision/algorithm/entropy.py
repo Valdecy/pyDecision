@@ -13,7 +13,7 @@ def entropy_method(dataset, criterion_type):
         if (criterion_type[j] == 'max'):
             X[:,j] =  X[:,j] / np.sum(X[:,j])
         else:
-            X[:,j] = (1 / X[:,j]) / np.sum((1 / X[:,j]))
+            X[:,j] = (1 / (X[:,j] + 1e-9)) / np.sum(1 / (X[:,j] + 1e-9))
     X = np.abs(X)
     H = np.zeros((X.shape))
     for j, i in itertools.product(range(H.shape[1]), range(H.shape[0])):
@@ -26,4 +26,3 @@ def entropy_method(dataset, criterion_type):
     return w
 
 ###############################################################################
-
