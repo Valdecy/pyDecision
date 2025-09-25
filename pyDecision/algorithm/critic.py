@@ -19,7 +19,7 @@ def critic_method(dataset, criterion_type):
             worst[i] = np.max(X[:, i])        
     for j in range(0, X.shape[1]):
         X[:,j] = ( X[:,j] - worst[j] ) / ( best[j] - worst[j] + 1e-10) 
-    std      = (np.sum((X - X.mean())**2, axis = 0)/(X.shape[0] - 1))**(1/2)
+    std      = (np.sum((X - X.mean(axis = 0))**2, axis = 0)/(X.shape[0] - 1))**(1/2)
     sim_mat  = np.corrcoef(X.T)
     sim_mat  = np.nan_to_num(sim_mat) 
     conflict = np.sum(1 - sim_mat, axis = 1)
