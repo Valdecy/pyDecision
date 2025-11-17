@@ -88,7 +88,6 @@ else:
 - ELECTRE III   ([ Colab Demo ](https://colab.research.google.com/drive/1smeD5ZoPgBnAAUyooAXSrkxHgqZPmUC9?usp=sharing)) ( [ Paper ](https://github.com/Valdecy/Datasets/raw/master/MCDA/E03.pdf))
 - ELECTRE IV    ([ Colab Demo ](https://colab.research.google.com/drive/178x062yC-Es6lstEiFaFprbMsTJZwnC-?usp=sharing)) ( [ Paper ](http://dx.doi.org/10.1007/978-1-4757-5057-7_3))
 - ELECTRE Tri-B ([ Colab Demo ](https://colab.research.google.com/drive/1hu0fJcxdBAiEDrVngmKQfpINpjTF-osE?usp=sharing)) ( [ Paper ](https://drive.google.com/file/d/1oWOI_sX3EEYdRbavoBTT7vUmPII1yPgE/view?usp=sharing))
-- ELECTRE Tri-B ([ Colab Demo ](https://colab.research.google.com/drive/1hu0fJcxdBAiEDrVngmKQfpINpjTF-osE?usp=sharing)) ( [ Paper ](https://drive.google.com/file/d/1oWOI_sX3EEYdRbavoBTT7vUmPII1yPgE/view?usp=sharing))
 - ELECTRE Tri-C ([ Colab Demo ](https://colab.research.google.com/drive/1djN1rjXiHG6inUuirJpTHwvE-QlpH6-s?usp=sharing)) ( [ Paper ](https://doi.org/10.1016/j.ejor.2009.10.018))
 - ELECTRE Tri-nC ([ Colab Demo ](https://colab.research.google.com/drive/1eG89O7kVoWtruLb2QMvYwrFT_D3au0QH?usp=sharing)) ( [ Paper ](https://doi.org/10.1016/j.ejor.2011.09.047))
 - Flowsort ([ Colab Demo ](https://colab.research.google.com/drive/1CIr8PwLbkX6fZFkn127WQWXNl7cGexg5?usp=sharing)) ( [ Paper ](https://link.springer.com/article/10.1007/s11750-007-0036-x))
