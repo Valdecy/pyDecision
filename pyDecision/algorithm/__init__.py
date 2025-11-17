@@ -19,8 +19,11 @@ from .e_ii          import electre_ii
 from .e_iii         import electre_iii
 from .e_iv          import electre_iv
 from .e_tri_b       import electre_tri_b
+from .e_tri_c       import electre_tri_c
+from .e_tri_nc      import electre_tri_nc
 from .edas          import edas_method
 from .entropy       import entropy_method
+from .flowsort      import flowsort_method
 from .fucom         import fucom_method
 from .fuzzy_ahp     import fuzzy_ahp_method
 from .fuzzy_ahp_ppf import ppf_ahp_method
