@@ -5,7 +5,7 @@ import numpy as np
 
 ###############################################################################
 
-# Function: AHP
+# Function: ANP
 def anp_method(W, max_iter = 100, tol = 1e-12):
     M_prev = W.copy()
     M      = W.copy()
@@ -17,3 +17,4 @@ def anp_method(W, max_iter = 100, tol = 1e-12):
     return M
 
 ###############################################################################
+
