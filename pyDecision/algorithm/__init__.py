@@ -1,4 +1,5 @@
 from .ahp           import ahp_method
+from .anp           import anp_method
 from .aras          import aras_method
 from .borda         import borda_method
 from .bwm           import bw_method
