@@ -81,6 +81,8 @@ from .spotis        import spotis_method
 from .todim         import todim_method
 from .topsis        import topsis_method
 from .utadis_i      import utadis_i_method, predict_classes_new
+from .utadis_ii     import utadis_ii_method
+from .utadis_iii    import utadis_iii_method
 from .vikor         import vikor_method, ranking
 from .waspas        import waspas_method
 from .wisp          import wisp_method
