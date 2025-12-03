@@ -20,6 +20,7 @@ from .e_ii          import electre_ii
 from .e_iii         import electre_iii
 from .e_iv          import electre_iv
 from .e_tri_b       import electre_tri_b
+from .e_tri_nb      import electre_tri_nb
 from .e_tri_c       import electre_tri_c
 from .e_tri_nc      import electre_tri_nc
 from .edas          import edas_method
