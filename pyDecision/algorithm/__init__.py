@@ -70,6 +70,7 @@ from .piv           import piv_method
 from .psi           import psi_method
 from .psi_m         import mpsi_method
 from .rafsi         import rafsi_method
+from .rancom        import rancom_method
 from .regime        import regime_method
 from .roc           import roc_method
 from .rov           import rov_method
