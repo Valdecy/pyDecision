@@ -19,6 +19,7 @@ from pyDecision.algorithm.fucom        import fucom_method
 from pyDecision.algorithm.idocriw      import idocriw_method
 from pyDecision.algorithm.merec        import merec_method
 from pyDecision.algorithm.psi_m        import mpsi_method
+from pyDecision.algorithm.rancom       import rancom_method
 from pyDecision.algorithm.roc          import roc_method
 from pyDecision.algorithm.rrw          import rrw_method
 from pyDecision.algorithm.rsw          import rsw_method
@@ -131,9 +132,9 @@ def corr_viz(df, correlation_method = 'kendall', size = 10, font_size = 10, grap
 ###############################################################################
 
 # Function: Compare Weights Crisp
-def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5, beta = 3):
+def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths = [], methods_list = [], mic = [], lic = [], criteria_priority = [], criteria_rank = [], alpha = 0.5, beta = 3, mode = 'ranking', ):
     if ('all' in methods_list):
-        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec', 'mpsi', 'roc', 'rrw', 'rsw', 'seca']
+        methods_list = ['bwm', 'bwm_s', 'cilos', 'critic', 'entropy', 'fucom', 'idocriw', 'merec', 'mpsi', 'rancom', 'roc', 'rrw', 'rsw', 'seca']
     if (len(custom_methods) > 0):
         methods_list = custom_methods + methods_list 
     X       = np.zeros((dataset.shape[1], len(methods_list)))
@@ -188,6 +189,11 @@ def compare_weights(dataset, criterion_type, custom_methods = [], custom_weigths
             X[:,j] = w
             j      = j + 1
             print('MPSI: Done!')
+        if (method == 'rancom' or method == 'all'):
+            w      = rancom_method(dataset, mode, None, True)
+            X[:,j] = w
+            j      = j + 1
+            print('RANCOM: Done!')
         if (method == 'roc' or method == 'all'):
             w      = roc_method(criteria_rank)
             X[:,j] = w
