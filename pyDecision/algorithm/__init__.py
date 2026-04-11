@@ -44,7 +44,7 @@ from .fuzzy_vikor   import fuzzy_vikor_method
 from .fuzzy_waspas  import fuzzy_waspas_method
 from .gra           import gra_method
 from .idocriw       import idocriw_method
-from .lara          import lara_method
+from .lara          import lara_method, plot_lara_graph, plot_lara_overview
 from .lmaw          import lmaw_method
 from .mabac         import mabac_method
 from .macbeth       import macbeth_method
@@ -77,6 +77,7 @@ from .roc           import roc_method
 from .rov           import rov_method
 from .rrw           import rrw_method
 from .rsw           import rsw_method
+from .sabina        import sabina_method
 from .saw           import saw_method
 from .seca          import seca_method
 from .smart         import smart_method
