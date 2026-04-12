@@ -221,7 +221,7 @@ def rank_scores(scores, labels):
 
 ###############################################################################
 
-# Function: 
+# Function: # Function: SABINA (Smooth Adaptive Bandwidth Integrated Net-flow Aggregation)
 def sabina_method(X, weights, criteria_type, labels = None, config = config):
     res = fit_score(X = X, weights = weights, directions = criteria_type, config = config)
     if labels is not None:
