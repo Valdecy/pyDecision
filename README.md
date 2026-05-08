@@ -96,7 +96,7 @@ else:
 - FUCOM ([ Colab Demo ](https://colab.research.google.com/drive/1eWP3xf3-9iLLW_l_9JuAe6BEeoMsqzcL?usp=sharing)) ( [ Paper ](https://doi.org/10.3390/sym10090393))
 - Fuzzy FUCOM ([ Colab Demo ](https://colab.research.google.com/drive/1bkelWth_7TOW_gIz8mBNe_4W5Ox84FUB?usp=sharing)) ( [ Paper ](https://doi.org/10.3390/su14094972 ))
 - GRA ([ Colab Demo ](https://colab.research.google.com/drive/1aMMI0Cuo5kpzTDefqEwJhf0wWpBOP_JL?usp=sharing)) ( [ Paper ](https://uranos.ch/research/references/Julong_1989/10.1.1.678.3477.pdf))
-- IDOCRIW ([ Colab Demo ](https://colab.
+- IDOCRIW ([ Colab Demo ](https://colab.research.google.com/drive/1zt8uPFZGcHaSnpiT7tDnrDjvs0pK_7vS?usp=sharing)) ( [ Paper ](https://doi.org/10.1007/978-3-030-15009-9_19))
 - LaRa ([ Colab Demo ](https://colab.research.google.com/drive/19oyFwJ72lk8SvEqtjyXA4jgWFF-SHy4-?usp=sharing)) ( [ Paper ]())
 - LMAW ([ Colab Demo ](https://colab.research.google.com/drive/1EBpI5oV7zRPhOJo7ckDKWDzlguxDNbWn?usp=sharing)) ( [ Paper ](https://doi.org/10.22190/FUME210214031P))
 - MABAC ([ Colab Demo ](https://colab.research.google.com/drive/1BMqO-HnBXdcOZfZoULpx1H4MLPoUGucJ?usp=sharing)) ( [ Paper ](https://doi.org/10.1016/j.eswa.2014.11.057))
