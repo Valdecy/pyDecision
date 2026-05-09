@@ -12,6 +12,8 @@ def _tri_c_r_matrices(performance_matrix, C, W, Q, P, V = None):
     m, n = A.shape
     hB   = B.shape[0]
     W    = np.array(W, dtype = float)
+    if W.size == 0 or np.sum(W) == 0:
+        W = np.ones(n, dtype = float)
     W    = W / W.sum()  
     Q    = np.array(Q, dtype = float)
     P    = np.array(P, dtype = float)
@@ -32,7 +34,8 @@ def _tri_c_r_matrices(performance_matrix, C, W, Q, P, V = None):
         C_Q     = (d > Q) & (d <= P)           
         C_Q_rev = (-d > Q) & (-d <= P)         
         s       = W[C_I | C_Q | C_P].sum()
-        u       = (d + P) / (P - Q)
+        denom   = np.where(np.abs(P - Q) < 1e-12, 1e-12, (P - Q))
+        u       = (d + P) / denom
         s       = s + (W[C_Q_rev] * u[C_Q_rev]).sum()
         return float(s)
 

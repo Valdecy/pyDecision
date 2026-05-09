@@ -57,6 +57,7 @@ from .moora         import moora_method
 from .moosra        import moosra_method
 from .multimoora    import multimoora_method  
 from .ocra          import ocra_method
+from .odo_ovo       import odo_ovo_method
 from .opa           import opa_method
 from .oreste        import oreste_method
 from .p_ec          import ec_promethee, solution_p_ranking, plot_rank_freq, find_column_modes

@@ -9,12 +9,16 @@ from scipy.stats import beta, logistic, norm
 
 # Function: Profiles to Quantiles
 def profiles_to_quantiles(profiles = None, decision_matrix = None, num_cat = None):
-    if profiles is not None and isinstance(profiles, dict) and len(profiles) > 0:
-        prof_arrays = []
-        for c in profiles:
-            arr = np.atleast_2d(np.array(profiles[c], dtype = float))
-            prof_arrays.append(arr.mean(axis = 0))
-        return np.vstack(prof_arrays)
+    if profiles is not None:
+        if isinstance(profiles, dict) and len(profiles) > 0:
+            prof_arrays = []
+            for c in profiles:
+                arr = np.atleast_2d(np.array(profiles[c], dtype = float))
+                prof_arrays.append(arr.mean(axis = 0))
+            return np.vstack(prof_arrays)
+        arr = np.asarray(profiles, dtype = float)
+        if arr.ndim == 2 and arr.size > 0:
+            return arr
     
     decision_matrix = np.asarray(decision_matrix, dtype = float)
     
