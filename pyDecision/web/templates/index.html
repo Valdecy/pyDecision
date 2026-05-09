@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>pyDecision · MCDA Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&family=Syne:wght@500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- decorative bg : layered ambience -->
+  <div class="bg-base"        aria-hidden="true"></div>
+  <div class="bg-aurora"      aria-hidden="true">
+    <span class="aurora aurora-1"></span>
+    <span class="aurora aurora-2"></span>
+    <span class="aurora aurora-3"></span>
+  </div>
+  <div class="bg-grid"        aria-hidden="true"></div>
+  <div class="bg-glow"        aria-hidden="true"></div>
+  <div class="bg-vignette"    aria-hidden="true"></div>
+  <div class="bg-noise"       aria-hidden="true"></div>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="brand">
+      <img class="brand-logo"
+           src="https://github.com/Valdecy/Datasets/raw/master/Data%20Science/logo_pd.png"
+           alt="pyDecision"
+           loading="lazy">
+    </div>
+    <div class="topbar-meta">
+      <span class="status-pill" id="status-pill">
+        <span class="status-dot"></span><span id="status-text">Idle</span>
+      </span>
+      <button class="btn-shutdown" id="btn-shutdown" title="Stop the server">
+        <span>Shut down</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2 class="sidebar-title">Methods</h2>
+        <span class="sidebar-count" id="method-count">—</span>
+      </div>
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 20l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="method-search" placeholder="Search methods…" autocomplete="off">
+      </div>
+      <div class="sidebar-toggle">
+        <button data-mode="alpha" class="sidebar-toggle-btn is-active">A → Z</button>
+        <button data-mode="group" class="sidebar-toggle-btn">By category</button>
+      </div>
+      <div class="method-list" id="method-list" role="listbox" aria-label="MCDA methods"></div>
+    </aside>
+
+    <!-- WORKSPACE -->
+    <main class="workspace">
+
+      <!-- header for selected method -->
+      <section class="method-header" id="method-header">
+        <div class="method-header-empty">
+          <div class="method-header-empty-icon">◆</div>
+          <h1 class="method-header-empty-title">Select a method</h1>
+          <p class="method-header-empty-sub">Pick an algorithm from the sidebar to configure its inputs.</p>
+        </div>
+      </section>
+
+      <!-- tab toggle -->
+      <nav class="tabs" id="tabs" hidden>
+        <button class="tab-btn is-active" data-tab="input">
+          <span class="tab-num">01</span><span class="tab-label">Input</span>
+        </button>
+        <button class="tab-btn" data-tab="results">
+          <span class="tab-num">02</span><span class="tab-label">Results</span>
+        </button>
+        <div class="tabs-actions">
+          <button class="btn-ghost" id="btn-reset" title="Clear all inputs">Reset</button>
+          <button class="btn-primary" id="btn-compute">
+            <span>Compute</span>
+            <kbd>⌘ ↵</kbd>
+          </button>
+        </div>
+      </nav>
+
+      <!-- INPUT PANEL -->
+      <section class="panel" id="panel-input" hidden>
+        <div id="dim-controls" class="dim-controls" hidden>
+          <div class="dim-control" id="dim-alternatives-control">
+            <label>Alternatives</label>
+            <div class="stepper">
+              <button class="step-btn" data-dim="alternatives" data-delta="-1">−</button>
+              <input type="number" id="num-alternatives" min="2" max="20" value="2">
+              <button class="step-btn" data-dim="alternatives" data-delta="1">+</button>
+            </div>
+          </div>
+          <div class="dim-control" id="dim-criteria-control">
+            <label>Criteria</label>
+            <div class="stepper">
+              <button class="step-btn" data-dim="criteria" data-delta="-1">−</button>
+              <input type="number" id="num-criteria" min="2" max="15" value="2">
+              <button class="step-btn" data-dim="criteria" data-delta="1">+</button>
+            </div>
+          </div>
+          <div class="dim-control" id="dim-classes-control" hidden>
+            <label>Classes</label>
+            <div class="stepper">
+              <button class="step-btn" data-dim="classes" data-delta="-1">−</button>
+              <input type="number" id="num-classes" min="2" max="8" value="3">
+              <button class="step-btn" data-dim="classes" data-delta="1">+</button>
+            </div>
+          </div>
+          <div class="dim-control" id="dim-experts-control" hidden>
+            <label>Experts</label>
+            <div class="stepper">
+              <button class="step-btn" data-dim="experts" data-delta="-1">−</button>
+              <input type="number" id="num-experts" min="1" max="10" value="1">
+              <button class="step-btn" data-dim="experts" data-delta="1">+</button>
+            </div>
+          </div>
+          <div class="dim-actions">
+            <button id="btn-paste" class="btn-ghost btn-paste">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M9 5H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-3M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Paste from spreadsheet
+            </button>
+            <button id="btn-fill-demo" class="btn-ghost">Load Example</button>
+          </div>
+        </div>
+        <div id="input-fields"></div>
+      </section>
+
+      <!-- RESULTS PANEL -->
+      <section class="panel" id="panel-results" hidden>
+        <div class="empty-results" id="empty-results">
+          <div class="empty-results-icon">▣</div>
+          <p>Run a computation to see results.</p>
+        </div>
+        <div id="results-content" hidden></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loading-overlay" hidden>
+    <div class="loading-card">
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+      <h3 id="loading-title">Computing…</h3>
+      <p id="loading-sub">Running the algorithm — please wait.</p>
+    </div>
+  </div>
+
+  <!-- PASTE MODAL -->
+  <div class="modal" id="paste-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card">
+      <header class="modal-head">
+        <h3>Paste data</h3>
+        <button class="modal-close" data-close>×</button>
+      </header>
+      <p class="modal-sub">Paste tab- or comma-separated values from Excel, Google Sheets, or any spreadsheet. You can also paste directly into any grid cell like a spreadsheet.</p>
+      <textarea id="paste-area" rows="10" placeholder="1.2&#9;3.4&#10;5.6&#9;7.8"></textarea>
+      <div class="modal-actions">
+        <button class="btn-ghost" data-close>Cancel</button>
+        <button class="btn-primary" id="btn-apply-paste">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="/static/js/app.js" defer></script>
+</body>
+</html>

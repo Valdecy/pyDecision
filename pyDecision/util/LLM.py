@@ -6,7 +6,7 @@ import os
 
 ###############################################################################
 
-# Function: Ask GPT Rank
+# Function: Ask GPT Corr
 def ask_chatgpt_corr(ranks, char_limit = 4097, api_key = 'your_api_key_here', query = 'which methods are more similar?', model = 'text-davinci-003', max_tokens = 2000, n = 1, temperature = 0.8):
     flag                     = 0
     os.environ['OPENAI_KEY'] = api_key
