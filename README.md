@@ -5,7 +5,7 @@
 
 ## Citation
 
-PEREIRA, V.; BASILIO, M.P.; SANTOS, C.H.T (2026). Enhancing Decision Analysis with a Large Language Model: pyDecision a Comprehensive Library of MCDA Methods in Python. Journal of Modelling in Management, Vol. 21 No. 2 pp. 481–--521, doi: https://doi.org/10.1108/JM2-04-2024-0118
+PEREIRA, V.; BASILIO, M.P.; SANTOS, C.H.T (2026). Enhancing Decision Analysis with a Large Language Model: pyDecision a Comprehensive Library of MCDA Methods in Python. Journal of Modelling in Management, Vol. 21 No. 2 pp. 481---521, doi: https://doi.org/10.1108/JM2-04-2024-0118
 
 ## pyDecision - MCDA Studio
 
