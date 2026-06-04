@@ -2,6 +2,8 @@
 
 # Required Libraries
 import numpy as np
+from ..util import extract_number
+
 import re
 
 ###############################################################################
@@ -11,11 +13,6 @@ def rsw_method(criteria_rank):
     
     ################################################
     
-    def extract_number(text):
-        match = re.search(r'\d+', text)
-        return int(match.group()) if match else None
-    
-    ################################################
     
     N = len(criteria_rank)
     x = np.zeros(N)

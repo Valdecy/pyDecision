@@ -2,6 +2,8 @@
 
 # Required Libraries
 import numpy as np
+from ..util import extract_number
+
 import re
 import warnings
 warnings.filterwarnings('ignore', message = 'delta_grad == 0.0. Check if the approximated')
@@ -16,27 +18,6 @@ def fuzzy_fucom_method(criteria_rank, criteria_priority, n_starts = 250, sort_cr
     
     ################################################
     
-    def extract_number(text):
-        match = re.search(r'\d+', text)
-        return int(match.group()) if match else None
-    
-    def generate_ordered_triplets(num_criteria):
-        variables = np.zeros(3 * num_criteria)
-        for i in range(0, num_criteria):
-            x1                   = np.random.uniform(low = 0.0001, high = 1.0)
-            x2                   = np.random.uniform(low = x1,    high = 1.0)
-            x3                   = np.random.uniform(low = x2,    high = 1.0)
-            variables[3 * i]     = x1
-            variables[3 * i + 1] = x2
-            variables[3 * i + 2] = x3
-        fuzzy_set = [(variables[i], variables[i + 1], variables[i + 2]) for i in range(0, len(variables), 3)]
-        weights   = np.array([(a + 4 * b + c) / 6 for a, b, c in fuzzy_set])
-        total     = np.sum(weights)
-        scale_fac = 1 / total
-        variables = variables * scale_fac
-        return variables
-    
-    ################################################
     
     def target_function(variables):
         fuzzy_set       = [(variables[i], variables[i + 1], variables[i + 2]) for i in range(0, len(variables), 3)]

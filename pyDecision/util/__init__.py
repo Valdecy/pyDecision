@@ -1,4 +1,5 @@
 from .ga import genetic_algorithm
+from .extract import extract_number
 
 try:  # optional dependencies
     from .MLLM import *

@@ -2,6 +2,8 @@
 
 # Required Libraries
 import numpy as np
+from ..util import extract_number
+
 import re
 import warnings
 warnings.filterwarnings('ignore', message = 'delta_grad == 0.0. Check if the approximated')
@@ -16,22 +18,6 @@ def fucom_method(criteria_rank, criteria_priority, sort_criteria = True, verbose
     
     ################################################
     
-    def extract_number(text):
-        match = re.search(r'\d+', text)
-        return int(match.group()) if match else None
-    
-    def target_function(variables):
-        variables       = np.array(variables)
-        ratios_1        = variables[:-1] / variables[1:]
-        target_ratios_1 = np.array(criteria_priority[1:]) / np.array(criteria_priority[:-1])
-        chi_1           = np.abs(ratios_1 - target_ratios_1)
-        ratios_2        = variables[:-2] / variables[2:]
-        target_ratios_2 = np.array(criteria_priority[2:]) / np.array(criteria_priority[:-2])
-        chi_2           = np.abs(ratios_2 - target_ratios_2)
-        chi             = np.hstack((chi_1, chi_2))
-        return np.max(chi)
-    
-    ################################################
     
     np.random.seed(42)
     variables   = np.random.uniform(low = 0.001, high = 1.0, size = len(criteria_priority))
