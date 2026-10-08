@@ -10,7 +10,7 @@ Top-level convenience exports:
 The full algorithm catalogue lives under `pyDecision.algorithm`.
 """
 
-__version__ = "5.1.1"
+__version__ = "5.1.5"
 
 try:
     from .web import web_app, web_stop, is_running as web_is_running
