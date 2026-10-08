@@ -26,13 +26,13 @@ def _labels(n, alt_labels):
     return alt_labels if alt_labels else [f"a{i+1}" for i in range(0, n)]
 
 # Function: Graph
-def plot_lara_graph(order, score, info, alt_labels = None, title = "Similarity Graph", figsize = (9, 6.5), seed = 42, node_scale = 1.0, savepath = None):
+def plot_lara_graph(order, score, info, alt_labels = None, title = "Similarity Graph", figsize = (12.5, 8.5), seed = 42, node_scale = 1.0, savepath = None):
     score      = np.asarray(score, dtype = float)
     n          = len(score)
     S          = info["S_graph"]
     labels     = _labels(n, alt_labels)
     cmap_nodes = plt.colormaps["RdYlGn"]
-    rank_pos   = np.empty(n, dtype=int)
+    rank_pos   = np.empty(n, dtype = int)
     for r, a in enumerate(order):
         rank_pos[a - 1] = r
     node_cols = [cmap_nodes(1.0 - rank_pos[i] / max(n - 1, 1)) for i in range(0, n)]
@@ -41,50 +41,51 @@ def plot_lara_graph(order, score, info, alt_labels = None, title = "Similarity G
     edges     = [(i, j, float(S[i, j])) for i in range(n) for j in range(i + 1, n) if S[i, j] > 1e-9]
     for i, j, w in edges:
         G.add_edge(i, j, weight = w)
-    try:
-        pos = nx.kamada_kawai_layout(G, weight = "weight")
-    except Exception:
-        pos = nx.spring_layout(G, seed = seed, weight = "weight", k = 2.2)
-    abs_s      = np.abs(score)
-    s_range    = abs_s.max() - abs_s.min() + 1e-9
-    node_sizes = node_scale * (900 + 1400 * (abs_s - abs_s.min()) / s_range)
+    # Deterministic Fruchterman--Reingold layout for visualization only.
+    # Edge affinities act as attractive weights; layout coordinates never enter LaRa.
+    pos = nx.spring_layout(G, seed = seed, weight = "weight", k = 0.45, iterations = 500)
+    for i in pos:
+        pos[i][0] *= 0.88
+    node_sizes = np.full(n, node_scale * 1900.0, dtype = float)
     if edges:
-        ws            = np.array([w for _, _, w in edges])
-        w_min, w_max  = ws.min(), ws.max() + 1e-9
-        widths        = 0.8  + 3.5  * (ws - w_min) / (w_max - w_min)
-        alphas        = 0.20 + 0.65 * (ws - w_min) / (w_max - w_min)
+        ws             = np.array([w for _, _, w in edges])
+        w_min, w_max   = ws.min(), ws.max()
+        denom          = (w_max - w_min) + 1e-9
+        widths         = 1.6  + 4.2  * (ws - w_min) / denom
+        alphas         = 0.22 + 0.58 * (ws - w_min) / denom
     else:
         widths = alphas = []
     fig, ax = plt.subplots(figsize = figsize, facecolor = "white")
     ax.set_facecolor("#F8F8F8")
-    ax.set_title(title, fontsize = 13, fontweight = "semibold", pad = 14, color = "#222222")
+    ax.set_title(title, fontsize = 18, fontweight = "semibold", pad = 16, color = "#222222")
     ax.axis("off")
     for idx, (u, v) in enumerate(list(G.edges())):
         x0, y0 = pos[u]; x1, y1 = pos[v]
-        ax.plot([x0, x1], [y0, y1], color = [0.60, 0.62, 0.72, float(alphas[idx])], linewidth = float(widths[idx]), solid_capstyle = "round", zorder = 1)
+        ax.plot([x0, x1], [y0, y1], color = [0.54, 0.58, 0.68, float(alphas[idx])], linewidth = float(widths[idx]), solid_capstyle = "round", zorder = 1)
     for i in range(0, n):
         x, y = pos[i]
-        ax.scatter(x, y, s = node_sizes[i] * 1.18, color = "white", zorder = 2, linewidths = 0)
-        ax.scatter(x, y, s = node_sizes[i], color = node_cols[i], zorder = 3, linewidths = 1.2, edgecolors = "white")
+        ax.scatter(x, y, s = node_sizes[i] * 1.16, color = "white", zorder = 2, linewidths = 0)
+        ax.scatter(x, y, s = node_sizes[i], color = node_cols[i], zorder = 3, linewidths = 1.4, edgecolors = "white")
     for i, lbl in enumerate(labels):
         x, y = pos[i]
         bg   = node_cols[i]
         lum  = 0.299 * bg[0] + 0.587 * bg[1] + 0.114 * bg[2]
         tc   = "white" if lum < 0.55 else "#222222"
-        ax.text(x, y, lbl, ha = "center", va = "center", fontsize = 8.5, fontweight = "bold", color = tc, zorder = 5)
-        ax.text(x, y - 0.095, f"{score[i]:.2f}", ha = "center", va = "top", fontsize = 7.5, color = "#444444", zorder = 5)
-    rank_norm = mcolors.Normalize(vmin=1, vmax=n)
+        ax.text(x, y, lbl, ha = "center", va = "center", fontsize = 11.5, fontweight = "bold", color = tc, zorder = 5)
+        ax.annotate(f"{score[i]:.2f}", xy = (x, y), xytext = (0, -24), textcoords = "offset points", ha = "center", va = "top", fontsize = 10, color = "#333333", zorder = 5, bbox = dict(boxstyle = "round,pad=0.18", facecolor = "white", edgecolor = "none", alpha = 0.88))
+    rank_norm = mcolors.Normalize(vmin = 1, vmax = n)
     sm        = cm.ScalarMappable(cmap = plt.colormaps["RdYlGn_r"], norm = rank_norm)
     sm.set_array([])
-    cbar      = fig.colorbar(sm, ax = ax, shrink = 0.70, pad = 0.02, aspect = 22)
-    cbar.set_label("Rank  (1 = best)", fontsize = 9, color = "#444444")
+    cbar      = fig.colorbar(sm, ax = ax, shrink = 0.82, pad = 0.02, aspect = 26)
+    cbar.set_label("Final LaRa rank  (1 = best)", fontsize = 12, color = "#444444")
     cbar.set_ticks([1, n])
     cbar.set_ticklabels(["best", "worst"])
-    cbar.ax.tick_params(labelsize = 8, color = "#888888")
+    cbar.ax.tick_params(labelsize = 10, color = "#888888")
     cbar.outline.set_visible(False)
+    ax.margins(0.10, 0.14)
     plt.tight_layout()
     if savepath:
-        fig.savefig(savepath, dpi = 180, bbox_inches = "tight", facecolor = "white")
+        fig.savefig(savepath, dpi = 300, bbox_inches = "tight", facecolor = "white")
     return fig, ax
  
 # Function: Overview
@@ -159,12 +160,25 @@ def plot_lara_overview(order, score, info, alt_labels = None, title = "Ranking",
 ###############################################################################
 
 # Function: Normalization
-def quantile_normalize(Xraw, criteria_type = None, q_low = 0.05, q_high = 0.95, eps = 1e-12):
+def quantile_normalize(Xraw, criteria_type = None, q_low = 0.10, q_high = 0.90, eps = 1e-12):
     Xraw  = np.asarray(Xraw, dtype = float)
     n, m  = Xraw.shape
     if criteria_type is None:
         criteria_type = ["max"] * m
-    criteria_type = np.asarray(criteria_type)
+    criteria_type = np.asarray(criteria_type, dtype = str)
+    if criteria_type.shape != (m,):
+        raise ValueError(f"criteria_type must contain exactly {m} entries.")
+    allowed = {"max", "min"}
+    invalid = sorted(set(criteria_type.tolist()) - allowed)
+    if invalid:
+        raise ValueError(
+            "Unsupported criterion direction(s): " + ", ".join(invalid) +
+            ". LaRa currently supports only 'max' and 'min'; transform target/interval criteria explicitly before use."
+        )
+    if not (0.0 <= q_low < q_high <= 1.0):
+        raise ValueError("Require 0 <= q_low < q_high <= 1.")
+    if not np.all(np.isfinite(Xraw)):
+        raise ValueError("dataset contains NaN or infinite values.")
     ql    = np.quantile(Xraw, q_low,  axis = 0)
     qh    = np.quantile(Xraw, q_high, axis = 0)
     denom = qh - ql
@@ -302,7 +316,9 @@ def connect_components_with_dense_similarity(S_sparse, S_dense, eps = 1e-12):
                     best_uv = (comps[a][ia], comps[b][ib])
         if best_uv is None or best_w <= eps:
             best_uv = (comps[0][0], comps[1][0])
-            best_w  = eps
+            # Component detection uses S > eps, so a fallback bridge equal to eps
+            # would remain invisible and could make this loop non-terminating.
+            best_w  = float(np.nextafter(float(eps), np.inf))
         u, v             = best_uv
         S_conn[u, v]     = max(S_conn[u, v], best_w)
         S_conn[v, u]     = max(S_conn[v, u], best_w)
@@ -356,12 +372,14 @@ def dominance_violations(score, dominates, tol = 1e-12):
 def enforce_dominance_monotonicity(score, dominates, tol = 1e-12, max_iter = 5000):
     g         = np.asarray(score,     dtype = float).copy()
     dominates = np.asarray(dominates, dtype = bool)
-    edges     = np.argwhere(dominates)        
+    edges     = np.argwhere(dominates)
     if edges.shape[0] == 0:
         return g
+    if not isinstance(max_iter, (int, np.integer)) or isinstance(max_iter, bool) or int(max_iter) < 1:
+        raise ValueError("max_iter must be a positive integer.")
     i_idx = edges[:, 0]
     j_idx = edges[:, 1]
-    for _ in range(0, max_iter):
+    for _ in range(0, int(max_iter)):
         gaps = g[j_idx] - g[i_idx]
         mask = gaps > tol
         if not np.any(mask):
@@ -369,7 +387,21 @@ def enforce_dominance_monotonicity(score, dominates, tol = 1e-12, max_iter = 500
         delta = 0.5 * gaps * mask.astype(float)
         np.add.at(g, i_idx,  delta)
         np.add.at(g, j_idx, -delta)
-    g, _, _ = _safe_standardize(g, eps=tol)
+
+    n_viol, max_viol = dominance_violations(g, dominates, tol = tol)
+    if n_viol:
+        raise RuntimeError(
+            f"dominance repair did not converge within {int(max_iter)} iterations "
+            f"({n_viol} inversion(s) remain; maximum inversion {max_viol:.3e})."
+        )
+
+    g, _, _ = _safe_standardize(g, eps = tol)
+    n_viol, max_viol = dominance_violations(g, dominates, tol = tol)
+    if n_viol:
+        raise RuntimeError(
+            f"dominance repair postcondition failed after standardization "
+            f"({n_viol} inversion(s) remain; maximum inversion {max_viol:.3e})."
+        )
     return g
 
 ###############################################################################
@@ -405,6 +437,11 @@ def build_reference_prior(X_norm, w, dom, reference_mode = "ideal", alpha_dom_pr
     dom  = np.asarray(dom,    dtype = float)
     n, m = X.shape
 
+    if reference_mode not in {"ideal", "existing"}:
+        raise ValueError("reference_mode must be either 'ideal' or 'existing'.")
+    if not np.isfinite(float(alpha_dom_prior)) or not (0.0 <= float(alpha_dom_prior) <= 1.0):
+        raise ValueError("alpha_dom_prior must be finite and lie in [0, 1].")
+
     if reference_mode == "ideal":
         best_idx    = None
         worst_idx   = None
@@ -417,35 +454,50 @@ def build_reference_prior(X_norm, w, dom, reference_mode = "ideal", alpha_dom_pr
     dist_to_best      = weighted_distance_to_point(X, best_point,  w)
     dist_to_worst     = weighted_distance_to_point(X, worst_point, w)
     closeness         = dist_to_worst / (dist_to_best + dist_to_worst + eps)
-    ref_z,  _, _      = _safe_standardize(closeness, eps = eps)
+    ref_z,  _, ref_sd = _safe_standardize(closeness, eps = eps)
     dom_z,  _, dom_sd = _safe_standardize(dom,       eps = eps)
 
+    corr_defined = bool(ref_sd > eps and dom_sd > eps)
+    corr_val     = float(np.corrcoef(ref_z, dom_z)[0, 1]) if corr_defined else 0.0
+    if corr_defined:
+        corr_val = float(np.clip(corr_val, -1.0, 1.0))
+
+    # Degenerate signals are handled explicitly. If dominance is constant it
+    # contains no ordinal information, so the prior uses closeness alone. If
+    # closeness is constant but dominance varies, adaptive mode falls back to
+    # the only informative signal (dominance) rather than evaluating an
+    # undefined Pearson correlation. If both are constant, the prior is the
+    # zero vector and the final ranking is a deterministic tie ordering.
     if dom_sd <= eps:
         alpha_eff = 0.0
+    elif ref_sd <= eps and adaptive_alpha:
+        alpha_eff = 1.0
     elif adaptive_alpha:
-        corr_val      = float(np.corrcoef(ref_z, dom_z)[0, 1])
-        corr_val      = np.clip(corr_val, -1.0, 1.0)
-        disagreement  = 0.5 * (1.0 - corr_val)   
-        alpha_eff     = float(alpha_dom_prior) + disagreement * (1.0 - float(alpha_dom_prior))
-        alpha_eff     = float(np.clip(alpha_eff, 0.0, 1.0))
+        disagreement = 0.5 * (1.0 - corr_val)
+        alpha_eff    = float(alpha_dom_prior) + disagreement * (1.0 - float(alpha_dom_prior))
+        alpha_eff    = float(np.clip(alpha_eff, 0.0, 1.0))
     else:
         alpha_eff = float(alpha_dom_prior)
+
     prior       = (1.0 - alpha_eff) * ref_z + alpha_eff * dom_z
     prior, _, _ = _safe_standardize(prior, eps = eps)
 
     info = {
-            "reference_mode":            reference_mode,
-            "best_reference_index":      best_idx,
-            "worst_reference_index":     worst_idx,
-            "best_reference_point":      best_point.copy(),
-            "worst_reference_point":     worst_point.copy(),
-            "reference_closeness":       closeness.copy(),
-            "dist_to_best_ref":          dist_to_best.copy(),
-            "dist_to_worst_ref":         dist_to_worst.copy(),
-            "alpha_dom_prior_requested": float(alpha_dom_prior),
-            "alpha_dom_prior_effective": float(alpha_eff),
-            "adaptive_alpha":            bool(adaptive_alpha),
-            "closeness_dom_correlation": float(np.corrcoef(ref_z, dom_z)[0, 1]) if dom_sd > eps else 0.0,
+            "reference_mode":                         reference_mode,
+            "best_reference_index":                   best_idx,
+            "worst_reference_index":                  worst_idx,
+            "best_reference_point":                   best_point.copy(),
+            "worst_reference_point":                  worst_point.copy(),
+            "reference_closeness":                    closeness.copy(),
+            "dist_to_best_ref":                       dist_to_best.copy(),
+            "dist_to_worst_ref":                      dist_to_worst.copy(),
+            "alpha_dom_prior_requested":              float(alpha_dom_prior),
+            "alpha_dom_prior_effective":              float(alpha_eff),
+            "adaptive_alpha":                         bool(adaptive_alpha),
+            "closeness_dom_correlation":              float(corr_val),
+            "closeness_dom_correlation_defined":      corr_defined,
+            "closeness_standard_deviation":           float(ref_sd),
+            "dominance_standard_deviation":           float(dom_sd),
             }
     return prior, info
 
@@ -457,20 +509,32 @@ def pairwise_graph_regularized_score(Lc, dominates, S_graph, prior_signal, lambd
     dominates = np.asarray(dominates,    dtype = bool)
     S_graph   = np.asarray(S_graph,      dtype = float)
     u         = np.asarray(prior_signal, dtype = float)
+    lambda_graph = float(lambda_graph)
+    mu_prior     = float(mu_prior)
+    gamma_pair   = float(gamma_pair)
+    margin       = float(margin)
+    if not np.isfinite(lambda_graph) or lambda_graph < 0.0:
+        raise ValueError("lambda_graph must be finite and nonnegative.")
+    if not np.isfinite(mu_prior) or mu_prior <= 0.0:
+        raise ValueError("mu_prior must be finite and strictly positive.")
+    if not np.isfinite(gamma_pair) or gamma_pair < 0.0:
+        raise ValueError("gamma_pair must be finite and nonnegative.")
+    if not np.isfinite(margin) or margin < 0.0:
+        raise ValueError("margin (delta_dom) must be finite and nonnegative.")
     n         = Lc.shape[0]
-    A         = float(lambda_graph) * Lc + float(mu_prior) * np.eye(n)
-    b         = float(mu_prior) * u.copy()
+    A         = lambda_graph * Lc + mu_prior * np.eye(n)
+    b         = mu_prior * u.copy()
     edges     = np.argwhere(dominates)
     for i, j in edges:
         if local_dominance and S_graph[i, j] <= 0.0:
             continue
-        gp         = float(gamma_pair)
+        gp         = gamma_pair
         A[i, i]    = A[i, i] + gp
         A[j, j]    = A[j, j] + gp
         A[i, j]    = A[i, j] - gp
         A[j, i]    = A[j, i] - gp
-        b[i]       = b[i] + gp * float(margin)
-        b[j]       = b[j] - gp * float(margin)
+        b[i]       = b[i] + gp * margin
+        b[j]       = b[j] - gp * margin
     A       = A + eps * np.eye(n)
     f       = np.linalg.solve(A, b)
     z, _, _ = _safe_standardize(f, eps = eps)
@@ -481,12 +545,56 @@ def pairwise_graph_regularized_score(Lc, dominates, S_graph, prior_signal, lambd
 # Function: LaRa (Laplacian Ranking)
 def lara_method(dataset, W, criteria_type = None, lambda_graph = 1.0, k_graph = 3, reference_mode = "ideal", margin = 0.0, gamma_pair = 0.0,  q_low = 0.10, q_high = 0.90, use_sparse_graph = True, graph_mode = "union", auto_connect = True, use_two_scale_graph = False, k_local = 3, k_bridge = 2, alpha_bridge = 0.15, sigma_override = None, k_sigma = 3, eps_dom = 1e-6, local_dominance = True, alpha_dom_prior = 0.5, adaptive_alpha = True, mu_prior = 1.0, dominance_repair = True):
     Xraw                   = np.asarray(dataset, dtype = float)
+    if Xraw.ndim != 2:
+        raise ValueError("dataset must be a two-dimensional decision matrix.")
     n, m                   = Xraw.shape
-    X                      = quantile_normalize(Xraw, criteria_type, q_low, q_high, 1e-12)
+    if n < 2 or m < 1:
+        raise ValueError("dataset must contain at least two alternatives and one criterion.")
     W                      = np.asarray(W, dtype = float)
-    w                      = W / (W.sum() + 1e-12)
-    dominates              = dominance_relation_matrix(X, eps_dom = eps_dom)
-    dom                    = dominance_score(X,           eps_dom = eps_dom)
+    if W.shape != (m,):
+        raise ValueError(f"W must contain exactly {m} criterion weights.")
+    if not np.all(np.isfinite(W)) or np.any(W < 0.0):
+        raise ValueError("criterion weights must be finite and nonnegative.")
+    if float(W.sum()) <= 0.0:
+        raise ValueError("at least one criterion weight must be positive.")
+
+    if reference_mode not in {"ideal", "existing"}:
+        raise ValueError("reference_mode must be either 'ideal' or 'existing'.")
+    if graph_mode not in {"union", "mutual"}:
+        raise ValueError("graph_mode must be either 'union' or 'mutual'.")
+    if not isinstance(k_graph, (int, np.integer)) or isinstance(k_graph, bool) or int(k_graph) < 1:
+        raise ValueError("k_graph must be a positive integer.")
+    if not isinstance(k_local, (int, np.integer)) or isinstance(k_local, bool) or int(k_local) < 1:
+        raise ValueError("k_local must be a positive integer.")
+    if not isinstance(k_bridge, (int, np.integer)) or isinstance(k_bridge, bool) or int(k_bridge) < 1:
+        raise ValueError("k_bridge must be a positive integer.")
+    if not isinstance(k_sigma, (int, np.integer)) or isinstance(k_sigma, bool) or int(k_sigma) < 1:
+        raise ValueError("k_sigma must be a positive integer.")
+    if not np.isfinite(float(lambda_graph)) or float(lambda_graph) < 0.0:
+        raise ValueError("lambda_graph must be finite and nonnegative.")
+    if not np.isfinite(float(mu_prior)) or float(mu_prior) <= 0.0:
+        raise ValueError("mu_prior must be finite and strictly positive.")
+    if not np.isfinite(float(gamma_pair)) or float(gamma_pair) < 0.0:
+        raise ValueError("gamma_pair must be finite and nonnegative.")
+    if not np.isfinite(float(margin)) or float(margin) < 0.0:
+        raise ValueError("margin (delta_dom) must be finite and nonnegative.")
+    if not np.isfinite(float(alpha_dom_prior)) or not (0.0 <= float(alpha_dom_prior) <= 1.0):
+        raise ValueError("alpha_dom_prior must be finite and lie in [0, 1].")
+    if not np.isfinite(float(eps_dom)) or float(eps_dom) < 0.0:
+        raise ValueError("eps_dom must be finite and nonnegative.")
+    if not np.isfinite(float(alpha_bridge)) or float(alpha_bridge) < 0.0:
+        raise ValueError("alpha_bridge must be finite and nonnegative.")
+    if sigma_override is not None and (not np.isfinite(float(sigma_override)) or float(sigma_override) <= 0.0):
+        raise ValueError("sigma_override must be finite and strictly positive when supplied.")
+
+    X                      = quantile_normalize(Xraw, criteria_type, q_low, q_high, 1e-12)
+    w                      = W / W.sum()
+    active_criteria        = w > 0.0
+    # A criterion assigned exactly zero metric weight is intentionally inactive:
+    # it cannot re-enter the model indirectly through the Pareto-dominance signal.
+    X_dom                  = X[:, active_criteria]
+    dominates              = dominance_relation_matrix(X_dom, eps_dom = eps_dom)
+    dom                    = dominance_score(X_dom,           eps_dom = eps_dom)
     prior_signal, ref_info = build_reference_prior(X_norm = X, w = w, dom = dom, reference_mode = reference_mode, alpha_dom_prior = alpha_dom_prior, adaptive_alpha = adaptive_alpha, eps = 1e-12)
     prior_order            = [i + 1 for i in np.argsort(-prior_signal, kind = "mergesort")]
     dist                   = weighted_pairwise_dist(X, w)
@@ -504,6 +612,7 @@ def lara_method(dataset, W, criteria_type = None, lambda_graph = 1.0, k_graph = 
 
     Lc, deg = combinatorial_laplacian(S_graph)
     score   = pairwise_graph_regularized_score(Lc = Lc, dominates = dominates, S_graph = S_graph, prior_signal = prior_signal, lambda_graph = lambda_graph, mu_prior = mu_prior, gamma_pair = gamma_pair, margin = margin, local_dominance = local_dominance, eps = 1e-10)
+    n_viol_pre, max_viol_pre = dominance_violations(score, dominates, tol = 1e-12)
     if dominance_repair:
         score = enforce_dominance_monotonicity(score, dominates, tol = 1e-12, max_iter = 5000)
     order            = np.argsort(-score, kind = "mergesort")
@@ -523,6 +632,10 @@ def lara_method(dataset, W, criteria_type = None, lambda_graph = 1.0, k_graph = 
                         "alpha_dom_prior_effective":     ref_info["alpha_dom_prior_effective"],
                         "adaptive_alpha":                ref_info["adaptive_alpha"],
                         "closeness_dom_correlation":     ref_info["closeness_dom_correlation"],
+                        "closeness_dom_correlation_defined": ref_info["closeness_dom_correlation_defined"],
+                        "closeness_standard_deviation":  ref_info["closeness_standard_deviation"],
+                        "dominance_standard_deviation":  ref_info["dominance_standard_deviation"],
+                        "active_criteria":               active_criteria.copy(),
                         "prior_signal":                  prior_signal.copy(),
                         "prior_order":                   prior_order,
                         "sigma_used":                    float(sigma_used),
@@ -530,6 +643,8 @@ def lara_method(dataset, W, criteria_type = None, lambda_graph = 1.0, k_graph = 
                         "S_graph":                       S_graph.copy(),
                         "dominates":                     dominates.copy(),
                         "dominance_pairs":               int(np.sum(dominates)),
+                        "dominance_violations_before":   int(n_viol_pre),
+                        "max_dominance_violation_before":float(max_viol_pre),
                         "dominance_violations_after":    int(n_viol),
                         "max_dominance_violation_after": float(max_viol),
                         "score":                         score.copy(),
