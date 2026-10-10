@@ -6,6 +6,7 @@ import numpy as np
 
 from dataclasses import dataclass
 from scipy.stats import norm
+from scipy.special import expit, logsumexp
 
 ###############################################################################
 
@@ -21,6 +22,7 @@ class config:
     veto_s_multiplier: float = 0.5
     eps:               float = 1e-12
     local_k:           int   = 3
+    rho_floor:         float = 0.25
 #    use_graph:         bool  = False
 #    graph_k:           int   = 3
 #    graph_lambda:      float = 1.0
@@ -30,6 +32,8 @@ def _normalize_weights(weights):
     w = np.asarray(weights, dtype = float)
     if w.ndim != 1:
         raise ValueError("weights must be a 1D sequence.")
+    if not np.all(np.isfinite(w)):
+        raise ValueError("weights must be finite.")
     if np.any(w < 0):
         raise ValueError("Weights must be nonnegative.")
     total = float(w.sum())
@@ -39,22 +43,62 @@ def _normalize_weights(weights):
 
 # Function: Criteria Type
 def _encode_directions(directions, n_criteria):
-    d = np.asarray([1.0 if item in ("max", "benefit", 1, True, "+") else -1.0 for item in directions], dtype = float)
-    if d.ndim != 1 or len(d) != n_criteria:
-        raise ValueError("weights and directions must have the same length.")
-    return d
+    try:
+        values = list(directions)
+    except TypeError as exc:
+        raise ValueError("directions must be a sequence.") from exc
+    if len(values) != n_criteria:
+        raise ValueError("directions must match the number of criteria.")
+    benefits = ("max", "benefit", 1, True, "+")
+    costs = ("min", "cost", -1, False, "-")
+    encoded = []
+    for item in values:
+        if item in benefits:
+            encoded.append(1.0)
+        elif item in costs:
+            encoded.append(-1.0)
+        else:
+            raise ValueError(f"Invalid criterion direction: {item!r}")
+    return np.asarray(encoded, dtype=float)
 
 ###############################################################################
 
 # Function: Perfomance Matrix Normalization
 def quantile_normalize(X, directions, config):
-    ql              = np.quantile(X, config.qlow,  axis = 0)
-    qh              = np.quantile(X, config.qhigh, axis = 0)
-    Z               = (X - ql) / (qh - ql + config.eps)
-    Z               = np.clip(Z, 0.0, 1.0)
-    cost_mask       = directions < 0
+    X = np.asarray(X, dtype = float)
+    ql = np.quantile(X, config.qlow, axis = 0)
+    qh = np.quantile(X, config.qhigh, axis = 0)
+    full_lo = np.min(X, axis = 0)
+    full_hi = np.max(X, axis = 0)
+    denom = qh - ql
+    constant = (full_hi - full_lo) <= config.eps
+    Z = np.zeros_like(X, dtype = float)
+    mode = []
+    for j in range(X.shape[1]):
+        if constant[j]:
+            Z[:, j] = 0.5
+            mode.append('constant')
+        elif denom[j] > config.eps:
+            Z[:, j] = np.clip((X[:, j] - ql[j]) / denom[j], 0.0, 1.0)
+            mode.append('quantile')
+        else:
+            vals = X[:, j]
+            order = np.argsort(vals, kind = 'mergesort')
+            ranks = np.empty(len(vals), dtype = float)
+            sv = vals[order]
+            start = 0
+            while start < len(vals):
+                end = start + 1
+                while end < len(vals) and sv[end] == sv[start]:
+                    end += 1
+                mid = 0.5*((start + 1) + end)
+                ranks[order[start:end]] = mid
+                start = end
+            Z[:, j] = (ranks - 0.5) / len(vals)
+            mode.append('ecdf')
+    cost_mask = directions < 0
     Z[:, cost_mask] = 1.0 - Z[:, cost_mask]
-    return Z, ql, qh
+    return Z, ql, qh, np.asarray(mode, dtype = object), constant
 
 # Function:  Pairwise Distance
 def pairwise_weighted_distance(Z, weights):
@@ -79,7 +123,7 @@ def local_scales(D, config):
         rho[i] = np.mean(vals[:k]) if len(vals) else 1.0
     positive = rho[rho > 0]
     med      = np.median(positive) if len(positive) > 0 else 1.0
-    return np.maximum(rho / (med + config.eps), 0.25)
+    return np.maximum(rho / med, config.rho_floor)
 
 # Function: Bandwith
 def base_bandwidths(Z, config):
@@ -91,36 +135,38 @@ def base_bandwidths(Z, config):
         else:
             std_j = 0.0
             iqr_j = 0.0
-        scale = max(std_j, iqr_j / 1.349, 0.05)
+        scale = max(std_j, iqr_j / 1.349)
         h[j]  = config.base_h_scale * scale + 1e-6
     return h
 
 # Function: Bandwith
 def adaptive_bandwidth(base_h, rho_i, rho_k):
-    factor = max((rho_i + rho_k) / 2.0, 0.25)
+    factor = (rho_i + rho_k) / 2.0
     return base_h * factor
 
 # Function: Preferences
 def criterion_preference(x, y, h, config):
-    z = (x - y - config.q_threshold) / (h + config.eps)
+    z = (x - y - config.q_threshold) / h
     return norm.cdf(z)
 
 # Function: Concordance
 def concordance(prefs, weights, config):
-    prefs = np.clip(prefs, 1e-12, 1.0)
+    prefs = np.clip(prefs, 1e-300, 1.0)
     eta   = config.eta
     if abs(eta) < 1e-10:
         return float(np.exp(np.sum(weights * np.log(prefs))))
-    return float(np.sum(weights * (prefs**eta)) ** (1.0 / eta))
+    # Log-space power mean avoids underflow for negative eta.
+    positive = weights > 0
+    return float(np.exp(logsumexp(np.log(weights[positive]) + eta * np.log(prefs[positive])) / eta))
 
 # Function: Veto
 def veto_factor(x, y, h, weights, config):
     loss   = np.maximum(0.0, y - x)
     v      = config.veto_h_multiplier * h
-    s      = np.maximum(config.veto_s_multiplier * h, 1e-6)
+    s      = config.veto_s_multiplier * h
     logits = (v - loss) / s
-    vals   = 1.0 / (1.0 + np.exp(-logits))
-    vals   = np.clip(vals, 1e-12, 1.0)
+    vals   = expit(logits)
+    vals   = np.clip(vals, 1e-300, 1.0)
     return float(np.exp(np.sum(weights * np.log(vals))))
 
 # Function:  Flow
@@ -152,7 +198,7 @@ def net_flow(Z, weights, config):
 #    positive_distances = D[D > 0]
 #    fallback           = float(np.median(positive_distances)) if positive_distances.size else 1.0
 #    sigma              = float(np.median(ksig_vals)) if len(ksig_vals) > 0 else fallback
-#    return max(sigma, 1e-6)
+#    return sigma
  
 #def build_sparse_similarity_graph(D, config):
 #    n         = D.shape[0]
@@ -188,46 +234,74 @@ def net_flow(Z, weights, config):
 
 # Function: 
 def fit_score(X, weights, directions, config): #, graph_regularizer = False
-    #cfg                     = replace(config or Config(), use_graph = graph_regularizer)
-    cfg                     = config
-    w                       = _normalize_weights(weights)
-    d                       = _encode_directions(directions, n_criteria = X.shape[1])
-    Z, ql, qh               = quantile_normalize(X, d, cfg)
-    flow, P, D, rho, base_h = net_flow(Z, w, cfg)
-    score                   = flow.copy()
-    #score, S, sigma         = apply_graph_regularization(flow, Z, w, cfg)
-    
+    cfg = config
+    X = np.asarray(X, dtype=float)
+    if X.ndim != 2 or min(X.shape) == 0:
+        raise ValueError("X must be a nonempty 2D decision matrix.")
+    if not np.all(np.isfinite(X)):
+        raise ValueError("X must contain finite values only.")
+    if not (0 <= cfg.qlow < cfg.qhigh <= 1):
+        raise ValueError("Require 0 <= qlow < qhigh <= 1.")
+    if cfg.base_h_scale <= 0 or cfg.veto_h_multiplier < 0 or cfg.veto_s_multiplier <= 0:
+        raise ValueError("Invalid bandwidth/veto parameters.")
+    if cfg.local_k < 1 or cfg.rho_floor <= 0 or cfg.eps <= 0:
+        raise ValueError("local_k, rho_floor, and eps must be positive.")
+    if not np.all(np.isfinite([cfg.eta, cfg.q_threshold, cfg.base_h_scale, cfg.veto_h_multiplier, cfg.veto_s_multiplier, cfg.rho_floor, cfg.eps])):
+        raise ValueError("Configuration parameters must be finite.")
+    w = _normalize_weights(weights)
+    if len(w) != X.shape[1]:
+        raise ValueError("weights must match the number of criteria.")
+    d = _encode_directions(directions, n_criteria = X.shape[1])
+    Z, ql, qh, norm_mode, constant = quantile_normalize(X, d, cfg)
+    active = ~constant
+    active &= w > 0
+    if not np.any(active):
+        n = X.shape[0]
+        flow = np.zeros(n, dtype = float)
+        P = np.zeros((n, n), dtype = float)
+        D = np.zeros((n, n), dtype = float)
+        rho = np.ones(n, dtype = float)
+        base_h = np.array([], dtype = float)
+    else:
+        Za = Z[:, active]
+        wa = _normalize_weights(w[active])
+        flow, P, D, rho, base_h = net_flow(Za, wa, cfg)
+    score = flow.copy()
     return {
                 "normalized":    Z,
                 "qlow":          ql,
                 "qhigh":         qh,
+                "normalization_mode": norm_mode,
+                "active_criteria": active,
                 "score":         score,
                 "pairwise_pref": P,
                 "distance":      D,
                 "local_scale":   rho,
                 "base_h":        base_h,
                 "weights":       w,
-                #"config":        cfg,
-                #"similarity":    S,
-                #"graph_sigma":   sigma,
             }
 
 # Function: Scores
 def rank_scores(scores, labels):
     if len(scores) != len(labels):
         raise ValueError("scores and labels must have the same length.")
-    order = np.argsort(scores)[::-1]
+    order = np.argsort(-np.asarray(scores), kind="mergesort")
     return [(labels[i], float(scores[i]), int(r + 1)) for r, i in enumerate(order)]
 
 ###############################################################################
 
 # Function: SABINA (Smooth Adaptive Bandwidth Integrated Net-flow Aggregation)
 def sabina_method(X, weights, criteria_type, labels = None, config = config):
+    """Compute SABINA scores and a 1-based ranked list of alternative indices.
+
+    Returns (order, scores, diagnostics). Higher scores are preferred.
+    ``config`` accepts the class ``config`` or a ``config(...)`` instance.
+    """
     res = fit_score(X = X, weights = weights, directions = criteria_type, config = config)
+    res["order"] = np.argsort(-res["score"], kind="mergesort") + 1
     if labels is not None:
         res["ranking"]         = rank_scores(res["score"], labels)
         res["predicted_order"] = [item[0] for item in res["ranking"]]
-        res["order"]           = np.argsort(res['score'])[::-1] + 1
     return res['order'], res['score'], res
 
 ###############################################################################
